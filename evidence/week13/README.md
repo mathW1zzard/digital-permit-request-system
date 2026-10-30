@@ -1,6 +1,6 @@
 # Week 13 evidence index
 
-**Who produced this:** Claude Code (AI assistant) ran S1-S9 and captured S10 at the student's request, on the student's laptop. The outputs are unedited. See `lab-log.md`.
+**Who produced this:** Claude Code (AI assistant) ran S1-S9 and captured S10 (except the phone screenshot) at the student's request, on the student's laptop. The outputs are unedited. See `lab-log.md`.
 
 **Build:** commit `00ce56d`, branch `week13-automation`. Environment: `00-environment.txt`. Tagged commit: not tagged yet.
 
@@ -17,7 +17,7 @@
 | S7 | AC9 | Expired 1, then 0; verify `valid: false`; requester gets 403 | `valid: true` before; expired 1, then 0; status `expired`, `valid: false`; requester 403 | S7\01-05 | Pass | 23:03 | 00ce56d |
 | S8 | AC10 | Escalated then 0; no reviewer flagged, then rerouted 1 | Escalated 1, then 0; with no reviewers the permit was flagged `no_reviewer_available`; rerouted 1 once they returned | S8\01-06 | Pass | 23:03 | 00ce56d |
 | S9 | AC2-AC4 | 401, 422, 403, 403, 404, 409; correlation ID on each; no stack trace | All six returned as expected, each with a correlation ID; a search of S9 found no stack trace, vendor path or SQL | S9\01-08 | Pass | 23:03 | 00ce56d |
-| S10 | UI states | The 13 states in the guide's Step 13g | 12 captured; #12 has no phone photo; #3, #7 and #13 differ from the guide (see `lab-log.md`) | S10\ | Partial | 22:44-22:56 | before 00ce56d, same code |
+| S10 | UI states | The 13 states in the guide's Step 13g | All 13 captured; #3, #7 and #13 differ from the guide (see `lab-log.md`). The phone screenshot in #12 was taken by the student | S10\ | Pass, with noted differences | 22:44-22:56; phone 23:39 | before 00ce56d, same code |
 
 Also: `01-migrations.txt`, `02-schedule.txt`, `03-tests-run1.txt` (14 of 14 passed: the guide's 12 plus Laravel's 2 examples), `04-flutter-analyze.txt` (no issues).
 

@@ -2,7 +2,7 @@
 
 | Date and time (Asia/Manila) | Commit | What I did | Expected | Actual |
 | --- | --- | --- | --- | --- |
-| 2026-10-30 22:44-22:56 | (none yet) | S10 screenshots captured by Claude Code (AI assistant), at the student's request, in its built-in browser from the release build. Served on port 5001 instead of 5000 because `flutter run` held port 5000; FRONTEND_ORIGIN was temporarily extended and then restored. | The 13 states in Step 13g | All 13 states captured except the phone photo in #12; see S10 notes below |
+| 2026-10-30 22:44-22:56 | (none yet) | S10 screenshots captured by Claude Code (AI assistant), at the student's request, in its built-in browser from the release build. Served on port 5001 instead of 5000 because `flutter run` held port 5000; FRONTEND_ORIGIN was temporarily extended and then restored. | The 13 states in Step 13g | All 13 states captured, with the phone screenshot in #12 added later by the student; see S10 notes below |
 | 2026-10-30 22:50 | (none yet) | #7 deviation: instead of two browser tabs, endorsed through the API as the same reviewer, then pressed Endorse on the outdated page. | 409 message | "This action is not available while the permit is pending approval." |
 | 2026-10-30 22:51 | (none yet) | #8 deliberate failure: reassigned PRM-20261030-TCWUK to reviewer id 5 with tinker while reviewer 1 had it open, then pressed Endorse. | 403 | "You are not allowed to do this." |
 | 2026-10-30 22:52 | (none yet) | #9 deliberate failure: stopped the API, pressed Refresh, restarted it, pressed Try again. | Connection problem, then recovery | As expected |
@@ -12,9 +12,16 @@
 ## S10 notes
 
 - #3 was captured by pressing Refresh on the normal connection, not with DevTools Slow 4G.
-- #12 has no phone photo yet: it needs the student's own phone (Step 13c Option A).
+- #12 phone screenshot (`12-phone.jpg`) was taken by the student at 23:39 on their Android phone in Chrome (Step 13c Option A). It shows the New permit form at phone width.
 - #13 shows focus as a grey highlight on the focused chip, not an outline. Only the first Tab stops were captured, not the whole order.
 - Observed defect: after the 409 in #7, the left-hand list still said "under review" until the next Refresh, because `AppState.act` reloads the list only on success. Not fixed.
+
+## Phone test
+
+| Date and time (Asia/Manila) | Commit | What was done | Expected | Actual |
+| --- | --- | --- | --- | --- |
+| 2026-10-30 23:31 | 11ce688 | First phone attempt: the app was started with the guide's example IP (192.168.1.10) instead of the laptop's 192.168.1.38. | Sign-in works | **Failed:** "Cannot reach the server." |
+| 2026-10-30 23:36-23:39 | 11ce688 | Restarted `flutter run` with the correct IP and reopened the app on the phone. | Sign-in and New permit work at phone width | Worked; screenshot saved as `S10/12-phone.jpg` |
 
 ## Evidence run
 
