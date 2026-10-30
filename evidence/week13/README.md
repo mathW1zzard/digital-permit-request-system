@@ -29,7 +29,19 @@ Also: `01-migrations.txt`, `02-schedule.txt`, `03-tests-run1.txt` (14 of 14 pass
 
 ## Interpretation
 
-This section is a draft by Claude Code. Rewrite it in your own words.
+## Interpretation
+
+**What I observed.** All nine scripted scenarios (S1-S9) matched their expected results in the evidence run on commit 00ce56d. A valid permit was routed to a reviewer and an approver, then issued with 3 notifications delivered. In S2, the gateway returned 503 twice, and the notification was delivered on attempt 3. In S3, a rejected recipient (HTTP 422) stopped after one attempt and appeared on the admin's Needs attention list. It was delivered only after the address was corrected and an admin pressed Requeue. In S4, with the gateway stopped, all 4 rows stopped at 4 attempts and each dispatch run paused after 3 transient failures in a row. In S5, the gateway recorded one accepted message and one duplicate_ignored for the same key, so the retry did not deliver twice.
+
+Not everything went right the first time. An earlier trial run showed that the first notification's dedupe key had an empty revision number (review_assigned:2:). This was fixed before the evidence run. My first phone test also failed with "Cannot reach the server" because the app was started with the wrong IP address. In S6, 6 permits were escalated instead of 1. This was expected: the simulated date was about 24 days ahead, so the older test permits were also past their 24-hour review SLA.
+
+**What I conclude.** The four Week 13 automations (approval routing, expiry reminders, automatic expiration and exception escalation) work in this controlled setup. The retry design separates failures correctly: temporary failures are retried a limited number of times, while permanent failures go straight to a person. The automation never approved or rejected a permit by itself.
+
+These results have limits. The gateway is a mock, the data is fictional, S6-S8 used a simulated clock, and each scenario ran only once. The commands were triggered by hand with the scheduler stopped, so schedule:work was not tested in this run. Claude Code (an AI assistant) ran S1-S9 from Git Bash and captured most of the S10 screenshots at my request, so api.cmd and ref.cmd were not tested. Three S10 captures differ from the guide (#3, #7 and #13). I also found two defects that are still open: the permit list can show an old status after a 409, and an unhandled database error can write raw details such as SQL and file paths to the log.
+
+**What I recommend.** Before this system is used for anything real, replace the X-Demo-User header with real login and HTTPS (planned for Week 14), stop writing raw exception messages to the log, and reload the permit list after a failed action. The retry mapping should also be tested against a real provider's sandbox, and the scheduler should be monitored, because no automation runs if it stops.
+
+This is a classroom prototype demonstrated with fictional data, and it is not production-ready.
 
 **What was observed:** all nine scripted scenarios matched their expected results on the first complete evidence run. An earlier trial run of the same scenarios, before this commit, exposed one defect: the first notification's dedupe key had an empty revision number (`review_assigned:2:`). It was fixed before commit `00ce56d`; see `lab-log.md`.
 
