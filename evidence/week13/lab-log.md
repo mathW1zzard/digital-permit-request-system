@@ -15,3 +15,12 @@
 - #12 has no phone photo yet: it needs the student's own phone (Step 13c Option A).
 - #13 shows focus as a grey highlight on the focused chip, not an outline. Only the first Tab stops were captured, not the whole order.
 - Observed defect: after the 409 in #7, the left-hand list still said "under review" until the next Refresh, because `AppState.act` reloads the list only on success. Not fixed.
+
+## Evidence run
+
+| Date and time (Asia/Manila) | Commit | What was done | Expected | Actual |
+| --- | --- | --- | --- | --- |
+| 2026-10-30 21:45 (approx.) | (none yet) | Trial run of S1-S9 by Claude Code, before the first commit. | Dedupe keys include the revision number | **Failed:** first key was `review_assigned:2:` because `revision_count` was not set on create. Output not kept in this folder; the symptom is recorded here. |
+| 2026-10-30 22:13 (approx.) | (none yet) | Fix: set `revision_count` to 0 in `PermitWorkflow::submit`. Reran `php artisan test`. | Key ends in `:0`; tests pass | 14 of 14 passed; S2 gateway log now shows `review_assigned:2:0` |
+| 2026-10-30 22:58-23:03 | 00ce56d | Evidence run of S1-S9 by Claude Code at the student's request, from Git Bash with `curl` equivalents of the guide's commands. | See `README.md` | See `README.md`; all nine passed |
+| 2026-10-30 23:05 | 00ce56d | Diagrams exported by Claude Code: `mermaid-cli` was blocked by a permission check, so they were rendered with Mermaid 11.4.1 in a browser and captured as PNGs. Shortened one sequence-diagram note so it fits. | 3 PNGs in `docs/` | 3 saved at about 800 px wide |

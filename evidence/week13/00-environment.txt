@@ -1,0 +1,12 @@
+PHP 8.3.30 (cli) (built: Jan 13 2026 22:50:40) (ZTS Visual C++ 2019 x64)
+Copyright (c) The PHP Group
+Zend Engine v4.3.30, Copyright (c) Zend Technologies
+[32mComposer[39m version [33m2.10.2[39m 2026-07-01 11:24:45
+[32mPHP[39m version [33m8.3.30[39m (C:\laragon\bin\php\php-8.3.30-Win32-vs16-x64\php.exe)
+Run the "diagnose" command to get more detailed diagnostics output.
+Flutter 3.47.8 • channel stable • https://github.com/flutter/flutter.git
+Framework • revision 737ba8f885 (7 days ago) • 2026-10-22 21:37:31 -0700
+Engine • hash dfd2e6cb7d319db05e3bf1503f3e2ac60f6288a2 (revision cf636b1dfb) (7 days ago) • 2026-10-23 02:13:38.000Z
+Tools • Dart 3.13.7 • DevTools 2.60.0
+Laravel: Laravel Framework [32m13.39.0[39m
+Commit: 00ce56d

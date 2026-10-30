@@ -13,5 +13,7 @@
 | SQLite, one server | Limited concurrency; no failover | Week 16 environment comparison (MySQL or PostgreSQL) |
 | Outbox and event tables grow forever | Disk use over time | Scheduled archive of rows older than N days |
 | The scheduler itself is not monitored | A stopped scheduler means no automation | Week 16: health signal on the last `automation.run_completed` |
+| Unhandled-exception log lines include the raw exception message | A database error can write SQL details, file paths and (fictional) email addresses to `permit.jsonl`, against the log rule in Step 7 | Log the exception class and location only |
+| After a 409 the permit list is not reloaded | The list can show an old status until Refresh | Reload the list in `AppState.act` on failure too |
 
 This is a bounded classroom prototype, demonstrated with fictional data, and not ready for production.

@@ -1,6 +1,6 @@
 # Diagrams
 
-Paste each block into mermaid.live and export a PNG into `docs/`. Keep the source here so the diagram can be updated when the code changes.
+Exported PNGs: `diagram-state-machine.png`, `diagram-data-flow.png`, `diagram-retry-sequence.png`. Keep the source here so the diagram can be updated when the code changes.
 
 ## Permit state machine
 
@@ -61,5 +61,5 @@ sequenceDiagram
   D->>GW: POST /send (same key)
   GW-->>D: 200 accepted
   D->>OB: status = sent
-  Note over D,GW: 4xx such as 422 is permanent: status = manual_action, never retried
+  Note over D,GW: 4xx such as 422 is permanent:<br/>status = manual_action, never retried
 ```

@@ -1,0 +1,12 @@
+HTTP/1.1 401 Unauthorized
+Host: localhost:8000
+Connection: close
+X-Powered-By: PHP/8.3.30
+Cache-Control: no-cache, private
+Date: Fri, 30 Oct 2026 15:03:25 GMT
+Content-Type: application/json
+X-Correlation-Id: 31a95f53-fb3b-4f6f-8850-a6745716bda6
+Access-Control-Allow-Origin: http://localhost:5000
+Access-Control-Expose-Headers: X-Correlation-Id
+
+{"error":{"code":"unauthenticated","message":"Sign in to continue.","correlation_id":"31a95f53-fb3b-4f6f-8850-a6745716bda6"}}
