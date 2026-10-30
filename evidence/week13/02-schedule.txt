@@ -1,0 +1,4 @@
+
+ */5 * * * * php artisan permits:run-automation .. Next Due: 2 minutes from now
+ * * * * * php artisan notifications:dispatch .. Next Due: 15 seconds from now
+

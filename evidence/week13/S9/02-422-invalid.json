@@ -1,0 +1,1 @@
+{"error":{"code":"validation_failed","message":"Some fields need attention.","details":{"permit_type_id":["The permit type id field is required."],"purpose":["The purpose field must be at least 10 characters."],"location":["The location field is required."],"requested_start":["The requested start field is required."]},"correlation_id":"64b4dc9f-9ffd-4a9a-9e55-441c49c6d924"}}
