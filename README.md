@@ -2,7 +2,7 @@
 
 Individual finals project for PFEBSIT 002 (Weeks 13-18): a Flutter Web app with a Laravel backend. The course module is used as a guide for what each week adds. The whole project lives in this one repository, and each week is marked with a git tag.
 
-- **Student:** [Your full name], [Your course, year and section] (solo)
+- **Student:** Joseph R. Dionisio, BSIT 3A (solo)
 - **Selected project:** #32 Digital Permit Request System
 - **Backend:** Laravel 13 (PHP 8.3), SQLite
 - **Frontend:** Flutter Web
@@ -27,14 +27,14 @@ Limits used in the demo: 4 attempts per notification, a 3 s timeout per attempt,
 
 | Week | Tag | What was added | Status |
 | --- | --- | --- | --- |
-| 13 | `week13-sa7` | Backend API with roles and audit trail, approval routing, reminder and expiry automation (scheduler, outbox, bounded retries, manual handling), mock gateway, Flutter screens for all roles | Done, tag not created yet |
+| 13 | `week13-sa7` | Backend API with roles and audit trail, approval routing, reminder and expiry automation (scheduler, outbox, bounded retries, manual handling), mock gateway, Flutter screens for all roles | Done |
 | 14 | - | Secure data exchange and encryption | Not started |
 | 15 | - | Integration testing and security hardening | Not started |
 | 16 | - | Performance, reliability and deployment | Not started |
 | 17 | - | Final integration, UAT and evaluation | Not started |
 | 18 | - | Final review, demo and technical defense | Not started |
 
-To see the project as it was in a given week, open the tag on GitHub, or run `git checkout week13-sa7` once the tag exists.
+To see the project as it was in a given week, open the tag on GitHub, or run `git checkout week13-sa7`.
 
 ## Repository layout
 
@@ -111,6 +111,6 @@ Evidence is listed in `evidence\week13\README.md`, with the lab log in `evidence
 
 ## AI assistance and third-party code
 
-I used Claude (Anthropic) as an AI assistant. A step-by-step build guide written with Claude gave the project its structure and starter code. Claude Code then generated the code, tests and documents in this repository, ran scenarios S1-S9, exported the diagrams and captured the S10 screenshots except the phone screenshot, which I took myself. These are recorded in the lab log. [Add what you changed, reviewed and tested yourself, and use your institution's required wording. Keep this truthful.]
+I used Claude (Anthropic) as an AI assistant. A step-by-step build guide written with Claude gave the project its structure and starter code. Claude Code then generated the code, tests and documents in this repository, ran scenarios S1-S9, exported the diagrams and captured the S10 screenshots except the phone screenshot, which I took myself. These are recorded in the lab log. I directed the work, took the phone screenshot, set up the phone test, and published the repository to GitHub. The interpretation in the evidence index started from a draft by Claude.
 
 Third-party code: the default Flutter and Laravel scaffolds, the Laravel framework and its default packages (via Composer, including Sanctum, installed for Week 14), and the Flutter `http`, `provider` and `cupertino_icons` packages. The diagrams were rendered with Mermaid.
