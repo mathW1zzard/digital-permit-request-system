@@ -2,7 +2,7 @@
 
 **Who produced this:** Claude Code (AI assistant) ran S1-S9 and captured S10 (except the phone screenshot) at the student's request, on the student's laptop. The outputs are unedited. See `lab-log.md`.
 
-**Build:** commit `00ce56d`, branch `week13-automation`. Environment: `00-environment.txt`. Tagged commit: not tagged yet.
+**Build:** commit `00ce56d`, branch `week13-automation`. Environment: `00-environment.txt`. Tagged commit: `abd9eeb` (tag `week13-sa7`).
 
 **Run:** S1-S9 on 2026-10-30, 22:58-23:03 Asia/Manila, in one pass from `migrate:fresh --seed`, in this order. S10 was captured on the same evening, 22:44-22:56, just before that commit, from the same code.
 
