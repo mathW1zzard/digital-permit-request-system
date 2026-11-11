@@ -1,0 +1,12 @@
+HTTP/1.1 426 Upgrade Required
+Host: localhost:8000
+Connection: close
+X-Powered-By: PHP/8.4.12
+Cache-Control: no-cache, private
+Date: Wed, 11 Nov 2026 07:31:26 GMT
+Content-Type: application/json
+X-Correlation-Id: 841e2f5d-a9a8-43b0-b57b-59708a01f66c
+Access-Control-Allow-Origin: http://localhost:5000
+Access-Control-Expose-Headers: X-Correlation-Id
+
+{"error":{"code":"http_426","message":"Use HTTPS to connect to this service.","correlation_id":"841e2f5d-a9a8-43b0-b57b-59708a01f66c"}}

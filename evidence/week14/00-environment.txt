@@ -1,0 +1,9 @@
+PHP 8.4.12 (cli) (built: Aug 26 2025 21:19:14) (NTS Visual C++ 2022 x64)
+[32mComposer[39m version [33m2.10.2[39m 2026-07-01 11:24:45
+Laravel: Laravel Framework [32m13.39.0[39m
+Flutter 3.47.8 • channel stable • https://github.com/flutter/flutter.git
+Node: v22.22.0
+PHP sodium: 1.0.20
+PHP curl TLS: OpenSSL/3.0.16
+Branch: week14-security
+Commit: a20d703

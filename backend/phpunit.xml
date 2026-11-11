@@ -28,6 +28,7 @@
         <env name="DB_URL" value=""/>
         <env name="DEMO_PASSWORD" value="test-only-password"/>
         <env name="REQUIRE_HTTPS" value="false"/>
+        <env name="PERMIT_LOG_PATH" value="storage/logs/permit-test.jsonl"/>
         <env name="GATEWAY_PAYLOAD_KEY_ID" value="t1"/>
         <env name="GATEWAY_PAYLOAD_KEY" value="dGVzdC1vbmx5LWtleS1ub3QtYS1zZWNyZXQtMzJieXQ="/>
         <env name="MAIL_MAILER" value="array"/>

@@ -1,0 +1,4 @@
+Finding: php artisan test wrote its auth.* lines into the live log storage/logs/permit.jsonl (lines with "channel":"testing" in W11/02-auth-log-lines.jsonl).
+Fix: config/logging.php reads PERMIT_LOG_PATH; phpunit.xml sets it to storage/logs/permit-test.jsonl.
+Recheck 2026-11-11 15:33:14: live log lines before tests 134, after tests 134; test log has 150 lines.
+{"tool":"phpunit","result":"passed","tests":24,"passed":24,"assertions":92,"duration_ms":3080}

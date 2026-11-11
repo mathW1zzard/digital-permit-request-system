@@ -1,0 +1,12 @@
+{"at":"2026-11-11T07:29:08+00:00","idempotency_key":"tamper-test:4lv4yzfg","template":"review_assigned","reference":"PRM-TAMPER-TEST","result":"accepted"}
+{"at":"2026-11-11T07:29:08+00:00","idempotency_key":"tamper-test:4lv4yzfg","template":"review_assigned","reference":"PRM-TAMPER-TEST","result":409,"error":"replayed"}
+{"at":"2026-11-11T07:29:08+00:00","idempotency_key":"tamper-test:4lv4yzfg","template":"review_assigned","reference":"PRM-TAMPER-TEST","result":400,"error":"invalid_envelope"}
+{"at":"2026-11-11T07:29:08+00:00","idempotency_key":"tamper-test:4lv4yzfg","template":"review_assigned","reference":"PRM-SOMEONE-ELSE","result":400,"error":"invalid_envelope"}
+{"at":"2026-11-11T07:29:08+00:00","idempotency_key":"tamper-test:4lv4yzfg","template":"review_assigned","reference":"PRM-TAMPER-TEST","result":400,"error":"invalid_envelope"}
+{"at":"2026-11-11T07:29:08+00:00","idempotency_key":"tamper-test:4lv4yzfg","template":"review_assigned","reference":"PRM-TAMPER-TEST","result":400,"error":"stale_timestamp"}
+{"at":"2026-11-11T07:31:29+00:00","idempotency_key":"tamper-test:jx8gi1e2","template":"review_assigned","reference":"PRM-TAMPER-TEST","result":"accepted"}
+{"at":"2026-11-11T07:31:29+00:00","idempotency_key":"tamper-test:jx8gi1e2","template":"review_assigned","reference":"PRM-TAMPER-TEST","result":409,"error":"replayed"}
+{"at":"2026-11-11T07:31:29+00:00","idempotency_key":"tamper-test:jx8gi1e2","template":"review_assigned","reference":"PRM-TAMPER-TEST","result":400,"error":"invalid_envelope"}
+{"at":"2026-11-11T07:31:29+00:00","idempotency_key":"tamper-test:jx8gi1e2","template":"review_assigned","reference":"PRM-SOMEONE-ELSE","result":400,"error":"invalid_envelope"}
+{"at":"2026-11-11T07:31:29+00:00","idempotency_key":"tamper-test:jx8gi1e2","template":"review_assigned","reference":"PRM-TAMPER-TEST","result":400,"error":"invalid_envelope"}
+{"at":"2026-11-11T07:31:29+00:00","idempotency_key":"tamper-test:jx8gi1e2","template":"review_assigned","reference":"PRM-TAMPER-TEST","result":400,"error":"stale_timestamp"}

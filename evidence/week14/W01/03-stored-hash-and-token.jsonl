@@ -1,0 +1,4 @@
+{"email":"admin@permit.test","hash_prefix":"$2y$12$","hash_length":60}
+{"email":"requester@permit.test","hash_prefix":"$2y$12$","hash_length":60}
+{"email":"bounce@invalid.test","hash_prefix":"$2y$12$","hash_length":60}
+{"id":2,"0":2,"name":"web","1":"web","stored_token_length":64,"2":64,"expires_at":"2026-11-11 08:31:00","3":"2026-11-11 08:31:00"}

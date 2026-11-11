@@ -1,0 +1,10 @@
++--------------------------------------------+----------------------+----------------------+--------+
+| case | expected | actual | result |
++--------------------------------------------+----------------------+----------------------+--------+
+| genuine message | 200 accepted | 200 accepted | PASS |
+| replay of the genuine message | 409 replayed | 409 replayed | PASS |
+| altered ciphertext | 400 invalid_envelope | 400 invalid_envelope | PASS |
+| altered reference (outside the ciphertext) | 400 invalid_envelope | 400 invalid_envelope | PASS |
+| sealed with the wrong key | 400 invalid_envelope | 400 invalid_envelope | PASS |
+| timestamp 10 minutes old | 400 stale_timestamp | 400 stale_timestamp | PASS |
++--------------------------------------------+----------------------+----------------------+--------+

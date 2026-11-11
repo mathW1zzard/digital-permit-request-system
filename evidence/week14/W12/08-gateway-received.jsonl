@@ -1,0 +1,8 @@
+{"at":"2026-11-11T07:31:43+00:00","idempotency_key":"review_assigned:1:0","template":"review_assigned","reference":"PRM-20261111-BGKKL","result":"accepted"}
+{"at":"2026-11-11T07:32:01+00:00","idempotency_key":"review_assigned:2:0","template":"review_assigned","reference":"PRM-20261111-VQRWX","result":"accepted"}
+{"at":"2026-11-11T07:32:01+00:00","idempotency_key":"revision_requested:2:0","template":"revision_requested","reference":"PRM-20261111-VQRWX","result":"accepted"}
+{"at":"2026-11-11T07:32:01+00:00","idempotency_key":"review_assigned:3:0","template":"review_assigned","reference":"PRM-20261111-70GQZ","result":"accepted"}
+{"at":"2026-11-11T07:32:01+00:00","idempotency_key":"approval_requested:3","template":"approval_requested","reference":"PRM-20261111-70GQZ","result":"accepted"}
+{"at":"2026-11-11T07:32:01+00:00","idempotency_key":"permit_issued:3","template":"permit_issued","reference":"PRM-20261111-70GQZ","result":"accepted"}
+{"at":"2026-11-11T07:32:08+00:00","idempotency_key":"review_assigned:4:0","template":"review_assigned","reference":"PRM-20261111-X8ELL","result":"accepted"}
+{"at":"2026-11-11T07:32:13+00:00","idempotency_key":"revision_requested:4:0","template":"revision_requested","reference":"PRM-20261111-X8ELL","result":422}

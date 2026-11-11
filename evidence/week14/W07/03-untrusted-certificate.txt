@@ -1,0 +1,2 @@
+Request without trusting the dev CA:
+curl exit code: 60 (60 = certificate could not be verified)

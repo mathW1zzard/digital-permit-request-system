@@ -54,7 +54,7 @@ return [
 
         'json' => [
             'driver' => 'single',
-            'path' => storage_path('logs/permit.jsonl'),
+            'path' => env('PERMIT_LOG_PATH', storage_path('logs/permit.jsonl')), // tests use their own file
             'level' => 'debug',
             'formatter' => \Monolog\Formatter\JsonFormatter::class,
         ],

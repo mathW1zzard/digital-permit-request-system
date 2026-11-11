@@ -1,0 +1,7 @@
+subject=CN=localhost
+issuer=CN=Project 32 Dev CA (local only)
+notBefore=Nov 11 07:27:47 2026 GMT
+notAfter=Dec 13 07:27:47 2027 GMT
+X509v3 Subject Alternative Name: 
+    DNS:localhost, IP Address:127.0.0.1, IP Address:0:0:0:0:0:0:0:1
+../certs/localhost.pem: OK

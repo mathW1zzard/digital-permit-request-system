@@ -1,0 +1,1 @@
+Prediction: with the gateway certificate not trusted, the dispatcher hands the row to a person after 1 attempt (permanent, gateway_tls_failed) and does not retry.

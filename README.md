@@ -28,7 +28,7 @@ Limits used in the demo: 4 attempts per notification, a 3 s timeout per attempt,
 | Week | Tag | What was added | Status |
 | --- | --- | --- | --- |
 | 13 | `week13-sa7` | Backend API with roles and audit trail, approval routing, reminder and expiry automation (scheduler, outbox, bounded retries, manual handling), mock gateway, Flutter screens for all roles | Done |
-| 14 | - | Secure data exchange and encryption | Not started |
+| 14 | `week14-sa8` | Password login with expiring tokens, HTTPS with a local TLS proxy, encrypted and tamper-checked gateway messages, encryption at rest, security tests | Done on `week14-security`, tag not created yet |
 | 15 | - | Integration testing and security hardening | Not started |
 | 16 | - | Performance, reliability and deployment | Not started |
 | 17 | - | Final integration, UAT and evaluation | Not started |
@@ -40,6 +40,7 @@ To see the project as it was in a given week, open the tag on GitHub, or run `gi
 
 ```
 backend/        Laravel API
+tls-proxy/      Local HTTPS proxy and certificate script (Week 14)
 client/         Flutter Web app
 mock-gateway/   Fake notification service for failure testing (plain PHP)
 docs/           Boundary map, diagrams, decision records, policies, API contract
@@ -49,37 +50,60 @@ README.md
 
 ## How to run
 
-You need Flutter (with Chrome), PHP 8.3 or newer, Composer and Git. The commands are for Command Prompt (CMD). These steps worked on the developer's Windows PC with the project already set up; they have not been tested from a fresh clone.
+You need Flutter (with Chrome), PHP 8.3 or newer with the `sodium` and `openssl` extensions, Composer, Node.js 18 or newer (only for the local HTTPS proxy) and Git. The commands are for Command Prompt (CMD). These steps worked on the developer's Windows PC with the project already set up; they have not been tested from a fresh clone.
 
-**Backend** (from `backend\`):
+**Once: certificates and keys** (from the repository root):
+
+```
+php tls-proxy\make-dev-certs.php
+```
+
+This creates `certs\` (git-ignored) with a local certificate authority and a certificate for `localhost`. Then in `backend\`:
 
 ```
 composer install
 copy .env.example .env
 php artisan key:generate
+php artisan gateway:key
+```
+
+Paste the printed key into `GATEWAY_PAYLOAD_KEY` in `backend\.env`, and set `DEMO_PASSWORD` to a password of at least 12 characters. All demo accounts use that password.
+
+**Backend** (from `backend\`, first terminal):
+
+```
 php artisan migrate:fresh --seed
 php artisan serve
 ```
 
-If it asks whether to create the SQLite database, answer yes. The API runs at http://localhost:8000. The demo accounts are fake and are created by `backend\database\seeders\DatabaseSeeder.php`, for example `requester@permit.test`.
+If it asks whether to create the SQLite database, answer yes. The demo accounts are fake and are created by `backend\database\seeders\DatabaseSeeder.php`, for example `requester@permit.test`.
 
-**Mock gateway** (from the repository root, in a second terminal). Use the same key as `GATEWAY_API_KEY` in `backend\.env`:
+**Mock gateway** (from the repository root, second terminal). Use the values from `backend\.env`, in the form `key-id:key`:
 
 ```
-set "GATEWAY_API_KEY=your-key-from-backend-env"
+set "GATEWAY_API_KEY=your-GATEWAY_API_KEY"
+set "GATEWAY_PAYLOAD_KEYS=k1:your-GATEWAY_PAYLOAD_KEY"
 php -S 127.0.0.1:9000 mock-gateway\router.php
 ```
 
-**Flutter Web app** (from `client\`, in a third terminal):
+**HTTPS proxy** (from the repository root, third terminal):
+
+```
+node tls-proxy\proxy.js
+```
+
+The API is now at https://localhost:8443 and the gateway at https://127.0.0.1:9443. The API refuses plain HTTP. Open https://localhost:8443/up once in Chrome and accept the warning (choose **Advanced → Proceed**), because the certificate comes from your own local authority, not a public one.
+
+**Flutter Web app** (from `client\`, fourth terminal):
 
 ```
 flutter pub get
-flutter run -d chrome --web-port 5000 --dart-define=API_BASE_URL=http://localhost:8000/api
+flutter run -d chrome --web-port 5000 --dart-define=API_BASE_URL=https://localhost:8443/api
 ```
 
-Use port 5000, because the API only accepts browser requests from the address in `FRONTEND_ORIGIN`.
+Use port 5000, because the API only accepts browser requests from the address in `FRONTEND_ORIGIN`. Sign in with a demo email and `DEMO_PASSWORD`. Sessions end after 60 minutes or when the page is reloaded.
 
-**Automation** (from `backend\`, in a fourth terminal). This delivers notifications every minute and runs the reminder, expiry and escalation checks every 5 minutes:
+**Automation** (from `backend\`, fifth terminal). This delivers notifications every minute and runs the reminder, expiry and escalation checks every 5 minutes:
 
 ```
 php artisan schedule:work
@@ -90,9 +114,10 @@ To run them once by hand instead:
 ```
 php artisan notifications:dispatch
 php artisan permits:run-automation
+php artisan gateway:tamper-test
 ```
 
-The failure switches on the mock gateway (`POST /control`) and the `--now` option on those two commands are for demos only.
+The failure switches on the mock gateway (`POST /control`), the `--now` option and `gateway:tamper-test` are for demos only.
 
 **Tests:**
 
@@ -103,14 +128,14 @@ cd client && flutter test
 
 ## Configuration and secrets
 
-The real `.env` file is never committed. Use `backend\.env.example` as the template. No API keys, passwords, tokens or real personal data belong in this repository, including screenshots and logs. Week 13 has no real login: the `X-Demo-User` header is a stand-in, and anyone can use it to act as any user. Real login is planned for Week 14.
+The real `.env` file is never committed. Use `backend\.env.example` as the template. No API keys, passwords, tokens or real personal data belong in this repository, including screenshots and logs. Since Week 14, users sign in with a password and receive a token that expires after 60 minutes; the token is kept in browser memory only. Keys and the demo password live in `backend\.env`, and certificates in `certs\`; both are git-ignored. See `docs\week14\12-key-lifecycle.md`.
 
 ## Evidence
 
-Evidence is listed in `evidence\week13\README.md`, with the lab log in `evidence\week13\lab-log.md`. Outputs and screenshots for scenarios S1-S10 are kept in that folder. Design documents are in `docs\`, and known limitations are in `docs\09-known-limitations.md`. This is a classroom prototype and is not production-ready.
+Evidence is listed in `evidence\week13\README.md` and `evidence\week14\README.md`, each with a lab log. Outputs and screenshots for scenarios S1-S10 are kept in that folder. Design documents are in `docs\`, and known limitations are in `docs\09-known-limitations.md`. This is a classroom prototype and is not production-ready.
 
 ## AI assistance and third-party code
 
 I used Claude (Anthropic) as an AI assistant. A step-by-step build guide written with Claude gave the project its structure and starter code. Claude Code then generated the code, tests and documents in this repository, ran scenarios S1-S9, exported the diagrams and captured the S10 screenshots except the phone screenshot, which I took myself. These are recorded in the lab log. I directed the work, took the phone screenshot, set up the phone test, and published the repository to GitHub. The interpretation in the evidence index started from a draft by Claude.
 
-Third-party code: the default Flutter and Laravel scaffolds, the Laravel framework and its default packages (via Composer, including Sanctum, installed for Week 14), and the Flutter `http`, `provider` and `cupertino_icons` packages. The diagrams were rendered with Mermaid.
+Third-party code: the default Flutter and Laravel scaffolds, the Laravel framework and its default packages (via Composer, including Sanctum, installed for Week 14), the Flutter `http`, `provider` and `cupertino_icons` packages, and libsodium (bundled with PHP) for message encryption. The HTTPS proxy uses only Node.js built-in modules. The diagrams were rendered with Mermaid.

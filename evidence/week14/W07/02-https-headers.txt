@@ -1,0 +1,6 @@
+HTTP/1.1 200 OK
+cache-control: no-store, private
+strict-transport-security: max-age=31536000
+x-correlation-id: 343c2195-a558-4acf-af96-fc4bc9407245
+access-control-expose-headers: X-Correlation-Id
+{"data":{"token":"[redacted]","expires_at":"2026-11-11T08:31:27+00:00","user":{"id":1,"name":"Ana Admin","role":"admin"}}}

@@ -1,0 +1,6 @@
+Analyzing client...                                             
+No issues found! (ran in 4.9s)
+00:00 +0: loading C:/Users/gaylo/Downloads/Flutter App Developments/project32-permit/client/test/widget_test.dart
+00:00 +0: Sign-in validates both fields and shows a wrong-password error
+00:03 +1: A 401 on a signed-in request ends the session
+00:03 +2: All tests passed!

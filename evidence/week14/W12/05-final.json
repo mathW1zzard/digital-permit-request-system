@@ -1,0 +1,24 @@
+{
+    "status": "issued",
+    "valid_until": "2026-12-11T07:31:59+00:00",
+    "notifications": [
+        {
+            "kind": "review_assigned",
+            "status": "sent",
+            "attempts": 1,
+            "next_attempt_at": "2026-11-11T07:32:12+00:00"
+        },
+        {
+            "kind": "approval_requested",
+            "status": "sent",
+            "attempts": 1,
+            "next_attempt_at": "2026-11-11T07:32:12+00:00"
+        },
+        {
+            "kind": "permit_issued",
+            "status": "sent",
+            "attempts": 1,
+            "next_attempt_at": "2026-11-11T07:32:12+00:00"
+        }
+    ]
+}
