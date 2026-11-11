@@ -78,12 +78,10 @@ php artisan serve
 
 If it asks whether to create the SQLite database, answer yes. The demo accounts are fake and are created by `backend\database\seeders\DatabaseSeeder.php`, for example `requester@permit.test`.
 
-**Mock gateway** (from the repository root, second terminal). Use the values from `backend\.env`, in the form `key-id:key`:
+**Mock gateway** (from the repository root, second terminal). This reads the keys from `backend\.env` itself and works in CMD, PowerShell or Git Bash:
 
 ```
-set "GATEWAY_API_KEY=your-GATEWAY_API_KEY"
-set "GATEWAY_PAYLOAD_KEYS=k1:your-GATEWAY_PAYLOAD_KEY"
-php -S 127.0.0.1:9000 mock-gateway\router.php
+php mock-gateway\start.php
 ```
 
 **HTTPS proxy** (from the repository root, third terminal):
