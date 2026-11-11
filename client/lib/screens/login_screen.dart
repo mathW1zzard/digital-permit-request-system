@@ -12,7 +12,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // Fictional seeded accounts (Step 4). Week 14 replaces this screen with real login.
+  // Fictional seeded accounts (Step 4). The chips fill the email only; the password is DEMO_PASSWORD from backend\.env.
   static const demoAccounts = {
     'requester@permit.test': 'Requester',
     'bounce@invalid.test': 'Requester (bad address)',
@@ -26,12 +26,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _formKey = GlobalKey<FormState>();
   final _email = TextEditingController();
+  final _password = TextEditingController();
+  final _passwordFocus = FocusNode();
   bool _busy = false;
+  bool _showPassword = false;
   ApiError? _error;
 
   @override
   void dispose() {
     _email.dispose();
+    _password.dispose();
+    _passwordFocus.dispose();
     super.dispose();
   }
 
@@ -42,22 +47,22 @@ class _LoginScreenState extends State<LoginScreen> {
       _error = null;
     });
     try {
-      await context.read<AppState>().signIn(_email.text);
+      await context.read<AppState>().signIn(_email.text, _password.text);
     } on ApiError catch (e) {
       if (mounted) setState(() => _error = e);
     } finally {
-      if (mounted) setState(() => _busy = false);
+      if (mounted) {
+        _password.clear(); // never keep a typed password around after an attempt
+        setState(() => _busy = false);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final errorText = _error == null
-        ? null
-        : _error!.kind == ErrorKind.unauthenticated
-            ? 'No demo account uses that email.'
-            : _error!.message;
+    final sessionExpired = context.select<AppState, bool>((s) => s.sessionExpired);
+    final errorText = _error?.message;
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -69,20 +74,59 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                 Text('Digital Permit Request System', style: theme.textTheme.headlineSmall),
                 const SizedBox(height: 4),
-                const Text('Week 13 demo sign-in. Real login arrives in Week 14.'),
+                const Text('Sign in with a demo account. All accounts and data are fictional.'),
+                if (sessionExpired) ...[
+                  const SizedBox(height: 16),
+                  Semantics(
+                    liveRegion: true,
+                    child: Card(
+                      color: theme.colorScheme.secondaryContainer,
+                      child: const ListTile(
+                        leading: Icon(Icons.timer_off_outlined),
+                        title: Text('Your session ended'),
+                        subtitle: Text('It expired or was signed out. Please sign in again.'),
+                      ),
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 24),
                 TextFormField(
                   controller: _email,
                   autofocus: true,
                   keyboardType: TextInputType.emailAddress,
+                  autofillHints: const [AutofillHints.username],
                   decoration: const InputDecoration(labelText: 'Email', border: OutlineInputBorder()),
                   validator: (v) => (v == null || !v.contains('@')) ? 'Enter an email address' : null,
+                  onFieldSubmitted: (_) => _passwordFocus.requestFocus(),
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _password,
+                  focusNode: _passwordFocus,
+                  obscureText: !_showPassword,
+                  autofillHints: const [AutofillHints.password],
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      tooltip: _showPassword ? 'Hide password' : 'Show password',
+                      icon: Icon(_showPassword ? Icons.visibility_off : Icons.visibility),
+                      onPressed: () => setState(() => _showPassword = !_showPassword),
+                    ),
+                  ),
+                  validator: (v) => (v == null || v.isEmpty) ? 'Enter your password' : null,
                   onFieldSubmitted: (_) => _signIn(),
                 ),
                 const SizedBox(height: 12),
                 Wrap(spacing: 8, runSpacing: 8, children: [
                   for (final entry in demoAccounts.entries)
-                    ActionChip(label: Text(entry.value), onPressed: () => setState(() => _email.text = entry.key)),
+                    ActionChip(
+                      label: Text(entry.value),
+                      onPressed: () {
+                        setState(() => _email.text = entry.key);
+                        _passwordFocus.requestFocus();
+                      },
+                    ),
                 ]),
                 const SizedBox(height: 16),
                 FilledButton(

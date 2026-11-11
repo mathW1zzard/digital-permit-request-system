@@ -1,6 +1,7 @@
 <?php
-// Mock notification gateway for Week 13 failure injection. Local use only, no dependencies.
-// Start: php -S 127.0.0.1:9000 mock-gateway/router.php
+// Mock notification gateway for Week 13 failure injection and Week 14 message protection. Local use only.
+// Start: php -S 127.0.0.1:9000 mock-gateway/router.php (with GATEWAY_API_KEY and GATEWAY_PAYLOAD_KEYS set)
+// Reached through the TLS proxy at https://127.0.0.1:9443 (tls-proxy/proxy.js).
 declare(strict_types=1);
 
 ignore_user_abort(true); // keep running when the caller times out, like a real server would
@@ -12,7 +13,7 @@ function loadState(): array
 {
     $saved = is_file(STATE_FILE) ? json_decode((string) file_get_contents(STATE_FILE), true) : null;
 
-    return (is_array($saved) ? $saved : []) + ['mode' => 'ok', 'remaining' => 0, 'seconds' => 5, 'seen' => []];
+    return (is_array($saved) ? $saved : []) + ['mode' => 'ok', 'remaining' => 0, 'seconds' => 5, 'seen' => [], 'nonces' => []];
 }
 
 function saveState(array $state): void
@@ -31,6 +32,52 @@ function reply(int $status, array $body): never
     header('Content-Type: application/json');
     echo json_encode($body);
     exit;
+}
+
+/**
+ * Week 14: open the sender's XChaCha20-Poly1305 envelope. Keys come from GATEWAY_PAYLOAD_KEYS
+ * ("k1:base64,k0:base64"), so an old key can stay valid during a rotation.
+ * Returns [recipient, null] or [null, [status, error]].
+ */
+function openEnvelope(array $in, string $idempotencyKey, array &$state): array
+{
+    $env = is_array($in['envelope'] ?? null) ? $in['envelope'] : [];
+    $keys = [];
+    foreach (array_filter(explode(',', getenv('GATEWAY_PAYLOAD_KEYS') ?: '')) as $pair) {
+        [$kid, $b64] = array_pad(explode(':', $pair, 2), 2, '');
+        $keys[$kid] = base64_decode($b64, true) ?: '';
+    }
+    if (($env['v'] ?? '') !== 'v1' || ! isset($keys[$env['kid'] ?? ''])) {
+        return [null, [400, 'invalid_envelope']];
+    }
+    $ts = (int) ($env['ts'] ?? 0);
+    if (abs(time() - $ts) > 300) {
+        return [null, [400, 'stale_timestamp']]; // outside the 5-minute window
+    }
+    $aad = implode('|', [$env['v'], $env['kid'], $ts, $env['nonce'] ?? '', $idempotencyKey, $in['reference'] ?? '', $in['template'] ?? '']);
+    try {
+        $plain = sodium_crypto_aead_xchacha20poly1305_ietf_decrypt(
+            sodium_base642bin((string) ($env['ct'] ?? ''), SODIUM_BASE64_VARIANT_URLSAFE_NO_PADDING),
+            $aad,
+            sodium_base642bin((string) ($env['nonce'] ?? ''), SODIUM_BASE64_VARIANT_URLSAFE_NO_PADDING),
+            $keys[$env['kid']],
+        );
+    } catch (SodiumException) {
+        $plain = false;
+    }
+    if ($plain === false) {
+        return [null, [400, 'invalid_envelope']]; // altered, or sealed with another key
+    }
+    // Replay check only after authentication, so an attacker cannot fill the nonce list with junk.
+    $state['nonces'] = array_filter($state['nonces'] ?? [], fn ($seenAt) => $seenAt > time() - 600);
+    if (isset($state['nonces'][$env['nonce']])) {
+        return [null, [409, 'replayed']];
+    }
+    $state['nonces'][$env['nonce']] = time();
+    saveState($state);
+    $payload = json_decode($plain, true);
+
+    return [(string) ($payload['to'] ?? ''), null];
 }
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -59,12 +106,16 @@ if ($method === 'POST' && $path === '/send') {
     $auth = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
     $idempotencyKey = $_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? '';
     $in = json_decode((string) file_get_contents('php://input'), true) ?: [];
-    $to = (string) ($in['to'] ?? '');
     $base = ['idempotency_key' => $idempotencyKey, 'template' => $in['template'] ?? null, 'reference' => $in['reference'] ?? null];
 
     if ($key !== '' && ! hash_equals("Bearer {$key}", $auth)) {
         record($base + ['result' => 401]);
         reply(401, ['error' => 'bad_credentials']);
+    }
+    [$to, $envelopeError] = openEnvelope($in, $idempotencyKey, $state);
+    if ($envelopeError !== null) {
+        record($base + ['result' => $envelopeError[0], 'error' => $envelopeError[1]]);
+        reply($envelopeError[0], ['error' => $envelopeError[1]]);
     }
     if (! filter_var($to, FILTER_VALIDATE_EMAIL) || str_ends_with($to, '@invalid.test')) {
         record($base + ['result' => 422]);

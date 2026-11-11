@@ -19,6 +19,7 @@ class Permit extends Model
             'requester_id' => 'integer',
             'reviewer_id' => 'integer',
             'approver_id' => 'integer',
+            'details' => 'encrypted', // free text may hold personal details
             'requested_start' => 'date',
             'submitted_at' => 'datetime',
             'stage_entered_at' => 'datetime',

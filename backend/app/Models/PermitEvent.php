@@ -12,6 +12,6 @@ class PermitEvent extends Model
 
     protected function casts(): array
     {
-        return ['meta' => 'array'];
+        return ['meta' => 'encrypted:array']; // reviewer comments and rejection reasons
     }
 }

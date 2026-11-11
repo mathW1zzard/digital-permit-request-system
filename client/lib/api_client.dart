@@ -26,8 +26,12 @@ class ApiClient {
   final http.Client _http;
   final Random _random = Random();
 
-  /// Week 13 demo identity, sent as X-Demo-User. Week 14 replaces it with a token.
-  String? userEmail;
+  /// Sanctum token from /login. Kept in memory only (never in local storage), so closing
+  /// or reloading the tab signs the user out.
+  String? token;
+
+  /// Called when a request made with a token comes back 401: the token expired or was revoked.
+  void Function()? onSessionExpired;
 
   Future<dynamic> get(String path) => _send('GET', path);
 
@@ -35,11 +39,12 @@ class ApiClient {
 
   Future<dynamic> _send(String method, String path, [Map<String, dynamic>? body]) async {
     final uri = Uri.parse('$apiBaseUrl$path');
+    final bearer = token == null ? null : 'Bearer $token';
     final headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
       'X-Correlation-Id': 'web-${DateTime.now().millisecondsSinceEpoch}-${_random.nextInt(1 << 30)}',
-      'X-Demo-User': ?userEmail,
+      'Authorization': ?bearer,
     };
 
     http.Response response;
@@ -63,6 +68,9 @@ class ApiClient {
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return decoded;
+    }
+    if (response.statusCode == 401 && bearer != null) {
+      onSessionExpired?.call();
     }
     throw _toError(response.statusCode, decoded);
   }

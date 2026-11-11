@@ -2,7 +2,7 @@
 
 use App\Exceptions\InvalidTransition;
 use App\Http\Middleware\CorrelationId;
-use App\Http\Middleware\DemoAuth;
+use App\Http\Middleware\RequireHttps;
 use App\Http\Middleware\RequireRole;
 use App\Support\StructuredLog;
 use Illuminate\Auth\AuthenticationException;
@@ -21,8 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Runs before route-model binding, so a stranger gets 401, never a 404 that reveals data.
-        $middleware->api(prepend: [CorrelationId::class, DemoAuth::class]);
+        // Only the local TLS proxy may say a request arrived over HTTPS (X-Forwarded-Proto).
+        $middleware->trustProxies(at: ['127.0.0.1', '::1']);
+        $middleware->api(prepend: [CorrelationId::class, RequireHttps::class]);
         $middleware->alias(['role' => RequireRole::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
@@ -31,8 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->report(function (Throwable $e) {
             StructuredLog::event('exception.unhandled', [
                 'exception' => $e::class,
-                'message' => $e->getMessage(),
-                'at' => basename($e->getFile()).':'.$e->getLine(),
+                'at' => basename($e->getFile()).':'.$e->getLine(), // class and location only: messages can contain SQL or personal data
             ], 'error');
         });
 
@@ -59,6 +59,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     403 => 'You are not allowed to do this.',
                     404 => 'That item was not found.',
                     409 => 'This action is not available right now.',
+                    426 => 'Use HTTPS to connect to this service.',
                     429 => 'Too many requests. Try again shortly.',
                     default => 'The request could not be completed.',
                 }),

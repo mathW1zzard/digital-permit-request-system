@@ -35,7 +35,7 @@ final class PermitAutomation
                 $result[$name] = $step();
             } catch (Throwable $e) {
                 $result[$name] = -1; // one broken step must not stop the others
-                StructuredLog::event('automation.step_failed', ['step' => $name, 'exception' => $e::class, 'message' => $e->getMessage()], 'error');
+                StructuredLog::event('automation.step_failed', ['step' => $name, 'exception' => $e::class, 'at' => basename($e->getFile()).':'.$e->getLine()], 'error');
             }
         }
 

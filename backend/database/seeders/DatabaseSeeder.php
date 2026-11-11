@@ -6,13 +6,20 @@ use App\Models\PermitType;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use RuntimeException;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
         // Fictional accounts only. bounce@invalid.test is rejected by the mock gateway on purpose.
+        // Every demo account shares DEMO_PASSWORD from .env; it is stored only as a bcrypt hash.
+        $password = (string) config('permit.demo_password');
+        if (strlen($password) < 12) {
+            throw new RuntimeException('Set DEMO_PASSWORD in .env (at least 12 characters) before seeding.');
+        }
+        $hash = Hash::make($password);
+
         $accounts = [
             ['Ana Admin', 'admin@permit.test', 'admin', false],
             ['Rico Requester', 'requester@permit.test', 'requester', false],
@@ -30,7 +37,7 @@ class DatabaseSeeder extends Seeder
                 'email' => $email,
                 'role' => $role,
                 'is_senior' => $senior,
-                'password' => Hash::make(Str::random(40)), // unusable random password; no login in Week 13
+                'password' => $hash,
             ]);
         }
 

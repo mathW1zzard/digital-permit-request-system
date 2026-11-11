@@ -26,6 +26,10 @@
         <env name="DB_CONNECTION" value="sqlite"/>
         <env name="DB_DATABASE" value=":memory:"/>
         <env name="DB_URL" value=""/>
+        <env name="DEMO_PASSWORD" value="test-only-password"/>
+        <env name="REQUIRE_HTTPS" value="false"/>
+        <env name="GATEWAY_PAYLOAD_KEY_ID" value="t1"/>
+        <env name="GATEWAY_PAYLOAD_KEY" value="dGVzdC1vbmx5LWtleS1ub3QtYS1zZWNyZXQtMzJieXQ="/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>

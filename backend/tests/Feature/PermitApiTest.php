@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Permit;
 use App\Models\PermitType;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -17,9 +18,13 @@ class PermitApiTest extends TestCase
         $this->seed();
     }
 
+    /** Signs in through the real login endpoint and returns a request builder with the token. */
     private function asUser(string $email): static
     {
-        return $this->withHeaders(['X-Demo-User' => $email, 'Accept' => 'application/json']);
+        $token = $this->postJson('/api/login', ['email' => $email, 'password' => 'test-only-password'])->json('data.token');
+        $this->app['auth']->forgetGuards(); // each call below authenticates from its own token
+
+        return $this->withHeaders(['Authorization' => "Bearer {$token}", 'Accept' => 'application/json']);
     }
 
     private function validBody(): array
@@ -63,5 +68,12 @@ class PermitApiTest extends TestCase
         $this->asUser($reviewer->email)->postJson("/api/permits/{$reference}/endorse")
             ->assertStatus(409)
             ->assertJsonPath('error.code', 'invalid_transition');
+    }
+
+    public function test_demo_header_no_longer_signs_anyone_in(): void
+    {
+        $this->withHeaders(['X-Demo-User' => 'admin@permit.test', 'Accept' => 'application/json'])
+            ->getJson('/api/me')->assertStatus(401);
+        $this->assertNotNull(User::where('email', 'admin@permit.test')->first());
     }
 }

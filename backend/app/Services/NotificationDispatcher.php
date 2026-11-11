@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\OutboxNotification;
+use App\Support\SecureEnvelope;
 use App\Support\StructuredLog;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
@@ -71,9 +72,14 @@ final class NotificationDispatcher
     {
         $cfg = config('permit.gateway');
         $started = microtime(true);
+        $aad = ['idempotency_key' => $n->dedupe_key, 'reference' => $n->permit->reference, 'template' => $n->kind];
+        // A fresh nonce and timestamp on every attempt, so a legitimate retry is never mistaken for a replay.
+        $envelope = SecureEnvelope::seal(['to' => $n->recipient->email], $aad, $cfg['payload_key_id'], $cfg['payload_key']);
+        $tlsFailed = false;
 
         try {
             $response = Http::withToken($cfg['api_key'])
+                ->withOptions(['verify' => $cfg['ca_file'] !== '' ? base_path($cfg['ca_file']) : true])
                 ->withHeaders([
                     'Idempotency-Key' => $n->dedupe_key, // same key on every retry: the gateway delivers once
                     'X-Correlation-Id' => $n->correlation_id ?? (string) Str::uuid(),
@@ -81,13 +87,14 @@ final class NotificationDispatcher
                 ->acceptJson()
                 ->timeout($cfg['timeout'])
                 ->post($cfg['url'], [
-                    'to' => $n->recipient->email,
                     'template' => $n->kind,
                     'reference' => $n->permit->reference,
+                    'envelope' => $envelope,
                 ]);
             $status = $response->status();
-        } catch (ConnectionException) {
+        } catch (ConnectionException $e) {
             $status = 0; // timeout, refused connection or DNS failure
+            $tlsFailed = str_contains($e->getMessage(), 'SSL') || str_contains($e->getMessage(), 'certificate');
         }
 
         $context = [
@@ -109,6 +116,11 @@ final class NotificationDispatcher
         }
 
         $detail = $status === 0 ? 'gateway_unreachable' : "gateway_http_{$status}";
+
+        // A certificate we cannot verify will not fix itself: hand it to a person instead of retrying.
+        if ($tlsFailed) {
+            return $this->handOverToPerson($n, 'permanent', 'gateway_tls_failed', $context, 'permanent');
+        }
 
         if ($status !== 0 && ! in_array($status, self::TRANSIENT_HTTP, true)) {
             return $this->handOverToPerson($n, 'permanent', $detail, $context, 'permanent');

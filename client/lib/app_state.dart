@@ -6,7 +6,9 @@ import 'models.dart';
 enum LoadStatus { idle, loading, ready, empty, error }
 
 class AppState extends ChangeNotifier {
-  AppState(this.api);
+  AppState(this.api) {
+    api.onSessionExpired = _expireSession;
+  }
 
   final ApiClient api;
 
@@ -17,31 +19,52 @@ class AppState extends ChangeNotifier {
   ApiError? listError;
   String? selectedReference;
 
+  /// True after the server rejected our token, so the sign-in screen can say why.
+  bool sessionExpired = false;
+
   bool get isSignedIn => user != null;
 
-  Future<void> signIn(String email) async {
-    api.userEmail = email.trim();
+  Future<void> signIn(String email, String password) async {
     try {
-      final me = await api.get('/me');
-      user = AppUser.fromJson(me['data'] as Map<String, dynamic>);
+      final body = await api.post('/login', {'email': email.trim(), 'password': password});
+      final data = body['data'] as Map<String, dynamic>;
+      api.token = data['token'] as String;
+      user = AppUser.fromJson(data['user'] as Map<String, dynamic>);
+      sessionExpired = false;
       final t = await api.get('/permit-types');
       types = (t['data'] as List).map((e) => PermitType.fromJson(e as Map<String, dynamic>)).toList();
       notifyListeners();
       await loadPermits();
     } catch (_) {
-      api.userEmail = null;
+      api.token = null;
       user = null;
       rethrow;
     }
   }
 
-  void signOut() {
-    api.userEmail = null;
+  Future<void> signOut() async {
+    try {
+      await api.post('/logout'); // revoke the token on the server, not just forget it here
+    } on ApiError {
+      // already expired or the server is down: forgetting it locally is still correct
+    }
+    _clear();
+    notifyListeners();
+  }
+
+  void _expireSession() {
+    if (user == null) return;
+    _clear();
+    sessionExpired = true;
+    notifyListeners();
+  }
+
+  void _clear() {
+    api.token = null;
     user = null;
     permits = [];
     selectedReference = null;
     listStatus = LoadStatus.idle;
-    notifyListeners();
   }
 
   Future<void> loadPermits() async {
@@ -54,8 +77,7 @@ class AppState extends ChangeNotifier {
       listStatus = permits.isEmpty ? LoadStatus.empty : LoadStatus.ready;
     } on ApiError catch (e) {
       listError = e;
-      listStatus = LoadStatus.error;
-      if (e.kind == ErrorKind.unauthenticated) user = null; // back to sign-in
+      listStatus = LoadStatus.error; // a 401 already sent the user back to sign-in
     }
     notifyListeners();
   }
