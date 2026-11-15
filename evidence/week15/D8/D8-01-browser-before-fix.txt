@@ -1,0 +1,13 @@
+D8 before the fix, 2026-11-16 00:38 (Asia/Manila), Chrome via the Claude in Chrome extension
+App: release web build at http://localhost:5000, signed in as requester@permit.test.
+Action: New permit form filled in (Facility Use Permit, purpose, location, start date) and Submit pressed twice.
+
+Network log for /api/permits as reported by the extension:
+  OPTIONS https://localhost:8443/api/permits  204
+  POST    https://localhost:8443/api/permits  503 (reported status; the request was blocked by Chrome)
+
+The preflight answer at that time (curl, same request headers):
+  access-control-allow-headers: accept, content-type, authorization, x-correlation-id
+Idempotency-Key, which the Week 15 client sends, is not in the list, so Chrome refused to send the POST.
+No permit was created: the permit list was still empty afterwards.
+The form stayed open and showed no error message.

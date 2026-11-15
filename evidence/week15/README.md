@@ -2,7 +2,7 @@
 
 **Who produced this:** Claude Code (AI assistant) wrote the test collection, runner and failure scripts, ran every test and scenario, fixed the defects, and wrote the reports, all at the student's request on the student's laptop. The outputs are unedited, except that the runner replaces access tokens with `[redacted]` before saving. See `lab-log.md`.
 
-**Build:** branch `week15-hardening`. Fixes D1–D6 are in commit `24af5dc`; fix D7 and the reports are in `18e198e`. Tagged commit: `18e198e` (tag `week15-ia6`). Environment: `00-environment.txt` (PHP 8.4.12, Laravel 13.39.0, Node 22, Flutter 3.47.8, Windows 11). Every collection run used the HTTPS proxy at `https://localhost:8443/api` and started from `php artisan migrate:fresh --seed`.
+**Build:** branch `week15-hardening`. Fixes D1–D6 are in commit `24af5dc`; fix D7 and the reports are in `18e198e`. Tagged commit: `18e198e` (tag `week15-ia6`). Fix D8 came after the tag, on 2026-11-16, in a later commit on the same branch (see below); the tag was not moved. Environment: `00-environment.txt` (PHP 8.4.12, Laravel 13.39.0, Node 22, Flutter 3.47.8, Windows 11). Every collection run used the HTTPS proxy at `https://localhost:8443/api` and started from `php artisan migrate:fresh --seed`.
 
 ## API collection runs (`api-tests/project32.postman_collection.json`, 48 requests)
 
@@ -13,6 +13,7 @@
 | `C1-baseline` | 12:37 | Week 14 | **40 / 48** | The real baseline. Failures T23, T35, T36, T40–T43, T45 → defects D1–D6 |
 | `C2-after-fixes` | 12:43 | Fixes D1–D6 | **48 / 48** | Retest |
 | `C3-after-d7` | 14:48 | Fixes D1–D7 | **48 / 48** | Regression after the D7 fix |
+| `C4-after-d8` | 2026-11-15 16:45 | Fixes D1–D8 | **48 / 48** | Regression after the D8 fix |
 
 Each folder has `summary.txt` (one line per request) and `results.json` (status, headers and redacted body for every request, with each check's result).
 
@@ -30,6 +31,19 @@ Each folder has `summary.txt` (one line per request) and `results.json` (status,
 | F7b | 9 MB body after the D7 fix | 413 | 413 `http_413`, nothing saved | Pass |
 
 Details and the reasons for each difference: `docs/week15/22-failure-injection-log.md`.
+
+## D8: web form blocked by CORS (found after the tag)
+
+Found on 2026-11-16 while capturing the Week 14 screenshots U3–U5 in the student's Chrome through the Claude in Chrome extension. The student accepted the certificate warning for https://localhost:8443 themselves.
+
+| File | What it shows |
+| --- | --- |
+| `D8/D8-01-browser-before-fix.txt` | The form's POST blocked by Chrome; the preflight allowed 4 headers, not `Idempotency-Key`; no permit created |
+| `D8/D8-02-preflight-after-fix.txt` | The preflight now allows all 5 headers the client sends |
+| `D8/D8-03-form-submit-after-fix.jpg` | Form submitted in Chrome: permit `PRM-20261115-VVNUG` created and opened |
+| `D8/D8-04-phpunit.txt` | PHPUnit 31 of 31, including HardeningTest D8 |
+
+The D8 test failed when the fix was removed and passed with it. Run `C4-after-d8` is the full regression.
 
 ## Test runs
 
@@ -50,4 +64,4 @@ Details and the reasons for each difference: `docs/week15/22-failure-injection-l
 
 ## UI evidence
 
-No new screens were added in Week 15. The only client change is invisible: the permit form sends an `Idempotency-Key`, which the widget test checks. The Week 14 screenshots still apply. U3–U5 in `evidence/week14/UI/` are still for the student to capture, because Claude's browser refuses the local certificate.
+No new screens were added in Week 15. The only client change is invisible: the permit form sends an `Idempotency-Key`, which the widget test checks. The Week 14 screenshots still apply. U3–U5 in `evidence/week14/UI/` were captured on 2026-11-16 in the student's Chrome; that is how D8 was found.

@@ -96,4 +96,39 @@ class HardeningTest extends TestCase
         // A normal request under the limit still works.
         $this->asRequester()->postJson("/api/permits", $this->body())->assertCreated();
     }
+
+    public function test_d8_browser_preflight_allows_every_header_the_web_client_sends(): void
+    {
+        // Read the header names straight from the Flutter client, so a new
+        // client header that the API does not allow fails here, not in the browser.
+        $client = base_path('../client/lib/api_client.dart');
+        if (! is_file($client)) {
+            $this->markTestSkipped('Flutter client not found next to the backend.');
+        }
+        preg_match_all("/^\s*'([A-Za-z-]+)':/m", file_get_contents($client), $m);
+        $sent = array_map('strtolower', $m[1]);
+        $this->assertContains('idempotency-key', $sent);
+
+        $origin = explode(',', config('cors.allowed_origins')[0] ?? 'http://localhost:5000')[0];
+        $response = $this->call('OPTIONS', '/api/permits', [], [], [], [
+            'HTTP_ORIGIN' => $origin,
+            'HTTP_ACCESS_CONTROL_REQUEST_METHOD' => 'POST',
+            'HTTP_ACCESS_CONTROL_REQUEST_HEADERS' => implode(',', $sent),
+        ]);
+
+        $response->assertNoContent();
+        $allowed = array_map('trim', explode(',', strtolower($response->headers->get('Access-Control-Allow-Headers', ''))));
+        foreach ($sent as $header) {
+            $this->assertContains($header, $allowed, "CORS does not allow the client header {$header}");
+        }
+
+        // The client can read whether a submission was replayed.
+        $this->asRequester()->withHeaders(['Origin' => $origin, 'Idempotency-Key' => 'd8-key'])
+            ->postJson('/api/permits', $this->body())
+            ->assertCreated()
+            ->assertHeader('Access-Control-Expose-Headers');
+        $exposed = strtolower($this->asRequester()->withHeaders(['Origin' => $origin, 'Idempotency-Key' => 'd8-key'])
+            ->postJson('/api/permits', $this->body())->headers->get('Access-Control-Expose-Headers', ''));
+        $this->assertStringContainsString('idempotent-replayed', $exposed);
+    }
 }

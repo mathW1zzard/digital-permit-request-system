@@ -27,5 +27,6 @@ Test IDs: **T** = Postman collection request, **F** = failure-injection scenario
 | R21 A gateway outage is bounded and handed to a person | AC7 | F2 | R | Manual action after 4 attempts; sent after restart and Requeue |
 | R22 A database outage fails safely and recovers | Week 15 | F3 | –, R | 500 safe shape with correlation ID; log has class only; works again after restore |
 | R23 Errors never expose internals | OWASP API8 | T13, T24, T26, T27, T34–T36, T44, F3, F7, F7b | – | No SQL, paths, stack traces or emails in any response |
+| R24 The browser allows every request the web client sends (CORS) | Week 15 (D8) | P HardeningTest D8, D8 browser check | – | Preflight from the app's origin allows every header in `client/lib/api_client.dart`; form submit 201 in Chrome |
 
 Every requirement has at least one negative or boundary test, and every authorization rule has a test from the wrong role. Coverage gaps are listed in the hardening report.

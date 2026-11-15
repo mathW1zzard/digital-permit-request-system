@@ -20,6 +20,16 @@ Kept by Claude Code (AI assistant), working at the student's request on the stud
 | 22:50 | Environment, PHPUnit (twice, 30 of 30), Flutter analyze (no issues) and Flutter test (3 of 3) saved. Secret scan of evidence and changed code: 0 hits. |
 | Then | Wrote the failure-injection log and the hardening report; updated the README, validation rules, API contract and known limitations. Committed, pushed, tagged `week15-ia6`, and uploaded the evidence to Drive. |
 
+## 2026-11-16 (Asia/Manila), after the tag
+
+| Time | What happened |
+| --- | --- |
+| 00:15–00:36 | Started the servers and a fresh release web build to capture the Week 14 screenshots U3–U5 in the student's Chrome through the Claude in Chrome extension. The extension disconnected twice and the servers stopped once (the laptop slept); restarted them. The student accepted the certificate warning in the extension's tab. |
+| 00:37–00:40 | Captured U3 (wrong password) and U5 (session ended). The New permit form could not submit: Chrome blocked the POST. The preflight did not allow `Idempotency-Key` (defect D8). For U4, created two fictional permits with `curl` and captured the list. |
+| 00:41–00:44 | With the student's approval, fixed D8 in `config/cors.php` and added HardeningTest D8, which reads the header names from the Flutter client. It failed without the fix and passed with it. Form submit in Chrome: 201. |
+| 00:45 | Run C4: 48 of 48. PHPUnit 31 of 31. Also fixed the collection command in the project README, where `` in `api-testsun-collection.php` had been written as a carriage return. |
+| Then | Recorded D8 in the defect record, backlog, traceability matrix and report; committed and pushed (the `week15-ia6` tag was not moved), and uploaded the new files to Drive. |
+
 ## Notes
 
 - Nothing was deleted from the evidence. Failed runs (C0, C0b, C1, F7) are kept with explanations.

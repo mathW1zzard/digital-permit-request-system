@@ -5,8 +5,8 @@ return [
     'allowed_methods' => ['GET', 'POST'],
     'allowed_origins' => explode(',', env('FRONTEND_ORIGIN', 'http://localhost:5000')),
     'allowed_origins_patterns' => [],
-    'allowed_headers' => ['Accept', 'Content-Type', 'Authorization', 'X-Correlation-Id'],
-    'exposed_headers' => ['X-Correlation-Id'],
+    'allowed_headers' => ['Accept', 'Content-Type', 'Authorization', 'X-Correlation-Id', 'Idempotency-Key'],
+    'exposed_headers' => ['X-Correlation-Id', 'Idempotent-Replayed'],
     'max_age' => 600,
     'supports_credentials' => false,
 ];

@@ -1,6 +1,6 @@
 # Week 14 evidence index (SA8 / IA5 – Secure Data Exchange and Encryption)
 
-**Who produced this:** Claude Code (AI assistant) ran W01–W13, captured the UI screenshots U1, U2, U6 and U7, and wrote the review and interpretation, all at the student's request on the student's laptop. The outputs are unedited, except that access tokens are replaced with `[redacted]` before saving. U3–U5 are for the student to capture (see below). See `lab-log.md`.
+**Who produced this:** Claude Code (AI assistant) ran W01–W13, captured the UI screenshots U1–U7, and wrote the review and interpretation, all at the student's request on the student's laptop. The outputs are unedited, except that access tokens are replaced with `[redacted]` before saving. See `lab-log.md`.
 
 **Build:** commit `a20d703`, branch `week14-security`. Environment: `00-environment.txt` (PHP 8.4.12, Laravel 13.39.0, libsodium 1.0.20, Node 22). Tagged commit: `00f4ac9` (tag `week14-sa8`).
 
@@ -37,19 +37,15 @@ Also: `01-tests-run1.txt` and `01-tests-run2.txt` (24 of 24 passed both times), 
 | --- | --- | --- | --- |
 | U1 | Sign-in screen with the password field (1280 px) | `U1-signin-desktop.jpg` | Captured by Claude, 2026-11-14 |
 | U2 | Field validation: both fields empty (375 px) | `U2-validation-narrow.jpg` | Captured by Claude |
-| U3 | Wrong password | - | **Student to capture** |
-| U4 | Signed in over HTTPS, permit list | - | **Student to capture** |
-| U5 | Session ended | - | **Student to capture** |
+| U3 | Wrong password: "Email or password is incorrect." | `U3-wrong-password.jpg` | Captured by Claude, 2026-11-16 |
+| U4 | Signed in over HTTPS, permit list with one permit open | `U4-signed-in.jpg` | Captured by Claude, 2026-11-16 (see note) |
+| U5 | Session ended after the token expired | `U5-session-ended.jpg` | Captured by Claude, 2026-11-16 |
 | U6 | Narrow width, 375 px | `U6-signin-375px.jpg` | Captured by Claude |
 | U7 | API not running: safe "Cannot reach the server" message (extra) | `U7-api-down-network-error.jpg` | Captured by Claude. The console showed `ERR_CONNECTION_REFUSED`: the API and proxy were stopped. |
 
-U3–U5 need the HTTPS API, and Claude's browser refuses the local certificate, so they could not be captured. In your own Chrome, start the system (README), open https://localhost:8443/up once and choose **Advanced → Proceed**, then save into `evidence\week14\UI\` as `U3-wrong-password.jpg`, `U4-signed-in.jpg` and `U5-session-ended.jpg`:
+**How U3–U5 were captured (2026-11-16).** Claude's built-in browser refuses the local certificate, so Claude used the Claude in Chrome extension in the student's Chrome. The student accepted the certificate warning for https://localhost:8443 themselves; Claude did not bypass it. The app was the release web build (`week15-hardening` branch) served at http://localhost:5000, calling the API through the HTTPS proxy, from a freshly seeded database. U5: after signing in, all access tokens were expired with `php artisan tinker` and Refresh was pressed. The password stayed hidden in every screenshot.
 
-- **U3:** tap the Requester chip, type a wrong password, then **Sign in**.
-- **U4:** sign in correctly and show the permit list.
-- **U5:** sign in, then in `backend\` run `php artisan tinker --execute="DB::table('personal_access_tokens')->update(['expires_at'=>now()->subMinute()]);"` and press Refresh.
-
-Keep the password hidden (never click the eye icon) in every screenshot.
+**Note on U4.** The two permits in the list were created through the API with `curl` as the requester, not through the app's form. Submitting the form in the browser failed: the Week 15 client sends an `Idempotency-Key` header that the API's CORS settings do not allow, so Chrome blocked the request. This is defect D8, recorded in the Week 15 defect record.
 
 ## Interpretation
 

@@ -1,0 +1,8 @@
+D8 preflight after the fix, 2026-11-15T16:44Z, curl via the HTTPS proxy
+Request: OPTIONS /api/permits, Origin http://localhost:5000, POST, headers accept,content-type,authorization,x-correlation-id,idempotency-key
+
+HTTP/1.1 204 No Content
+access-control-allow-origin: http://localhost:5000
+access-control-allow-methods: GET, POST
+access-control-allow-headers: accept, content-type, authorization, x-correlation-id, idempotency-key
+access-control-max-age: 600

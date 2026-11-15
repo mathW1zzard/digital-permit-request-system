@@ -128,7 +128,7 @@ cd client && flutter test
 **API test collection (Week 15).** With the API, gateway and proxy running and the database freshly seeded (`php artisan migrate:fresh --seed` in `backend\`), from the project folder:
 
 ```
-php api-testsun-collection.php api-testsesults
+php api-tests\run-collection.php api-tests\results
 ```
 
 It runs the 48 requests in `api-tests\project32.postman_collection.json` and writes `results.json` and `summary.txt` (tokens redacted). The same file can be imported into Postman with `project32.postman_environment.example.json`; type the demo password into the environment there and never save it in the file. To change the requests, edit `api-tests\build-collection.php` and run it again.
