@@ -8,6 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:permit_web/api_client.dart';
 import 'package:permit_web/app_state.dart';
 import 'package:permit_web/main.dart';
+import 'package:permit_web/models.dart';
+import 'package:permit_web/screens/permit_form_screen.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   testWidgets('Sign-in validates both fields and shows a wrong-password error', (tester) async {
@@ -75,5 +78,38 @@ void main() {
 
     expect(keys, [key, key, null]);
     expect(api.newIdempotencyKey(), isNot(key));
+  });
+
+  testWidgets('U1: a failed submission keeps a visible error on the form', (tester) async {
+    final client = MockClient((request) async => throw http.ClientException('blocked'));
+    final state = AppState(ApiClient(client: client))
+      ..types = [PermitType.fromJson({'id': 1, 'code': 'FAC-USE', 'name': 'Facility Use Permit', 'validity_days': 30})];
+    await tester.binding.setSurfaceSize(const Size(800, 1400));
+    await tester.pumpWidget(ChangeNotifierProvider.value(
+      value: state,
+      child: const MaterialApp(home: PermitFormScreen()),
+    ));
+
+    await tester.tap(find.textContaining('Facility Use Permit'));
+    await tester.enterText(find.bySemanticsLabel('Purpose'), 'Basketball clinic for first-year students');
+    await tester.enterText(find.bySemanticsLabel('Location'), 'Gym A');
+    await tester.tap(find.text('Choose'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('OK'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Submit for review'));
+    await tester.pump(const Duration(seconds: 1));
+
+    expect(find.textContaining('Cannot reach the server'), findsWidgets);
+
+    // A SnackBar alone disappears after 4 seconds; the user may be looking elsewhere.
+    for (var i = 0; i < 60; i++) {
+      await tester.pump(const Duration(milliseconds: 200));
+    }
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Cannot reach the server'), findsOneWidget);
+    expect(find.textContaining('Your entries are kept'), findsOneWidget);
+    expect(find.text('Submit for review'), findsOneWidget); // the form stays open so the user can retry
+    await tester.binding.setSurfaceSize(null);
   });
 }

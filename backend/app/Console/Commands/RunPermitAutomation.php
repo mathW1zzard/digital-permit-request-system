@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\HealthController;
 use App\Services\PermitAutomation;
 use App\Support\StructuredLog;
 use Illuminate\Console\Command;
@@ -23,6 +24,9 @@ class RunPermitAutomation extends Command
 
         $result = $automation->run();
         StructuredLog::event('automation.run_completed', $result + ['simulated_now' => $this->option('now')]);
+        if (! $this->option('now')) {
+            HealthController::beat('automation');
+        }
         $this->table(array_keys($result), [array_values($result)]);
 
         return in_array(-1, $result, true) ? self::FAILURE : self::SUCCESS;

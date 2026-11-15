@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\HealthController;
 use App\Services\NotificationDispatcher;
 use App\Support\StructuredLog;
 use Illuminate\Console\Command;
@@ -23,6 +24,9 @@ class DispatchNotifications extends Command
 
         $stats = $dispatcher->dispatchDue();
         StructuredLog::event('dispatch.run_completed', $stats + ['simulated_now' => $this->option('now')]);
+        if (! $this->option('now')) {
+            HealthController::beat('dispatch');
+        }
         $this->table(array_keys($stats), [array_values($stats)]);
 
         return self::SUCCESS;

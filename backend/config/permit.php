@@ -16,6 +16,13 @@ return [
     // Week 15: largest request body accepted, in KB (defect D7). A permit request is under 2 KB.
     'max_body_kb' => (int) env('MAX_BODY_KB', 1024),
 
+    // Week 16: readiness check (GET /api/health). The scheduler runs dispatch every minute and
+    // automation every 5 minutes, so a heartbeat older than 10 minutes means it has stopped.
+    'health' => [
+        'heartbeat_max_age_seconds' => (int) env('HEALTH_HEARTBEAT_MAX_AGE', 600),
+        'outbox_overdue_seconds' => (int) env('HEALTH_OUTBOX_OVERDUE', 600),
+    ],
+
     'gateway' => [
         'url' => env('GATEWAY_URL', 'https://127.0.0.1:9443/send'),
         'api_key' => env('GATEWAY_API_KEY', ''),

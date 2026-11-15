@@ -19,6 +19,9 @@ class _PermitFormScreenState extends State<PermitFormScreen> {
   int? _typeId;
   DateTime? _start;
   Map<String, String> _serverErrors = {};
+  // Week 16 (U1): a failure that is not about one field stays on the form until the next try.
+  // A SnackBar alone disappears after 4 seconds and is easy to miss.
+  ApiError? _submitError;
   bool _busy = false;
 
   // Same content sent again (double click, retry after a lost answer) reuses the key, so the
@@ -53,7 +56,10 @@ class _PermitFormScreenState extends State<PermitFormScreen> {
   }
 
   Future<void> _submit() async {
-    setState(() => _serverErrors = {});
+    setState(() {
+      _serverErrors = {};
+      _submitError = null;
+    });
     if (!_formKey.currentState!.validate()) return;
     final state = context.read<AppState>();
     final navigator = Navigator.of(context);
@@ -81,6 +87,7 @@ class _PermitFormScreenState extends State<PermitFormScreen> {
         setState(() => _serverErrors = e.fieldErrors);
         _formKey.currentState!.validate(); // show the server's messages under the fields
       } else {
+        setState(() => _submitError = e);
         messenger.showSnackBar(SnackBar(content: Text(e.message)));
       }
     } finally {
@@ -173,6 +180,33 @@ class _PermitFormScreenState extends State<PermitFormScreen> {
                 ),
               ),
               const SizedBox(height: 24),
+              if (_submitError != null) ...[
+                Semantics(
+                  liveRegion: true,
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.errorContainer,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Icon(Icons.error_outline, color: Theme.of(context).colorScheme.onErrorContainer),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          [
+                            _submitError!.message,
+                            'Your entries are kept. Press Submit to try again.',
+                            if (_submitError!.correlationId != null) 'Reference for support: ${_submitError!.correlationId}',
+                          ].join('\n'),
+                          style: TextStyle(color: Theme.of(context).colorScheme.onErrorContainer),
+                        ),
+                      ),
+                    ]),
+                  ),
+                ),
+                const SizedBox(height: 12),
+              ],
               FilledButton(
                 onPressed: _busy ? null : _submit,
                 child: _busy
