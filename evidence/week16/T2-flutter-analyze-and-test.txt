@@ -1,0 +1,14 @@
+Flutter, 2026-11-15T23:36Z
+Flutter 3.47.8 • channel stable • https://github.com/flutter/flutter.git
+
+== flutter analyze
+Analyzing client...                                             
+No issues found! (ran in 68.8s)
+
+== flutter test
+00:00 +0: loading C:/Users/gaylo/Downloads/Flutter App Developments/project32-permit/client/test/widget_test.dart
+00:00 +0: Sign-in validates both fields and shows a wrong-password error
+00:03 +1: A 401 on a signed-in request ends the session
+00:03 +2: A resent submission carries the same Idempotency-Key
+00:03 +3: U1: a failed submission keeps a visible error on the form
+00:05 +4: All tests passed!

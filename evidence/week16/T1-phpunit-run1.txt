@@ -1,0 +1,2 @@
+PHPUnit, 2026-11-15T23:35Z, commit 8054ac6 + uncommitted docs only
+{"tool":"phpunit","result":"passed","tests":40,"passed":40,"assertions":186,"duration_ms":21806}

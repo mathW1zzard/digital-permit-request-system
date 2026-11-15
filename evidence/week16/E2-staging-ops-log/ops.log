@@ -1,0 +1,101 @@
+2026-11-15T17:07:55Z setup: staging folder <staging>
+2026-11-15T17:07:56Z setup: initialising MySQL data folder
+2026-11-15T17:08:09Z setup: MySQL users created (passwords in shared/secrets, not printed)
+2026-11-15T17:08:12Z setup: shared/.env written with new APP_KEY, database and demo passwords (not printed)
+2026-11-15T17:08:12Z setup: nginx.conf and php-staging.ini generated
+2026-11-15T17:08:20Z run: mysql on 127.0.0.1:3307
+2026-11-15T17:08:34Z run: nginx on https://localhost:8444
+2026-11-15T17:08:34Z run: mock gateway on 127.0.0.1:9000 (HTTPS through nginx on 9444)
+2026-11-15T17:08:35Z workers: 4 workers on 9101 9102 9103 9104
+2026-11-15T17:08:50Z deploy: start 5962978 (5962978) -> 20261116-010850-5962978
+2026-11-15T17:14:58Z deploy: backend installed (no dev packages)
+2026-11-15T17:16:47Z deploy: web build made for https://localhost:8444/api
+2026-11-15T17:17:00Z deploy: FAILED 5962978 at migrate: shared/.env had unquoted paths with spaces (setup.sh defect); fixed .env, removing the partial release
+2026-11-15T17:17:14Z deploy: start 5962978 (5962978) -> 20261116-011714-5962978
+2026-11-15T17:20:41Z deploy: backend installed (no dev packages)
+2026-11-15T17:22:14Z deploy: web build made for https://localhost:8444/api
+2026-11-15T17:22:21Z deploy: migrations applied, config and routes cached
+2026-11-15T17:22:23Z workers: worker on 9101 exited; restarting
+2026-11-15T17:22:23Z workers: worker on 9102 exited; restarting
+2026-11-15T17:22:24Z workers: worker on 9103 exited; restarting
+2026-11-15T17:22:24Z workers: worker on 9104 exited; restarting
+2026-11-15T17:22:33Z deploy: current -> 20261116-011714-5962978, workers restarted
+2026-11-15T17:22:35Z deploy: health check 200
+2026-11-15T17:22:36Z deploy: done 5962978
+2026-11-15T17:22:46Z seed: demo accounts seeded in staging (fictional)
+2026-11-15T17:27:36Z deploy: start HEAD (3fc625a) -> 20261116-012736-3fc625a
+2026-11-15T17:27:38Z backup: 20261116-012737-pre-deploy-3fc625a.sql (21925 bytes, sha256 da274863f01c)
+2026-11-15T17:31:08Z deploy: backend installed (no dev packages)
+2026-11-15T17:32:51Z deploy: web build made for https://localhost:8444/api
+2026-11-15T17:32:56Z deploy: migrations applied, config and routes cached
+2026-11-15T17:32:58Z workers: worker on 9101 exited; restarting
+2026-11-15T17:32:58Z workers: worker on 9102 exited; restarting
+2026-11-15T17:32:59Z workers: worker on 9103 exited; restarting
+2026-11-15T17:32:59Z workers: worker on 9104 exited; restarting
+2026-11-15T17:33:08Z deploy: current -> 20261116-012736-3fc625a, workers restarted
+2026-11-15T17:33:11Z deploy: health check 200
+2026-11-15T17:33:11Z deploy: done 3fc625a
+2026-11-15T17:33:21Z run: scheduler (php artisan schedule:work) in current/
+2026-11-15T17:39:01Z setup: staging folder <staging>
+2026-11-15T17:39:01Z setup: nginx.conf and php-staging.ini generated
+2026-11-15T17:39:02Z S1: nginx reloaded without upstream keepalive
+2026-11-15T17:39:08Z reset: staging database recreated (fictional demo and load users) for the measured runs
+2026-11-15T18:03:45Z workers: worker on 9101 exited; restarting
+2026-11-15T18:03:45Z workers: worker on 9102 exited; restarting
+2026-11-15T18:03:46Z workers: worker on 9103 exited; restarting
+2026-11-15T18:03:46Z workers: worker on 9104 exited; restarting
+2026-11-15T22:49:57Z run: mysql on 127.0.0.1:3307
+2026-11-15T22:50:07Z workers: 4 workers on 9101 9102 9103 9104
+2026-11-15T22:50:08Z run: nginx on https://localhost:8444
+2026-11-15T22:50:10Z run: mock gateway on 127.0.0.1:9000 (HTTPS through nginx on 9444)
+2026-11-15T22:50:12Z run: scheduler (php artisan schedule:work) in current/
+2026-11-15T22:55:57Z workers: worker on 9101 exited; restarting
+2026-11-15T22:55:57Z workers: worker on 9102 exited; restarting
+2026-11-15T22:55:57Z workers: worker on 9103 exited; restarting
+2026-11-15T22:55:58Z workers: worker on 9104 exited; restarting
+2026-11-15T22:56:06Z stress: API_RATE_PER_MINUTE raised to 100000 in current release only, for run P6
+2026-11-15T22:59:25Z workers: worker on 9101 exited; restarting
+2026-11-15T22:59:26Z workers: worker on 9102 exited; restarting
+2026-11-15T22:59:26Z workers: worker on 9103 exited; restarting
+2026-11-15T22:59:27Z workers: worker on 9104 exited; restarting
+2026-11-15T22:59:35Z stress: API_RATE_PER_MINUTE restored to 60
+2026-11-15T23:05:53Z deploy: start HEAD (26f1ce7) -> 20261116-070553-26f1ce7
+2026-11-15T23:05:55Z backup: 20261116-070554-pre-deploy-26f1ce7.sql (3544229 bytes, sha256 1b00f9c64c01)
+2026-11-15T23:09:47Z deploy: backend installed (no dev packages)
+2026-11-15T23:09:51Z deploy: web build copied from the current release (--skip-web)
+2026-11-15T23:09:54Z deploy: migrations applied, config and routes cached
+2026-11-15T23:09:56Z workers: worker on 9101 exited; restarting
+2026-11-15T23:09:56Z workers: worker on 9102 exited; restarting
+2026-11-15T23:09:57Z workers: worker on 9103 exited; restarting
+2026-11-15T23:09:57Z workers: worker on 9104 exited; restarting
+2026-11-15T23:10:06Z deploy: current -> 20261116-070553-26f1ce7, workers restarted
+2026-11-15T23:10:08Z deploy: health check 200
+2026-11-15T23:10:08Z deploy: done 26f1ce7
+2026-11-15T23:14:00Z run: scheduler (php artisan schedule:work) from <staging>/releases/20261116-070553-26f1ce7
+2026-11-15T23:18:37Z F8: staging MySQL stopped
+2026-11-15T23:18:59Z run: mysql on 127.0.0.1:3307
+2026-11-15T23:19:01Z F8: MySQL started again; readiness 200 after 3 s; outage 25 s
+2026-11-15T23:19:44Z workers: worker on 9102 exited; restarting
+2026-11-15T23:21:24Z backup: 20261116-072123-rehearsal.sql (3703557 bytes, sha256 2cf7f460713d)
+2026-11-15T23:21:27Z rollback: start 20261116-070553-26f1ce7 -> 20261116-012736-3fc625a
+2026-11-15T23:21:29Z backup: 20261116-072127-before-restore.sql (3703457 bytes, sha256 336548cb16c0)
+2026-11-15T23:21:32Z rollback: database restored from 20261116-072123-rehearsal.sql
+2026-11-15T23:21:33Z workers: worker on 9101 exited; restarting
+2026-11-15T23:21:34Z workers: worker on 9102 exited; restarting
+2026-11-15T23:21:34Z workers: worker on 9103 exited; restarting
+2026-11-15T23:21:35Z workers: worker on 9104 exited; restarting
+2026-11-15T23:21:46Z rollback: current -> 20261116-012736-3fc625a, health 200
+2026-11-15T23:21:47Z run: scheduler (php artisan schedule:work) from <staging>/releases/20261116-012736-3fc625a
+2026-11-15T23:22:43Z deploy: start HEAD (f2ed55f) -> 20261116-072243-f2ed55f
+2026-11-15T23:22:45Z backup: 20261116-072244-pre-deploy-f2ed55f.sql (3704701 bytes, sha256 3f4378a12643)
+2026-11-15T23:26:01Z deploy: backend installed (no dev packages)
+2026-11-15T23:26:01Z deploy: web build copied from the current release (--skip-web)
+2026-11-15T23:26:05Z deploy: migrations applied, config and routes cached
+2026-11-15T23:26:07Z workers: worker on 9101 exited; restarting
+2026-11-15T23:26:07Z workers: worker on 9102 exited; restarting
+2026-11-15T23:26:08Z workers: worker on 9103 exited; restarting
+2026-11-15T23:26:08Z workers: worker on 9104 exited; restarting
+2026-11-15T23:26:18Z deploy: current -> 20261116-072243-f2ed55f, workers and scheduler restarted
+2026-11-15T23:26:19Z run: scheduler (php artisan schedule:work) from <staging>/releases/20261116-072243-f2ed55f
+2026-11-15T23:26:19Z deploy: health check 200
+2026-11-15T23:26:20Z deploy: done f2ed55f

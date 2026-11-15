@@ -30,7 +30,7 @@ Limits used in the demo: 4 attempts per notification, a 3 s timeout per attempt,
 | 13 | `week13-sa7` | Backend API with roles and audit trail, approval routing, reminder and expiry automation (scheduler, outbox, bounded retries, manual handling), mock gateway, Flutter screens for all roles | Done |
 | 14 | `week14-sa8` | Password login with expiring tokens, HTTPS with a local TLS proxy, encrypted and tamper-checked gateway messages, encryption at rest, security tests | Done (branch `week14-security`) |
 | 15 | `week15-ia6` | Postman API test collection (48 requests) with a PHP runner, failure injection, idempotent submissions, security headers, API rate limit, request size limit, 365-day start limit | Done (branch `week15-hardening`) |
-| 16 | - | Performance, reliability and deployment | Not started |
+| 16 | `week16-eval` | Staging deployment (nginx, 4 PHP workers, MySQL, release folders, backup, rollback), readiness health check, workload models and load tests, parallel-race retest, failure drills, rollback rehearsal, conditional readiness recommendation | Done (branch `week16-deployment`) |
 | 17 | - | Final integration, UAT and evaluation | Not started |
 | 18 | - | Final review, demo and technical defense | Not started |
 
@@ -42,6 +42,8 @@ To see the project as it was in a given week, open the tag on GitHub, or run `gi
 backend/        Laravel API
 tls-proxy/      Local HTTPS proxy and certificate script (Week 14)
 api-tests/      Postman collection, environment example and PHP runner (Week 15)
+deploy/staging/ Staging setup, deploy, rollback, backup, run and stop scripts (Week 16)
+perf/           Load generator, workload models, resource sampler, race test (Week 16)
 client/         Flutter Web app
 mock-gateway/   Fake notification service for failure testing (plain PHP)
 docs/           Boundary map, diagrams, decision records, policies, API contract
@@ -133,13 +135,25 @@ php api-tests\run-collection.php api-tests\results
 
 It runs the 48 requests in `api-tests\project32.postman_collection.json` and writes `results.json` and `summary.txt` (tokens redacted). The same file can be imported into Postman with `project32.postman_environment.example.json`; type the demo password into the environment there and never save it in the file. To change the requests, edit `api-tests\build-collection.php` and run it again.
 
+**Staging deployment (Week 16).** Staging runs a released commit the way a server would: nginx with HTTPS on https://localhost:8444 serves the web app and `/api` from one origin, with 4 PHP workers and a private MySQL 8.4 on port 3307. It uses Laragon's nginx, MySQL and PHP and changes none of Laragon's settings. Run these from the project folder in **Git Bash**. The staging folder is created next to the repository and holds the generated secrets, which are never printed:
+
+```
+deploy/staging/setup.sh
+deploy/staging/run.sh all
+deploy/staging/deploy.sh <tag-or-commit>
+```
+
+The first command is a one-time setup, the second starts MySQL, the workers, nginx, the gateway and the scheduler, and the third deploys with a backup, migrations and a health check. Rollback is `deploy/staging/rollback.sh` (code only) or `rollback.sh --restore <backup>` (code and database). `deploy/staging/stop.sh` stops everything. Readiness is at https://localhost:8444/api/health. The checklist and the rollback plan are in `docs\week16\33-environments-and-deployment.md` and `34-rollback-and-recovery.md`.
+
+**Load tests (Week 16).** Create the fictional load-test accounts once with `php artisan db:seed --class=LoadTestUsersSeeder --force` in the release's `backend` folder. Then run `perf/measure.sh <label> <api-url> perf/models/<model>.json <output-folder> <seconds-to-sample>`, with `LOAD_PASSWORD` set to that environment's demo password. The models are described in `docs\week16\30-workload-models.md`.
+
 ## Configuration and secrets
 
 The real `.env` file is never committed. Use `backend\.env.example` as the template. No API keys, passwords, tokens or real personal data belong in this repository, including screenshots and logs. Since Week 14, users sign in with a password and receive a token that expires after 60 minutes; the token is kept in browser memory only. Keys and the demo password live in `backend\.env`, and certificates in `certs\`; both are git-ignored. See `docs\week14\12-key-lifecycle.md`.
 
 ## Evidence
 
-Evidence is listed in `evidence\week13\README.md`, `evidence\week14\README.md` and `evidence\week15\README.md`, each with a lab log. Outputs and screenshots for scenarios S1-S10 are kept in that folder. Design documents are in `docs\`, and known limitations are in `docs\09-known-limitations.md`. This is a classroom prototype and is not production-ready.
+Evidence is listed in `evidence\week13\README.md`, `evidence\week14\README.md`, `evidence\week15\README.md` and `evidence\week16\README.md`, each with a lab log. Outputs and screenshots for scenarios S1-S10 are kept in that folder. Design documents are in `docs\`, and known limitations are in `docs\09-known-limitations.md`. This is a classroom prototype and is not production-ready.
 
 ## AI assistance and third-party code
 

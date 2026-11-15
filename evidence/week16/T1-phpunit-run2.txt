@@ -1,0 +1,2 @@
+PHPUnit, 2026-11-15T23:36Z, second run
+{"tool":"phpunit","result":"passed","tests":40,"passed":40,"assertions":186,"duration_ms":4948}

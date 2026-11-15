@@ -1,0 +1,50 @@
+Environment comparison, collected 2026-11-15T23:28Z. Non-secret settings only.
+
+== Development (backend/ working copy, php artisan serve)
+{
+ "app.env": "local",
+ "app.debug": true,
+ "db": "sqlite",
+ "db_version": "3.49.2",
+ "cache": "database",
+ "config_cached": false,
+ "routes_cached": false,
+ "require_https": true,
+ "rate_per_min": 60,
+ "max_body_kb": 1024,
+ "dispatch_batch": 50,
+ "cors_origin": [
+ "http://localhost:5000"
+ ],
+ "log_level": "debug"
+}
+
+CLI PHP (used by artisan serve): 8.4.12, opcache off, post_max_size 2G, display_errors 1, expose_php 1
+
+== Staging (20261116-072243-f2ed55f)
+{
+    "app.env": "staging",
+    "app.debug": false,
+    "db": "mysql",
+    "db_version": "8.4.3",
+    "cache": "database",
+    "config_cached": true,
+    "routes_cached": true,
+    "require_https": true,
+    "rate_per_min": 60,
+    "max_body_kb": 1024,
+    "dispatch_batch": 200,
+    "cors_origin": [
+        "https://localhost:8444"
+    ],
+    "log_level": "warning"
+}
+
+php-cgi workers (same ini, read with php.exe -c): 8.4.12, opcache.enable 1 (validate_timestamps 0, loaded yes), post_max_size 2M, display_errors off, expose_php off
+
+== Response headers
+dev  /up:
+  (dev server not running at collection time)
+staging /up:
+HTTP/1.1 200 OK
+Server: nginx
