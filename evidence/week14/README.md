@@ -2,7 +2,7 @@
 
 **Who produced this:** Claude Code (AI assistant) ran W01–W13, captured the UI screenshots U1, U2, U6 and U7, and wrote the review and interpretation, all at the student's request on the student's laptop. The outputs are unedited, except that access tokens are replaced with `[redacted]` before saving. U3–U5 are for the student to capture (see below). See `lab-log.md`.
 
-**Build:** commit `a20d703`, branch `week14-security`. Environment: `00-environment.txt` (PHP 8.4.12, Laravel 13.39.0, libsodium 1.0.20, Node 22). Tagged commit: not tagged yet.
+**Build:** commit `a20d703`, branch `week14-security`. Environment: `00-environment.txt` (PHP 8.4.12, Laravel 13.39.0, libsodium 1.0.20, Node 22). Tagged commit: `00f4ac9` (tag `week14-sa8`).
 
 **Run:** W01–W12 on 2026-11-11, 15:30–15:33 Asia/Manila, in one pass from `migrate:fresh --seed`, through the HTTPS proxy.
 

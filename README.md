@@ -28,7 +28,7 @@ Limits used in the demo: 4 attempts per notification, a 3 s timeout per attempt,
 | Week | Tag | What was added | Status |
 | --- | --- | --- | --- |
 | 13 | `week13-sa7` | Backend API with roles and audit trail, approval routing, reminder and expiry automation (scheduler, outbox, bounded retries, manual handling), mock gateway, Flutter screens for all roles | Done |
-| 14 | `week14-sa8` | Password login with expiring tokens, HTTPS with a local TLS proxy, encrypted and tamper-checked gateway messages, encryption at rest, security tests | Done on `week14-security`, tag not created yet |
+| 14 | `week14-sa8` | Password login with expiring tokens, HTTPS with a local TLS proxy, encrypted and tamper-checked gateway messages, encryption at rest, security tests | Done (branch `week14-security`) |
 | 15 | - | Integration testing and security hardening | Not started |
 | 16 | - | Performance, reliability and deployment | Not started |
 | 17 | - | Final integration, UAT and evaluation | Not started |
