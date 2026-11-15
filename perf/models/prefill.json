@@ -1,0 +1,11 @@
+{
+  "name": "W0 data volume prefill",
+  "about": "Not a measurement. Creates 1,200 fictional permits through the API (about two months of a busy office) so the measured runs do not start from an empty database.",
+  "vus": { "requester": 40 },
+  "think_ms": [1050, 1300],
+  "ramp_s": 5,
+  "warmup_s": 0,
+  "duration_s": 300,
+  "max_submits": 1200,
+  "mix": { "requester": [ { "op": "submit", "weight": 1 } ] }
+}

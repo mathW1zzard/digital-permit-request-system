@@ -1,0 +1,78 @@
+# Week 16 staging: nginx in front of 4 PHP FastCGI workers, one HTTPS origin for the web app and the API.
+# deploy/staging/start.sh fills in @STAGING@ (the staging folder) and @REPO@ (this repository).
+worker_processes  1;            # nginx on Windows uses one worker process; it still multiplexes connections
+error_log  "@STAGING@/shared/logs/nginx-error.log" warn;
+pid        "@STAGING@/shared/run/nginx.pid";
+
+events { worker_connections 1024; }
+
+http {
+    include       "@NGINX_HOME@/conf/mime.types";
+    default_type  application/octet-stream;
+    sendfile      on;
+    keepalive_timeout 30;
+    server_tokens off;                      # no nginx version in headers or error pages
+    client_max_body_size 2m;                # outer limit; the app refuses anything over 1 MB (D7)
+
+    # Access log with timing, used to read response times and status codes per request.
+    log_format timed '$time_iso8601 $status $request_method $uri $request_time $upstream_response_time $body_bytes_sent';
+    access_log "@STAGING@/shared/logs/nginx-access.log" timed;
+
+
+    # Readiness checks are cheap but public: limit them here, because the app's own limiter needs the database.
+    limit_req_zone $binary_remote_addr zone=health:1m rate=1r/s;
+
+    upstream php_workers {
+        server 127.0.0.1:9101;
+        server 127.0.0.1:9102;
+        server 127.0.0.1:9103;
+        server 127.0.0.1:9104;
+        keepalive 8;
+    }
+
+    server {
+        listen       127.0.0.1:8444 ssl;
+        server_name  localhost;
+        ssl_certificate      "@REPO@/certs/localhost.pem";
+        ssl_certificate_key  "@REPO@/certs/localhost-key.pem";
+        ssl_protocols        TLSv1.2 TLSv1.3;
+
+        # Flutter Web release build of the current release.
+        root   "@STAGING@/current/web";
+        index  index.html;
+
+        location = /api/health {
+            limit_req zone=health burst=5 nodelay;
+            limit_req_status 429;
+            include "@NGINX_HOME@/conf/fastcgi_params";
+            fastcgi_param SCRIPT_FILENAME "@STAGING@/current/backend/public/index.php";
+            fastcgi_param HTTPS on;
+            fastcgi_keep_conn on;
+            fastcgi_pass php_workers;
+        }
+
+        location ~ ^/(api|up)(/|$) {
+            include "@NGINX_HOME@/conf/fastcgi_params";
+            fastcgi_param SCRIPT_FILENAME "@STAGING@/current/backend/public/index.php";
+            fastcgi_param HTTPS on;
+            fastcgi_keep_conn on;
+            fastcgi_read_timeout 30s;
+            fastcgi_pass php_workers;
+        }
+
+        location / {
+            try_files $uri $uri/ /index.html;
+            add_header X-Content-Type-Options nosniff always;
+            add_header Referrer-Policy no-referrer always;
+        }
+    }
+
+    # Mock gateway behind TLS, as in development (the dispatcher verifies it with the dev CA).
+    server {
+        listen       127.0.0.1:9444 ssl;
+        server_name  localhost 127.0.0.1;
+        ssl_certificate      "@REPO@/certs/localhost.pem";
+        ssl_certificate_key  "@REPO@/certs/localhost-key.pem";
+        location / { proxy_pass http://127.0.0.1:9000; }
+    }
+}

@@ -1,0 +1,3 @@
+{ "name": "smoke", "vus": { "requester": 2, "reviewer": 1, "approver": 1 }, "think_ms": [200, 400], "ramp_s": 0, "warmup_s": 0, "duration_s": 15,
+  "mix": { "requester": [ { "op": "list", "weight": 40 }, { "op": "detail", "weight": 35 }, { "op": "submit", "weight": 15 }, { "op": "types", "weight": 10 } ],
+           "reviewer": [ { "op": "endorse", "weight": 60 }, { "op": "list", "weight": 40 } ], "approver": [ { "op": "approve", "weight": 60 }, { "op": "list", "weight": 40 } ] } }
