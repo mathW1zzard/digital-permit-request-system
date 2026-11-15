@@ -1,0 +1,13 @@
+F8 database stopped on staging. Prediction written before the run (2026-11-15 23:19 UTC).
+
+Action: stop the staging MySQL (mysqladmin shutdown) while nginx, workers and scheduler keep running.
+Expected while it is down:
+  - GET /up (liveness) 200: the PHP process still answers. Liveness alone would say "fine".
+  - GET /api/health (readiness) 503 {"status":"not_ready","checks":{"database":{"status":"fail"}}},
+    no hostnames, SQL or paths in the body.
+  - POST /api/login and GET /api/permits: 500 in the safe error shape with a correlation ID
+    (the rate limiter and Sanctum both need the database), no SQL or paths.
+  - The log has QueryException lines with class and location only.
+Expected after MySQL is started again, with no restart of nginx, workers or scheduler:
+  - /api/health 200 again within one request; sign-in and listing work.
+Recovery time objective for this case: as soon as the database is back (no manual app step).

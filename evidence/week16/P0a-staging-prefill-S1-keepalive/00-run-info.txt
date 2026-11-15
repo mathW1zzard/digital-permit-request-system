@@ -1,0 +1,9 @@
+label: staging
+api: https://localhost:8444/api
+model: perf/models/prefill.json
+repo commit: 3fc625a
+machine: AMD Ryzen 5 7520U with Radeon Graphics, 8 logical cores, 7.2 GB RAM
+started (UTC): 2026-11-15T17:35:20Z
+health before: {"status":"ready","checks":{"database":{"status":"ok"},"scheduler_automation":{"status":"ok","age_seconds":18},"scheduler_dispatch":{"status":"ok","age_seconds":78},"outbox":{"status":"ok","overdue":0,"manual_action":0}},"checked_at":"2026-11-15T17:35:20+00:00"}
+health after: {"status":"ready","checks":{"database":{"status":"ok"},"scheduler_automation":{"status":"ok","age_seconds":194},"scheduler_dispatch":{"status":"ok","age_seconds":254},"outbox":{"status":"ok","overdue":0,"manual_action":0}},"checked_at":"2026-11-15T17:38:16+00:00"}
+ended (UTC): 2026-11-15T17:38:16Z

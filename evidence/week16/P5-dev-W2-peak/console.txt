@@ -1,0 +1,22 @@
+W2 peak deadline: 46 users, 180s (+20s ramp, 20s warm-up excluded), base https://localhost:8443/api
+W2 peak deadline dev (php artisan serve + SQLite) | https://localhost:8443/api | 2026-11-15T22:51:35.756Z -> 2026-11-15T22:55:12.146Z | 46 users
+Measured window (after 20s warm-up, sign-ins excluded): 357 requests in 195s = 1.83 req/s; errors 15 (4.2%); p50 17907.2 ms, p95 29669.1 ms, p99 30020.6 ms, max 30024.4 ms
+
+op        count   ok  4xx  err    p50    p90    p95    p99    max  statuses
+login        46   41    0    5 17816.9 30009.5 30011.3 30028.2 30028.2  {"200":41,"timeout":5}
+list        159  147    0   12 18085.3 29044.3 30012.5 30023.1 30024.4  {"200":147,"timeout":12}
+detail      106  104    0    2 17801.9 23799.8  26902 30008.9 30018.4  {"200":104,"timeout":2}
+types        31   31    0    0 17932.4 24681.9 26325.1 26858.3 26858.3  {"200":31}
+submit       46   45    0    1 17682.5 19595.6 29418.5 30021.8 30021.8  {"201":45,"timeout":1}
+endorse      13   13    0    0 17244.7 18732.8 19443.9 19443.9 19443.9  {"200":13}
+approve       2    2    0    0 16486.6 18286.2 18286.2 18286.2 18286.2  {"200":2}
+
+FAIL  error rate %: 4.2 (limit <= 2)
+FAIL  p95 all requests ms: 29669.1 (limit <= 1500)
+FAIL  p95 list ms: 30012.5 (limit <= 1500)
+FAIL  p95 detail ms: 26902 (limit <= 1500)
+FAIL  p95 types ms: 26325.1 (limit <= 1500)
+FAIL  p95 submit ms: 29418.5 (limit <= 2500)
+FAIL  p95 endorse ms: 19443.9 (limit <= 2500)
+FAIL  p95 approve ms: 18286.2 (limit <= 2500)
+Verdict: FAIL

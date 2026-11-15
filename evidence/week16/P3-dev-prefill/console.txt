@@ -1,0 +1,9 @@
+W0 data volume prefill: 40 users, 300s (+5s ramp, 0s warm-up excluded), base https://localhost:8443/api
+W0 data volume prefill dev (php artisan serve + SQLite) | https://localhost:8443/api | 2026-11-15T17:49:04.698Z -> 2026-11-15T17:54:27.091Z | 40 users
+Measured window (after 0s warm-up, sign-ins excluded): 589 requests in 321s = 1.83 req/s; errors 10 (1.7%); p50 16153.8 ms, p95 22079.3 ms, p99 30013 ms, max 30021 ms
+
+op        count   ok  4xx  err    p50    p90    p95    p99    max  statuses
+login        40   36    0    4 15966.4 29860.2 30015.8 30019.2 30019.2  {"200":36,"timeout":4}
+submit      589  579    0   10 16153.8 17168.3 22079.3  30013  30021  {"201":579,"timeout":10}
+
+Verdict: PASS

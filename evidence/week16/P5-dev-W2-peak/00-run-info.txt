@@ -1,0 +1,9 @@
+label: dev (php artisan serve + SQLite)
+api: https://localhost:8443/api
+model: perf/models/peak.json
+repo commit: 7a128b7
+machine: AMD Ryzen 5 7520U with Radeon Graphics, 8 logical cores, 7.2 GB RAM
+started (UTC): 2026-11-15T22:51:33Z
+health before: {"status":"degraded","checks":{"database":{"status":"ok"},"scheduler_automation":{"status":"stale","age_seconds":null},"scheduler_dispatch":{"status":"stale","age_seconds":null},"outbox":{"status":"backlog","overdue":676,"manual_action":0}},"checked_at":"2026-11-15T22:51:35+00:00"}
+health after: {"status":"degraded","checks":{"database":{"status":"ok"},"scheduler_automation":{"status":"stale","age_seconds":null},"scheduler_dispatch":{"status":"stale","age_seconds":null},"outbox":{"status":"backlog","overdue":676,"manual_action":0}},"checked_at":"2026-11-15T22:55:12+00:00"}
+ended (UTC): 2026-11-15T22:55:13Z

@@ -1,0 +1,14 @@
+Grouped nginx error log for run P0a (counts, client addresses removed):
+    420 [error] no live upstreams while connecting to upstream
+     79 [warn] upstream server temporarily disabled while reading response header from upstream
+     79 [error] upstream timed out (10060: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond) while reading response header from upstream
+
+Status codes in the nginx access log for the same period:
+    187 200
+    719 201
+      2 404
+      4 499
+    420 502
+     79 504
+
+Worker restarts during the run: 0 (the 8 restarts in ops.log are from the two deploys)

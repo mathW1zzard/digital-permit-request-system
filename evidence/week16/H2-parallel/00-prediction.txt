@@ -1,0 +1,14 @@
+H2 parallel retest, prediction written before the run (2026-11-15, staging: nginx + 4 php-cgi + MySQL 8.4).
+
+R1 (as Week 15 F4, now truly parallel): two endorsements of one permit sent together.
+  Expected: every trial 200 + 409 invalid_transition; exactly one "endorsed" event per permit.
+  Reason: the status update is a compare-and-set (UPDATE ... WHERE status = 'under_review'); the
+  second writer changes 0 rows and gets 409, whichever worker it lands on.
+
+R2 (as Week 15 F5, now truly parallel): same body, same Idempotency-Key, sent together.
+  Expected: every trial 201 + 200 with Idempotent-Replayed true and the same reference; one permit
+  per key. Reason: unique index (user_id, key); the loser's transaction rolls back (with its permit)
+  and it returns the winner's permit.
+  Risk I am not sure about: on MySQL/InnoDB the two inserts can also end in a deadlock error
+  instead of a duplicate-key error. The code only catches the duplicate-key case, so a deadlock
+  would surface as 500. If that happens it is a defect in the D3 fix.

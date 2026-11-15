@@ -1,0 +1,9 @@
+label: dev (php artisan serve + SQLite)
+api: https://localhost:8443/api
+model: perf/models/ordinary.json
+repo commit: 3fc625a
+machine: AMD Ryzen 5 7520U with Radeon Graphics, 8 logical cores, 7.2 GB RAM
+started (UTC): 2026-11-15T17:54:38Z
+health before: {"status":"degraded","checks":{"database":{"status":"ok"},"scheduler_automation":{"status":"stale","age_seconds":null},"scheduler_dispatch":{"status":"stale","age_seconds":null},"outbox":{"status":"ok","overdue":0,"manual_action":0}},"checked_at":"2026-11-15T17:54:39+00:00"}
+health after: {"status":"degraded","checks":{"database":{"status":"ok"},"scheduler_automation":{"status":"stale","age_seconds":null},"scheduler_dispatch":{"status":"stale","age_seconds":null},"outbox":{"status":"backlog","overdue":1,"manual_action":0}},"checked_at":"2026-11-15T17:59:28+00:00"}
+ended (UTC): 2026-11-15T17:59:28Z

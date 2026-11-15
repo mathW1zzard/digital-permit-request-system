@@ -1,0 +1,36 @@
+== 1 backup 23:21:22
+backup file: 20261116-072123-rehearsal.sql (3703557 bytes)
+permits=2978 permits_rejected=0 permits_under_review=2443 events=7300 outbox_sent=1400 outbox_pending=2387 
+== 2 faulty change 23:21:25
+rows_changed
+25
+permits=2978 permits_rejected=25 permits_under_review=2418 events=7300 outbox_sent=1400 outbox_pending=2387 
+== 3 rollback with restore 23:21:26
+2026-11-15T23:21:27Z rollback: start 20261116-070553-26f1ce7 -> 20261116-012736-3fc625a
+2026-11-15T23:21:32Z rollback: database restored from 20261116-072123-rehearsal.sql
+2026-11-15T23:21:46Z rollback: current -> 20261116-012736-3fc625a, health 200
+rollback.sh took 20.6 s
+== 4 after 23:21:47
+permits=2978 permits_rejected=0 permits_under_review=2443 events=7300 outbox_sent=1400 outbox_pending=2387 
+serving release: 3fc625a
+GET /api/health: 200 (3fc625a has /api/health; it was added in 15aab32)
+== while 3fc625a is live: log lines 23:22-23:23
+  23:22:02 exception.unhandled GuzzleHttp\Exception\InvalidArgumentException {}
+  23:22:03 exception.unhandled Exception {}
+== 5 roll forward 23:22:42
+2026-11-15T23:22:43Z deploy: start HEAD (f2ed55f) -> 20261116-072243-f2ed55f
+2026-11-15T23:26:01Z deploy: backend installed (no dev packages)
+2026-11-15T23:26:01Z deploy: web build copied from the current release (--skip-web)
+2026-11-15T23:26:05Z deploy: migrations applied, config and routes cached
+2026-11-15T23:26:18Z deploy: current -> 20261116-072243-f2ed55f, workers and scheduler restarted
+2026-11-15T23:26:19Z deploy: health check 200
+2026-11-15T23:26:20Z deploy: done f2ed55f
+roll-forward deploy took 218 s
+serving release: f2ed55f
+== after roll forward: log lines 23:26-23:28
+  23:26:02 exception.unhandled GuzzleHttp\Exception\InvalidArgumentException {}
+  23:26:03 exception.unhandled Exception {}
+  23:27:13 dispatch.run_completed  {'sent': 200}
+2026-11-15T23:26:18Z deploy: current -> 20261116-072243-f2ed55f, workers and scheduler restarted
+2026-11-15T23:26:19Z run: scheduler (php artisan schedule:work) from C:/Users/gaylo/Downloads/Flutter App Developments/permit-staging/releases/20261116-072243-f2ed55f
+health: {"status":"degraded","checks":{"database":{"status":"ok"},"scheduler_automation":{"status":"ok","age_seconds":156},"scheduler_dispatch":{"status":"ok","age_seconds":25},"outbox":{"status":"backlog","overdue":2030,"manual_action":0}},"checked_at":"2026-11-15T23:27:38+00:00"}

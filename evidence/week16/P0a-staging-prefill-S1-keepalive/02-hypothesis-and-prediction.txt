@@ -1,0 +1,17 @@
+Defect S1 (staging configuration), written before the fix, 2026-11-15 17:40 UTC.
+
+Observation: workers did not crash (no restarts during the run). nginx logged 79 "upstream timed out
+while reading response header" (504 after 30 s) followed by 420 "no live upstreams" (502).
+
+Hypothesis: nginx.conf enabled keep-alive connections to the FastCGI workers ("keepalive 8" in the
+upstream and "fastcgi_keep_conn on"). php-cgi on Windows handles one connection at a time and keeps
+a kept-alive connection open while idle. When nginx opens a second connection to the same worker,
+that connection waits in the listen queue until the 30 s read timeout. Each timeout marks the worker
+as failed for 10 s (max_fails=1 by default); once all four are marked, nginx answers 502 at once.
+
+Fix: remove "keepalive" from the upstream and "fastcgi_keep_conn on" from the locations, so each
+request uses its own connection that php-cgi closes when it is done. Also allow 3 failures in 10 s
+before a worker is taken out (max_fails=3), so one slow request does not remove a worker.
+
+Prediction for the rerun (same prefill model, fresh database): 0 timeouts, 0 x 502/504,
+1,200 x 201, sign-ins all 200. Submit p95 well under 1 s.

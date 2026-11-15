@@ -1,0 +1,21 @@
+F9 W1 for 60 s with a worker killed staging | https://localhost:8444/api | 2026-11-15T23:19:18.968Z -> 2026-11-15T23:20:26.842Z | 23 users
+Measured window (after 0s warm-up, sign-ins excluded): 751 requests in 65s = 11.53 req/s; errors 0 (0%); p50 78.8 ms, p95 216.6 ms, p99 699.5 ms, max 1643.3 ms
+
+op        count   ok  4xx  err    p50    p90    p95    p99    max  statuses
+login        23   23    0    0  490.2   1019 1226.8   1261   1261  {"200":23}
+list        323  323    0    0   83.1  126.5  251.3  834.8 1123.6  {"200":323}
+detail      216  216    0    0   63.7     89  216.6  536.4 1173.9  {"200":216}
+endorse      34   34    0    0   85.6  108.8  253.6  464.6  464.6  {"200":34}
+submit       99   99    0    0  101.6  129.5  155.3  363.4  363.4  {"201":99}
+approve      19   19    0    0   88.5  104.4  109.8  109.8  109.8  {"200":19}
+types        60   60    0    0   50.7   73.6   90.7 1643.3 1643.3  {"200":60}
+
+PASS  error rate %: 0 (limit <= 1)
+PASS  p95 all requests ms: 216.6 (limit <= 500)
+PASS  p95 list ms: 251.3 (limit <= 500)
+PASS  p95 detail ms: 216.6 (limit <= 500)
+PASS  p95 types ms: 90.7 (limit <= 500)
+PASS  p95 submit ms: 155.3 (limit <= 1000)
+PASS  p95 endorse ms: 253.6 (limit <= 1000)
+PASS  p95 approve ms: 109.8 (limit <= 1000)
+Verdict: PASS

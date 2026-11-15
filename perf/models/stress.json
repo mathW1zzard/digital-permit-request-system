@@ -1,0 +1,15 @@
+{
+  "name": "W3 stress (capacity search)",
+  "about": "Not a realistic office: 46 users with almost no think time (0-100 ms), to find where staging saturates and how it degrades. Run only with the per-user API limit raised for the test (it would otherwise answer 429 and cap the load).",
+  "vus": { "requester": 40, "reviewer": 4, "approver": 2 },
+  "think_ms": [0, 100],
+  "ramp_s": 30,
+  "warmup_s": 30,
+  "duration_s": 120,
+  "mix": {
+    "requester": [ { "op": "list", "weight": 40 }, { "op": "detail", "weight": 35 }, { "op": "submit", "weight": 15 }, { "op": "types", "weight": 10 } ],
+    "reviewer":  [ { "op": "endorse", "weight": 60 }, { "op": "list", "weight": 40 } ],
+    "approver":  [ { "op": "approve", "weight": 60 }, { "op": "list", "weight": 40 } ]
+  },
+  "thresholds": { "error_rate_pct": 2, "p95_ms": 1500 }
+}

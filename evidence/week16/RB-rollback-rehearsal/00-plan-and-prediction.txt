@@ -1,0 +1,24 @@
+Rollback rehearsal, written before the run (2026-11-15 23:22 UTC, staging).
+
+Scenario: release 26f1ce7 is live. A faulty data change (simulated: 25 permits under review are
+wrongly set to "rejected", as a bad data-fix script might do) is discovered. The decision is to
+return to the state before the change: restore the database from the last backup and put the
+previous code release back.
+
+Steps:
+  1. backup.sh "rehearsal" (the backup a deploy would take) and record row counts.
+  2. Apply the faulty change (25 permits under_review -> rejected) and record counts.
+  3. rollback.sh --restore <backup>: backs up the current (bad) state first, restores the database,
+     points current/ at the previous release (3fc625a), restarts workers and scheduler, waits for
+     health 200.
+  4. Check row counts equal step 1, and the previous release is serving (REVISION, routes).
+  5. Roll forward: deploy.sh HEAD --skip-web, health 200.
+
+Predictions:
+  - Restore and code switch finish in under 1 minute; the API answers health 200 afterwards.
+  - Counts after restore equal the backup's counts, except rows the scheduler wrote between the
+    backup and the restore (reminders or notification status). This is the recovery point: any
+    write after the backup is lost.
+  - While 3fc625a is live, notification dispatch fails again, because 3fc625a contains defect S2.
+    Rolling back re-opens fixed defects; that is a cost of rollback, not a fault of the procedure.
+  - Roll forward takes about as long as a normal --skip-web deploy (~4 minutes, mostly composer).

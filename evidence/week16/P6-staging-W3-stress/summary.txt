@@ -1,0 +1,15 @@
+W3 stress (capacity search) staging stress, per-user limit raised | https://localhost:8444/api | 2026-11-15T22:56:11.264Z -> 2026-11-15T22:58:42.762Z | 46 users
+Measured window (after 30s warm-up, sign-ins excluded): 6475 requests in 121s = 53.3 req/s; errors 0 (0%); p50 832 ms, p95 1770.1 ms, p99 1936.7 ms, max 2106 ms
+
+op        count   ok  4xx  err    p50    p90    p95    p99    max  statuses
+login        46   46    0    0  781.9 1483.7 1558.3 1812.3 1812.3  {"200":46}
+submit      856  856    0    0    975 1703.4   1777 1893.3 2083.7  {"201":856}
+list       2773 2773    0    0  833.1 1672.9 1767.2 1953.9   2106  {"200":2773}
+detail     1964 1964    0    0  505.7 1675.4 1763.8   1933 2069.4  {"200":1964}
+approve     104  104    0    0 1194.6 1728.5 1783.1 1848.1 1849.6  {"200":104}
+types       580  580    0    0 1089.3 1653.5 1743.3 1869.5 2075.5  {"200":580}
+endorse     198  198    0    0  570.4 1763.9 1856.9 2096.9   2099  {"200":198}
+
+PASS  error rate %: 0 (limit <= 2)
+FAIL  p95 all requests ms: 1770.1 (limit <= 1500)
+Verdict: FAIL

@@ -1,0 +1,692 @@
+[
+ {
+  "trial": 1,
+  "key": "race-a5009b40-2c4f-4c6e-adcd-738b200127b7",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.8,
+  "ms": [
+   61,
+   88
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 2,
+  "key": "race-1ec5bfe4-e696-4819-8a81-b07e63abc1d8",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 2.1,
+  "ms": [
+   61,
+   83
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 3,
+  "key": "race-66788b26-526e-42f3-bc7a-4a4ec0b71099",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 2.8,
+  "ms": [
+   68,
+   68
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 4,
+  "key": "race-736c6bfc-d06e-44bb-87f5-733675722fa2",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.2,
+  "ms": [
+   79,
+   79
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 5,
+  "key": "race-270c5ec2-0f66-4ec6-9dd0-11a6197b802a",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.2,
+  "ms": [
+   58,
+   60
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 6,
+  "key": "race-7eb539ed-3bcd-4bc4-be52-4c3ada9ca4b5",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.3,
+  "ms": [
+   58,
+   60
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 7,
+  "key": "race-76cea25f-22a4-4054-95a3-fc044731d2ca",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.1,
+  "ms": [
+   63,
+   66
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 8,
+  "key": "race-ecde71c3-9498-48b0-88fb-dca03e82a684",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.1,
+  "ms": [
+   61,
+   59
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 9,
+  "key": "race-7b80b9ba-5d98-4535-8865-3fd597726fa4",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.1,
+  "ms": [
+   61,
+   58
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 10,
+  "key": "race-691f82c5-4c2e-429c-bbcd-de0ec5c45a2f",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.4,
+  "ms": [
+   63,
+   66
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 11,
+  "key": "race-a1ba6a91-dbf6-43ee-9d71-f80bfec2290e",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.3,
+  "ms": [
+   63,
+   60
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 12,
+  "key": "race-b3c11da0-ca97-413b-a7f4-3ed795d60630",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.4,
+  "ms": [
+   67,
+   67
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 13,
+  "key": "race-6e9ad8e8-c0a8-40ea-8f46-f4eefb751d1e",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.2,
+  "ms": [
+   65,
+   63
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 14,
+  "key": "race-e15e2f4d-700e-4a62-b79c-5ecf97e6157c",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.1,
+  "ms": [
+   69,
+   61
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 15,
+  "key": "race-15ffd34d-9a83-481d-a3a5-7c2d9e427842",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.5,
+  "ms": [
+   62,
+   60
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 16,
+  "key": "race-aff66daf-3b6c-4fa7-b692-5b5f012328fc",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.1,
+  "ms": [
+   70,
+   59
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 17,
+  "key": "race-bf6c6831-0539-44da-ba75-15942486fd25",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.2,
+  "ms": [
+   77,
+   58
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 18,
+  "key": "race-00245a0d-f5d5-4c71-882e-d0c38459a507",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.7,
+  "ms": [
+   72,
+   68
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 19,
+  "key": "race-33696381-0792-4fab-8235-09aef696088d",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.3,
+  "ms": [
+   63,
+   77
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 20,
+  "key": "race-94b3b0e3-567e-4d39-a2a8-cc138aa01b27",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.5,
+  "ms": [
+   65,
+   62
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 21,
+  "key": "race-6111bfc0-d5d4-44b5-95a2-ebf67e105a60",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.3,
+  "ms": [
+   59,
+   82
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 22,
+  "key": "race-b7ab5233-4f78-42b2-9a01-3cd784ff9459",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 2.3,
+  "ms": [
+   66,
+   68
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 23,
+  "key": "race-44ad2bc7-8f53-4022-a0d0-a3ae731f6c71",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.6,
+  "ms": [
+   70,
+   71
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 24,
+  "key": "race-2eaafa6c-9792-40c5-b30e-d67e081b821d",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.4,
+  "ms": [
+   68,
+   62
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 25,
+  "key": "race-0b7daf51-9689-4e02-9415-5dd8eac7e03d",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.3,
+  "ms": [
+   73,
+   58
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 26,
+  "key": "race-99cfee27-5665-4345-b597-1cfd608e5e2b",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.2,
+  "ms": [
+   62,
+   62
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 27,
+  "key": "race-0ba35113-8cf8-4140-b4a4-6b6849ba476f",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.1,
+  "ms": [
+   62,
+   67
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 28,
+  "key": "race-5889e581-f3ce-47f2-be18-416278e69ff2",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.2,
+  "ms": [
+   61,
+   61
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 29,
+  "key": "race-5ea54786-d156-4260-a7fb-84ec594b5559",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.1,
+  "ms": [
+   59,
+   62
+  ],
+  "ok": false,
+  "errors": []
+ },
+ {
+  "trial": 30,
+  "key": "race-27ab7545-2655-46b6-a8ac-16c45471f5bc",
+  "statuses": [
+   429,
+   429
+  ],
+  "replayed": [
+   null,
+   null
+  ],
+  "refs": [
+   null,
+   null
+  ],
+  "gap_ms": 1.4,
+  "ms": [
+   60,
+   89
+  ],
+  "ok": false,
+  "errors": []
+ }
+]

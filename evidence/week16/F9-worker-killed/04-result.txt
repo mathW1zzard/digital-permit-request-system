@@ -1,0 +1,16 @@
+F9 result (2026-11-15 23:19 UTC, staging).
+
+Observed: killed php-cgi on 9102 at 23:19:43.955; the supervisor logged the exit at 23:19:44 and a
+new worker listened on 9102 at 23:19:46.049 (2.1 s). The 60 s load run (23 users, 751 requests)
+had 0 errors and 0 timeouts. nginx logged no errors in that period (03-nginx-errors.txt is empty);
+its access log shows only 200 and 201 for 23:19:40-50. p99 rose to 0.5-0.8 s and the slowest
+request was 1.6 s, against about 0.13 s in the undisturbed W1 run.
+
+Difference from the prediction: I expected a few 502s. None happened. The worker appears to have
+been idle when it was killed (no request was cut off), and the extra delay instead of errors is
+most likely Windows retrying the refused loopback connection for about a second, by which time the
+replacement worker was listening. I did not capture packet-level evidence, so this explanation is
+an inference, not an observation. A worker killed mid-request would still fail that request.
+
+Conclusion: a crashed worker is replaced in about 2 s without operator action, and users see a
+short slowdown, not errors, in this run.

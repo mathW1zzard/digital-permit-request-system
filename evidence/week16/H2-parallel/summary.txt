@@ -1,0 +1,4 @@
+R2 parallel duplicate submission, 30 trials (same user, same body, same Idempotency-Key)
+  correct: 30/30; status pairs {"200+201":30}
+R1 parallel double endorsement, 30 trials (assigned reviewer, two connections)
+  correct: 30/30; status pairs {"200+409":30}

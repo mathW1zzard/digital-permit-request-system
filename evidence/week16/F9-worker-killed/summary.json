@@ -1,0 +1,171 @@
+{
+  "model": "F9 W1 for 60 s with a worker killed",
+  "label": "staging",
+  "base": "https://localhost:8444/api",
+  "started": "2026-11-15T23:19:18.968Z",
+  "ended": "2026-11-15T23:20:26.842Z",
+  "users": 23,
+  "model_file": "evidence/week16/F9-worker-killed/model.json",
+  "overall": {
+    "requests": 751,
+    "duration_s": 65,
+    "throughput_rps": 11.53,
+    "errors": 0,
+    "error_rate": 0,
+    "p50": 78.8,
+    "p95": 216.6,
+    "p99": 699.5,
+    "max": 1643.3
+  },
+  "ops": {
+    "login": {
+      "count": 23,
+      "ok": 23,
+      "errors": 0,
+      "client": 0,
+      "p50": 490.2,
+      "p90": 1019,
+      "p95": 1226.8,
+      "p99": 1261,
+      "max": 1261,
+      "statuses": {
+        "200": 23
+      }
+    },
+    "list": {
+      "count": 323,
+      "ok": 323,
+      "errors": 0,
+      "client": 0,
+      "p50": 83.1,
+      "p90": 126.5,
+      "p95": 251.3,
+      "p99": 834.8,
+      "max": 1123.6,
+      "statuses": {
+        "200": 323
+      }
+    },
+    "detail": {
+      "count": 216,
+      "ok": 216,
+      "errors": 0,
+      "client": 0,
+      "p50": 63.7,
+      "p90": 89,
+      "p95": 216.6,
+      "p99": 536.4,
+      "max": 1173.9,
+      "statuses": {
+        "200": 216
+      }
+    },
+    "endorse": {
+      "count": 34,
+      "ok": 34,
+      "errors": 0,
+      "client": 0,
+      "p50": 85.6,
+      "p90": 108.8,
+      "p95": 253.6,
+      "p99": 464.6,
+      "max": 464.6,
+      "statuses": {
+        "200": 34
+      }
+    },
+    "submit": {
+      "count": 99,
+      "ok": 99,
+      "errors": 0,
+      "client": 0,
+      "p50": 101.6,
+      "p90": 129.5,
+      "p95": 155.3,
+      "p99": 363.4,
+      "max": 363.4,
+      "statuses": {
+        "201": 99
+      }
+    },
+    "approve": {
+      "count": 19,
+      "ok": 19,
+      "errors": 0,
+      "client": 0,
+      "p50": 88.5,
+      "p90": 104.4,
+      "p95": 109.8,
+      "p99": 109.8,
+      "max": 109.8,
+      "statuses": {
+        "200": 19
+      }
+    },
+    "types": {
+      "count": 60,
+      "ok": 60,
+      "errors": 0,
+      "client": 0,
+      "p50": 50.7,
+      "p90": 73.6,
+      "p95": 90.7,
+      "p99": 1643.3,
+      "max": 1643.3,
+      "statuses": {
+        "200": 60
+      }
+    }
+  },
+  "verdicts": [
+    {
+      "name": "error rate %",
+      "actual": 0,
+      "limit": "<= 1",
+      "pass": true
+    },
+    {
+      "name": "p95 all requests ms",
+      "actual": 216.6,
+      "limit": "<= 500",
+      "pass": true
+    },
+    {
+      "name": "p95 list ms",
+      "actual": 251.3,
+      "limit": "<= 500",
+      "pass": true
+    },
+    {
+      "name": "p95 detail ms",
+      "actual": 216.6,
+      "limit": "<= 500",
+      "pass": true
+    },
+    {
+      "name": "p95 types ms",
+      "actual": 90.7,
+      "limit": "<= 500",
+      "pass": true
+    },
+    {
+      "name": "p95 submit ms",
+      "actual": 155.3,
+      "limit": "<= 1000",
+      "pass": true
+    },
+    {
+      "name": "p95 endorse ms",
+      "actual": 253.6,
+      "limit": "<= 1000",
+      "pass": true
+    },
+    {
+      "name": "p95 approve ms",
+      "actual": 109.8,
+      "limit": "<= 1000",
+      "pass": true
+    }
+  ],
+  "verdict": "PASS"
+}

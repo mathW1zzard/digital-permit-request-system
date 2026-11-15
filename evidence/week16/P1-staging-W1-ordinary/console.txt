@@ -1,0 +1,22 @@
+W1 ordinary office day: 13 users, 180s (+20s ramp, 20s warm-up excluded), base https://localhost:8444/api
+W1 ordinary office day staging (nginx + 4 php-cgi + MySQL) | https://localhost:8444/api | 2026-11-15T17:40:12.887Z -> 2026-11-15T17:43:41.141Z | 13 users
+Measured window (after 20s warm-up, sign-ins excluded): 360 requests in 180s = 2 req/s; errors 0 (0%); p50 78.5 ms, p95 118.7 ms, p99 129.5 ms, max 136.6 ms
+
+op        count   ok  4xx  err    p50    p90    p95    p99    max  statuses
+login        13   13    0    0  444.9  513.9  574.8  574.8  574.8  {"200":13}
+types        21   21    0    0   60.5   73.6   74.1   74.2   74.2  {"200":21}
+list        159  159    0    0   78.4  103.2  109.2  119.9  123.2  {"200":159}
+submit       45   45    0    0  107.7  124.3  129.5  134.7  134.7  {"201":45}
+detail       98   98    0    0   69.6   88.4   98.1  129.3  129.3  {"200":98}
+endorse      31   31    0    0   98.1  112.7  126.1  136.6  136.6  {"200":31}
+approve       6    6    0    0   83.5  105.9  105.9  105.9  105.9  {"200":6}
+
+PASS  error rate %: 0 (limit <= 1)
+PASS  p95 all requests ms: 118.7 (limit <= 500)
+PASS  p95 list ms: 109.2 (limit <= 500)
+PASS  p95 detail ms: 98.1 (limit <= 500)
+PASS  p95 types ms: 74.1 (limit <= 500)
+PASS  p95 submit ms: 129.5 (limit <= 1000)
+PASS  p95 endorse ms: 126.1 (limit <= 1000)
+PASS  p95 approve ms: 105.9 (limit <= 1000)
+Verdict: PASS

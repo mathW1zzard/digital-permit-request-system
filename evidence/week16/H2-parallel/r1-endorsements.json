@@ -1,0 +1,482 @@
+[
+ {
+  "ref": "PRM-20261115-QC8YA",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.6,
+  "ms": [
+   155,
+   171
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-GZDB9",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.5,
+  "ms": [
+   127,
+   118
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-8VUTG",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.6,
+  "ms": [
+   126,
+   114
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-ZXLQR",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.4,
+  "ms": [
+   116,
+   104
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-VRDXY",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.4,
+  "ms": [
+   172,
+   164
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-CVL5Y",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.6,
+  "ms": [
+   147,
+   156
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-NXB2B",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.6,
+  "ms": [
+   118,
+   107
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-FKB2I",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.4,
+  "ms": [
+   119,
+   108
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-EBZVR",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.4,
+  "ms": [
+   121,
+   111
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-7NIYJ",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.5,
+  "ms": [
+   109,
+   122
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-2TDNM",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.2,
+  "ms": [
+   126,
+   113
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-IBADJ",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 2.1,
+  "ms": [
+   114,
+   101
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-PFMPW",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.6,
+  "ms": [
+   111,
+   118
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-FGQO1",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.9,
+  "ms": [
+   111,
+   101
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-YZWQT",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.7,
+  "ms": [
+   237,
+   246
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-RUNDJ",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.2,
+  "ms": [
+   121,
+   110
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-CEAV2",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.6,
+  "ms": [
+   121,
+   110
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-VGOM5",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 2.1,
+  "ms": [
+   134,
+   122
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-LZR1F",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.6,
+  "ms": [
+   107,
+   115
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-KNN8N",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.6,
+  "ms": [
+   106,
+   113
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-AG4B9",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.6,
+  "ms": [
+   111,
+   119
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-EBF7O",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.5,
+  "ms": [
+   108,
+   115
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-VPVMT",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.4,
+  "ms": [
+   117,
+   106
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-LKQ6B",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.8,
+  "ms": [
+   109,
+   117
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-LY5GH",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.5,
+  "ms": [
+   128,
+   116
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-OUIFH",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.9,
+  "ms": [
+   111,
+   119
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-Z4DHI",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.3,
+  "ms": [
+   131,
+   121
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-QYKDA",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.4,
+  "ms": [
+   129,
+   137
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-VKMML",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.7,
+  "ms": [
+   116,
+   106
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ },
+ {
+  "ref": "PRM-20261115-D9HFI",
+  "statuses": [
+   200,
+   409
+  ],
+  "gap_ms": 1.3,
+  "ms": [
+   113,
+   102
+  ],
+  "ok": true,
+  "codes": [
+   "invalid_transition"
+  ]
+ }
+]

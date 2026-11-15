@@ -1,0 +1,6 @@
+Database check after H2 run 3, 2026-11-15T23:02Z (staging MySQL, read-only queries)
+Runs 1 and 3 each sent 30 keys twice (run 2 was refused with 429 and created nothing): expected 60 keys and 60 permits.
+race_keys	race_permits
+60	60
+permits_checked	exactly_one_endorsed_event	max_events
+30	30	1

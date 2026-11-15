@@ -1,0 +1,56 @@
+{
+  "model": "W0 data volume prefill",
+  "label": "staging",
+  "base": "https://localhost:8444/api",
+  "started": "2026-11-15T17:35:21.066Z",
+  "ended": "2026-11-15T17:38:15.702Z",
+  "users": 40,
+  "model_file": "perf/models/prefill.json",
+  "overall": {
+    "requests": 1200,
+    "duration_s": 173,
+    "throughput_rps": 6.92,
+    "errors": 486,
+    "error_rate": 40.5,
+    "p50": 91.9,
+    "p95": 30002.6,
+    "p99": 30014.2,
+    "max": 30036.6
+  },
+  "ops": {
+    "login": {
+      "count": 40,
+      "ok": 23,
+      "errors": 17,
+      "client": 0,
+      "p50": 489,
+      "p90": 30034.3,
+      "p95": 30039,
+      "p99": 30047.2,
+      "max": 30047.2,
+      "statuses": {
+        "200": 23,
+        "timeout": 17
+      }
+    },
+    "submit": {
+      "count": 1200,
+      "ok": 714,
+      "errors": 486,
+      "client": 0,
+      "p50": 91.9,
+      "p90": 127.3,
+      "p95": 30002.6,
+      "p99": 30014.2,
+      "max": 30036.6,
+      "statuses": {
+        "201": 714,
+        "502": 420,
+        "504": 3,
+        "timeout": 63
+      }
+    }
+  },
+  "verdicts": [],
+  "verdict": "PASS"
+}

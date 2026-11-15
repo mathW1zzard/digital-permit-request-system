@@ -1,0 +1,135 @@
+{
+  "model": "W3 stress (capacity search)",
+  "label": "staging stress, per-user limit raised",
+  "base": "https://localhost:8444/api",
+  "started": "2026-11-15T22:56:11.264Z",
+  "ended": "2026-11-15T22:58:42.762Z",
+  "users": 46,
+  "model_file": "perf/models/stress.json",
+  "overall": {
+    "requests": 6475,
+    "duration_s": 121,
+    "throughput_rps": 53.3,
+    "errors": 0,
+    "error_rate": 0,
+    "p50": 832,
+    "p95": 1770.1,
+    "p99": 1936.7,
+    "max": 2106
+  },
+  "ops": {
+    "login": {
+      "count": 46,
+      "ok": 46,
+      "errors": 0,
+      "client": 0,
+      "p50": 781.9,
+      "p90": 1483.7,
+      "p95": 1558.3,
+      "p99": 1812.3,
+      "max": 1812.3,
+      "statuses": {
+        "200": 46
+      }
+    },
+    "submit": {
+      "count": 856,
+      "ok": 856,
+      "errors": 0,
+      "client": 0,
+      "p50": 975,
+      "p90": 1703.4,
+      "p95": 1777,
+      "p99": 1893.3,
+      "max": 2083.7,
+      "statuses": {
+        "201": 856
+      }
+    },
+    "list": {
+      "count": 2773,
+      "ok": 2773,
+      "errors": 0,
+      "client": 0,
+      "p50": 833.1,
+      "p90": 1672.9,
+      "p95": 1767.2,
+      "p99": 1953.9,
+      "max": 2106,
+      "statuses": {
+        "200": 2773
+      }
+    },
+    "detail": {
+      "count": 1964,
+      "ok": 1964,
+      "errors": 0,
+      "client": 0,
+      "p50": 505.7,
+      "p90": 1675.4,
+      "p95": 1763.8,
+      "p99": 1933,
+      "max": 2069.4,
+      "statuses": {
+        "200": 1964
+      }
+    },
+    "approve": {
+      "count": 104,
+      "ok": 104,
+      "errors": 0,
+      "client": 0,
+      "p50": 1194.6,
+      "p90": 1728.5,
+      "p95": 1783.1,
+      "p99": 1848.1,
+      "max": 1849.6,
+      "statuses": {
+        "200": 104
+      }
+    },
+    "types": {
+      "count": 580,
+      "ok": 580,
+      "errors": 0,
+      "client": 0,
+      "p50": 1089.3,
+      "p90": 1653.5,
+      "p95": 1743.3,
+      "p99": 1869.5,
+      "max": 2075.5,
+      "statuses": {
+        "200": 580
+      }
+    },
+    "endorse": {
+      "count": 198,
+      "ok": 198,
+      "errors": 0,
+      "client": 0,
+      "p50": 570.4,
+      "p90": 1763.9,
+      "p95": 1856.9,
+      "p99": 2096.9,
+      "max": 2099,
+      "statuses": {
+        "200": 198
+      }
+    }
+  },
+  "verdicts": [
+    {
+      "name": "error rate %",
+      "actual": 0,
+      "limit": "<= 2",
+      "pass": true
+    },
+    {
+      "name": "p95 all requests ms",
+      "actual": 1770.1,
+      "limit": "<= 1500",
+      "pass": false
+    }
+  ],
+  "verdict": "FAIL"
+}

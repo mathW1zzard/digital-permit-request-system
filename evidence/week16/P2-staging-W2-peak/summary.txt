@@ -1,0 +1,21 @@
+W2 peak deadline staging (nginx + 4 php-cgi + MySQL) | https://localhost:8444/api | 2026-11-15T17:44:15.192Z -> 2026-11-15T17:47:37.781Z | 46 users
+Measured window (after 20s warm-up, sign-ins excluded): 4226 requests in 180s = 23.48 req/s; errors 0 (0%); p50 74.6 ms, p95 119 ms, p99 167.4 ms, max 318.5 ms
+
+op        count   ok  4xx  err    p50    p90    p95    p99    max  statuses
+login        46   46    0    0  473.8  632.8 1019.4 1560.8 1560.8  {"200":46}
+submit      541  541    0    0   98.7  123.6  138.3  179.7  242.5  {"201":541}
+list       1875 1875    0    0   76.5    103  113.9    156  318.5  {"200":1875}
+detail     1181 1181    0    0   66.1   85.8  103.1    153  310.8  {"200":1181}
+endorse     189  189    0    0   87.8  113.1  138.6  198.2  249.1  {"200":189}
+types       345  345    0    0   53.7   74.2   83.1  141.3  183.3  {"200":345}
+approve      95   95    0    0   86.1    114    145    230    230  {"200":95}
+
+PASS  error rate %: 0 (limit <= 2)
+PASS  p95 all requests ms: 119 (limit <= 1500)
+PASS  p95 list ms: 113.9 (limit <= 1500)
+PASS  p95 detail ms: 103.1 (limit <= 1500)
+PASS  p95 types ms: 83.1 (limit <= 1500)
+PASS  p95 submit ms: 138.3 (limit <= 2500)
+PASS  p95 endorse ms: 138.6 (limit <= 2500)
+PASS  p95 approve ms: 145 (limit <= 2500)
+Verdict: PASS

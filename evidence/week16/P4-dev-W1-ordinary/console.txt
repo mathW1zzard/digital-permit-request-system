@@ -1,0 +1,22 @@
+W1 ordinary office day: 13 users, 180s (+20s ramp, 20s warm-up excluded), base https://localhost:8443/api
+W1 ordinary office day dev (php artisan serve + SQLite) | https://localhost:8443/api | 2026-11-15T17:54:39.423Z -> 2026-11-15T17:59:28.291Z | 13 users
+Measured window (after 20s warm-up, sign-ins excluded): 152 requests in 263s = 0.58 req/s; errors 2 (1.32%); p50 948.2 ms, p95 3620.2 ms, p99 180596.8 ms, max 180600.1 ms
+
+op        count   ok  4xx  err    p50    p90    p95    p99    max  statuses
+login        13   13    0    0 1951.1 4412.7 5385.6 5385.6 5385.6  {"200":13}
+types         7    7    0    0  668.5 1025.7 1025.7 1025.7 1025.7  {"200":7}
+submit       13   13    0    0 1401.4 2814.7 3640.2 3640.2 3640.2  {"201":13}
+list         86   84    0    2  949.3 3402.8 3634.8 180600.1 180600.1  {"200":84,"timeout":2}
+detail       28   28    0    0  864.4 3429.6 3446.6 3497.9 3497.9  {"200":28}
+endorse      13   13    0    0  919.6 2166.8 5213.6 5213.6 5213.6  {"200":13}
+approve       5    5    0    0 1356.9 3050.6 3050.6 3050.6 3050.6  {"200":5}
+
+FAIL  error rate %: 1.32 (limit <= 1)
+FAIL  p95 all requests ms: 3620.2 (limit <= 500)
+FAIL  p95 list ms: 3634.8 (limit <= 500)
+FAIL  p95 detail ms: 3446.6 (limit <= 500)
+FAIL  p95 types ms: 1025.7 (limit <= 500)
+FAIL  p95 submit ms: 3640.2 (limit <= 1000)
+FAIL  p95 endorse ms: 5213.6 (limit <= 1000)
+FAIL  p95 approve ms: 3050.6 (limit <= 1000)
+Verdict: FAIL

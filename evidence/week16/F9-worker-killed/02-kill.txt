@@ -1,0 +1,3 @@
+23:19:43.955 killing php-cgi pid 25096 on 9102
+SUCCESS: The process with PID 25096 has been terminated.
+23:19:46.049 new worker pid 16108 listening on 9102

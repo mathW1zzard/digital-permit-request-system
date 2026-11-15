@@ -1,0 +1,175 @@
+{
+  "model": "W2 peak deadline",
+  "label": "dev (php artisan serve + SQLite)",
+  "base": "https://localhost:8443/api",
+  "started": "2026-11-15T22:51:35.756Z",
+  "ended": "2026-11-15T22:55:12.146Z",
+  "users": 46,
+  "model_file": "perf/models/peak.json",
+  "overall": {
+    "requests": 357,
+    "duration_s": 195,
+    "throughput_rps": 1.83,
+    "errors": 15,
+    "error_rate": 4.2,
+    "p50": 17907.2,
+    "p95": 29669.1,
+    "p99": 30020.6,
+    "max": 30024.4
+  },
+  "ops": {
+    "login": {
+      "count": 46,
+      "ok": 41,
+      "errors": 5,
+      "client": 0,
+      "p50": 17816.9,
+      "p90": 30009.5,
+      "p95": 30011.3,
+      "p99": 30028.2,
+      "max": 30028.2,
+      "statuses": {
+        "200": 41,
+        "timeout": 5
+      }
+    },
+    "list": {
+      "count": 159,
+      "ok": 147,
+      "errors": 12,
+      "client": 0,
+      "p50": 18085.3,
+      "p90": 29044.3,
+      "p95": 30012.5,
+      "p99": 30023.1,
+      "max": 30024.4,
+      "statuses": {
+        "200": 147,
+        "timeout": 12
+      }
+    },
+    "detail": {
+      "count": 106,
+      "ok": 104,
+      "errors": 2,
+      "client": 0,
+      "p50": 17801.9,
+      "p90": 23799.8,
+      "p95": 26902,
+      "p99": 30008.9,
+      "max": 30018.4,
+      "statuses": {
+        "200": 104,
+        "timeout": 2
+      }
+    },
+    "types": {
+      "count": 31,
+      "ok": 31,
+      "errors": 0,
+      "client": 0,
+      "p50": 17932.4,
+      "p90": 24681.9,
+      "p95": 26325.1,
+      "p99": 26858.3,
+      "max": 26858.3,
+      "statuses": {
+        "200": 31
+      }
+    },
+    "submit": {
+      "count": 46,
+      "ok": 45,
+      "errors": 1,
+      "client": 0,
+      "p50": 17682.5,
+      "p90": 19595.6,
+      "p95": 29418.5,
+      "p99": 30021.8,
+      "max": 30021.8,
+      "statuses": {
+        "201": 45,
+        "timeout": 1
+      }
+    },
+    "endorse": {
+      "count": 13,
+      "ok": 13,
+      "errors": 0,
+      "client": 0,
+      "p50": 17244.7,
+      "p90": 18732.8,
+      "p95": 19443.9,
+      "p99": 19443.9,
+      "max": 19443.9,
+      "statuses": {
+        "200": 13
+      }
+    },
+    "approve": {
+      "count": 2,
+      "ok": 2,
+      "errors": 0,
+      "client": 0,
+      "p50": 16486.6,
+      "p90": 18286.2,
+      "p95": 18286.2,
+      "p99": 18286.2,
+      "max": 18286.2,
+      "statuses": {
+        "200": 2
+      }
+    }
+  },
+  "verdicts": [
+    {
+      "name": "error rate %",
+      "actual": 4.2,
+      "limit": "<= 2",
+      "pass": false
+    },
+    {
+      "name": "p95 all requests ms",
+      "actual": 29669.1,
+      "limit": "<= 1500",
+      "pass": false
+    },
+    {
+      "name": "p95 list ms",
+      "actual": 30012.5,
+      "limit": "<= 1500",
+      "pass": false
+    },
+    {
+      "name": "p95 detail ms",
+      "actual": 26902,
+      "limit": "<= 1500",
+      "pass": false
+    },
+    {
+      "name": "p95 types ms",
+      "actual": 26325.1,
+      "limit": "<= 1500",
+      "pass": false
+    },
+    {
+      "name": "p95 submit ms",
+      "actual": 29418.5,
+      "limit": "<= 2500",
+      "pass": false
+    },
+    {
+      "name": "p95 endorse ms",
+      "actual": 19443.9,
+      "limit": "<= 2500",
+      "pass": false
+    },
+    {
+      "name": "p95 approve ms",
+      "actual": 18286.2,
+      "limit": "<= 2500",
+      "pass": false
+    }
+  ],
+  "verdict": "FAIL"
+}

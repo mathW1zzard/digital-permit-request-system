@@ -1,0 +1,62 @@
+{
+ "name": "F9 W1 for 60 s with a worker killed",
+ "about": "A normal working hour compressed: 10 requesters, 2 reviewers and 1 approver active at once, each pausing 4-10 s between actions (reading, typing). Proves the system is comfortable at everyday load; it does not prove behaviour at a deadline.",
+ "vus": {
+  "requester": 20,
+  "reviewer": 2,
+  "approver": 1
+ },
+ "think_ms": [
+  1000,
+  3000
+ ],
+ "ramp_s": 5,
+ "warmup_s": 0,
+ "duration_s": 60,
+ "mix": {
+  "requester": [
+   {
+    "op": "list",
+    "weight": 40
+   },
+   {
+    "op": "detail",
+    "weight": 35
+   },
+   {
+    "op": "submit",
+    "weight": 15
+   },
+   {
+    "op": "types",
+    "weight": 10
+   }
+  ],
+  "reviewer": [
+   {
+    "op": "endorse",
+    "weight": 60
+   },
+   {
+    "op": "list",
+    "weight": 40
+   }
+  ],
+  "approver": [
+   {
+    "op": "approve",
+    "weight": 60
+   },
+   {
+    "op": "list",
+    "weight": 40
+   }
+  ]
+ },
+ "thresholds": {
+  "error_rate_pct": 1,
+  "p95_ms": 500,
+  "read_p95_ms": 500,
+  "write_p95_ms": 1000
+ }
+}

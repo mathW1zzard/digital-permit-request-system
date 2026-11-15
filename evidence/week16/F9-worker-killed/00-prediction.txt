@@ -1,0 +1,7 @@
+F9 one PHP worker killed during load. Prediction written before the run (2026-11-15 23:19 UTC).
+
+Action: run the W1 ordinary model for 60 s; 20 s in, kill the php-cgi process on port 9102.
+Expected: the supervisor loop in workers.sh logs "worker on 9102 exited; restarting" and a new
+worker listens on 9102 within about 2 s. The request being processed by the killed worker (if any)
+fails: nginx returns 502 for it. With max_fails=3, nginx keeps sending to the other three workers
+and tries 9102 again; at most a handful of 502s, no timeouts, error rate under 1 %.

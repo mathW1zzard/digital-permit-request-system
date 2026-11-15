@@ -1,0 +1,54 @@
+{
+  "model": "W0 data volume prefill",
+  "label": "dev (php artisan serve + SQLite)",
+  "base": "https://localhost:8443/api",
+  "started": "2026-11-15T17:49:04.698Z",
+  "ended": "2026-11-15T17:54:27.091Z",
+  "users": 40,
+  "model_file": "perf/models/prefill.json",
+  "overall": {
+    "requests": 589,
+    "duration_s": 321,
+    "throughput_rps": 1.83,
+    "errors": 10,
+    "error_rate": 1.7,
+    "p50": 16153.8,
+    "p95": 22079.3,
+    "p99": 30013,
+    "max": 30021
+  },
+  "ops": {
+    "login": {
+      "count": 40,
+      "ok": 36,
+      "errors": 4,
+      "client": 0,
+      "p50": 15966.4,
+      "p90": 29860.2,
+      "p95": 30015.8,
+      "p99": 30019.2,
+      "max": 30019.2,
+      "statuses": {
+        "200": 36,
+        "timeout": 4
+      }
+    },
+    "submit": {
+      "count": 589,
+      "ok": 579,
+      "errors": 10,
+      "client": 0,
+      "p50": 16153.8,
+      "p90": 17168.3,
+      "p95": 22079.3,
+      "p99": 30013,
+      "max": 30021,
+      "statuses": {
+        "201": 579,
+        "timeout": 10
+      }
+    }
+  },
+  "verdicts": [],
+  "verdict": "PASS"
+}

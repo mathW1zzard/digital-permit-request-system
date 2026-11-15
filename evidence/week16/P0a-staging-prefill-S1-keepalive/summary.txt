@@ -1,0 +1,8 @@
+W0 data volume prefill staging | https://localhost:8444/api | 2026-11-15T17:35:21.066Z -> 2026-11-15T17:38:15.702Z | 40 users
+Measured window (after 0s warm-up, sign-ins excluded): 1200 requests in 173s = 6.92 req/s; errors 486 (40.5%); p50 91.9 ms, p95 30002.6 ms, p99 30014.2 ms, max 30036.6 ms
+
+op        count   ok  4xx  err    p50    p90    p95    p99    max  statuses
+login        40   23    0   17    489 30034.3  30039 30047.2 30047.2  {"200":23,"timeout":17}
+submit     1200  714    0  486   91.9  127.3 30002.6 30014.2 30036.6  {"201":714,"502":420,"504":3,"timeout":63}
+
+Verdict: PASS

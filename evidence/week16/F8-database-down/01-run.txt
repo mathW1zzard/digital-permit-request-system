@@ -1,0 +1,15 @@
+--- 23:18:34.728 before
+GET /up: 200
+GET /api/health: {"status":"degraded","checks":{"database":{"status":"ok"},"scheduler_automation":{"status":"ok","age_seconds":213},"scheduler_dispatch":{"status":"ok","age_seconds":22},"outbox":{"status":"backlog","overdue":2830,"manual_action":0}},"checked_at":"2026-11-15T23:18:35+00:00"} [200]
+POST /api/login: {"data":{"token":"[redacted]","expires_at":"2026-11-16T00:18:36+00:00","user":{"id":2,"name":"Rico Requester","role":"requester"}}} [200]
+2026-11-15T23:18:37Z F8: staging MySQL stopped
+--- 23:18:40.575 database stopped
+GET /up: 200
+GET /api/health: {"status":"not_ready","checks":{"database":{"status":"fail"}},"checked_at":"2026-11-15T23:18:49+00:00"} [503]
+POST /api/login: {"error":{"code":"server_error","message":"Something went wrong on our side. Quote the correlation ID if you report it.","correlation_id":"23d69af5-49fa-4076-bdbc-07ad779e7b6e"}} [500]
+2026-11-15T23:19:01Z F8: MySQL started again; readiness 200 after 3 s; outage 25 s
+MySQL start issued; /api/health 200 again after 3 s (whole outage 25 s); no app restart
+--- 23:19:01.958 after recovery
+GET /up: 200
+GET /api/health: {"status":"degraded","checks":{"database":{"status":"ok"},"scheduler_automation":{"status":"ok","age_seconds":240},"scheduler_dispatch":{"status":"ok","age_seconds":49},"outbox":{"status":"backlog","overdue":2830,"manual_action":0}},"checked_at":"2026-11-15T23:19:02+00:00"} [200]
+POST /api/login: {"data":{"token":"[redacted]","expires_at":"2026-11-16T00:19:03+00:00","user":{"id":2,"name":"Rico Requester","role":"requester"}}} [200]
