@@ -1,0 +1,9 @@
+23:15:01 degraded dispatch stale overdue 3626 manual 0
+23:16:02 degraded dispatch ok overdue 3426 manual 0
+23:17:02 degraded dispatch ok overdue 3216 manual 0
+23:18:03 degraded dispatch ok overdue 3004 manual 0
+new unhandled exceptions since 23:14: 0
+dispatch runs completed since 23:14:
+  23:15:13 {'sent': 200, 'retry_scheduled': 0, 'manual_action': 0, 'paused': 0}
+  23:16:12 {'sent': 200, 'retry_scheduled': 0, 'manual_action': 0, 'paused': 0}
+  23:17:12 {'sent': 200, 'retry_scheduled': 0, 'manual_action': 0, 'paused': 0}

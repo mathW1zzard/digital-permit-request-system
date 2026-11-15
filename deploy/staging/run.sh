@@ -14,8 +14,14 @@ nginx)
     log "run: nginx on $STAGING_URL"
     exec "$NGINX_HOME/nginx.exe" -p "$SHARED/nginx/" -c "$SHARED/nginx/nginx.conf" -g "daemon off;" ;;
 scheduler)
-    log "run: scheduler (php artisan schedule:work) in current/"
-    cd "$STAGING/current/backend" && exec "$PHP" artisan schedule:work ;;
+    # Restart loop (defect S3): each start enters current/ afresh, so after a deploy or rollback
+    # stops schedule:work, the next one runs the release current/ now points at.
+    : > "$SHARED/run/scheduler.run"
+    while [ -f "$SHARED/run/scheduler.run" ]; do
+        log "run: scheduler (php artisan schedule:work) from $(cat "$SHARED/run/current-release")"
+        ( cd "$STAGING/current/backend" && "$PHP" artisan schedule:work ) || true
+        sleep 1
+    done ;;
 gateway)
     log "run: mock gateway on 127.0.0.1:9000 (HTTPS through nginx on 9444)"
     exec "$PHP" "$REPO/mock-gateway/start.php" ;;

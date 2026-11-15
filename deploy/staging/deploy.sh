@@ -56,7 +56,8 @@ junction "$STAGING/current" "$REL"
 printf '%s\n' "$PREVIOUS" > "$REL/PREVIOUS_RELEASE"
 printf '%s\n' "$REL" > "$SHARED/run/current-release"
 "$REPO/deploy/staging/workers.sh" restart
-log "deploy: current -> $(basename "$REL"), workers restarted"
+restart_scheduler
+log "deploy: current -> $(basename "$REL"), workers and scheduler restarted"
 
 for _ in $(seq 1 20); do code="$(health)"; [ "$code" = 200 ] && break; sleep 1; done
 log "deploy: health check $code"

@@ -25,6 +25,7 @@ fi
 junction "$STAGING/current" "$PREVIOUS"
 printf '%s\n' "$PREVIOUS" > "$SHARED/run/current-release"
 "$REPO/deploy/staging/workers.sh" restart
+restart_scheduler
 for _ in $(seq 1 20); do code="$(health)"; [ "$code" = 200 ] && break; sleep 1; done
 log "rollback: current -> $(basename "$PREVIOUS"), health $code"
 [ "$code" = 200 ]

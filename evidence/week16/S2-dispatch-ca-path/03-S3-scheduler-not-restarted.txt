@@ -1,0 +1,16 @@
+Defect S3 (deploy script), found while checking the S2 fix, 2026-11-15 23:13 UTC.
+
+After deploying 26f1ce7 (S2 fix) at 23:10:06, the next three dispatch runs (23:11, 23:12, 23:13)
+still failed with the same InvalidArgumentException; overdue grew 3,565 -> 3,625.
+
+Cause: deploy.sh restarts the PHP workers but not the scheduler. "php artisan schedule:work" is a
+long-running process that booted from the previous release; PHP resolves the release folder's real
+path at boot, so every "schedule:run" it starts uses the OLD code even though current/ now points at
+the new release. A deploy therefore changed the web requests but not the background jobs.
+
+Fix: run.sh runs the scheduler in a restart loop that enters current/backend afresh each time;
+deploy.sh and rollback.sh stop the running schedule:work after switching current/, so the loop
+starts it again from the new release.
+
+Prediction: after restarting the scheduler from the new release, the next dispatch run completes,
+no new InvalidArgumentException, scheduler_dispatch "ok", overdue falls by up to 200 a minute.

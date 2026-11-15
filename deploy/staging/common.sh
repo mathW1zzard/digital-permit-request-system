@@ -26,6 +26,11 @@ junction() { # junction <link> <target>
     cmd //c mklink //J "$link" "$target" >/dev/null
 }
 
+# Stop "php artisan schedule:work"; run.sh's loop starts it again from current/ (defect S3).
+restart_scheduler() {
+    powershell -NoProfile -Command "Get-CimInstance Win32_Process -Filter \"Name='php.exe'\" | Where-Object { \$_.CommandLine -like '*schedule:work*' } | ForEach-Object { Stop-Process -Id \$_.ProcessId -Force }" || true
+}
+
 mysql_cli() { "$MYSQL_HOME/bin/mysql.exe" --protocol=TCP -h 127.0.0.1 -P "$MYSQL_PORT" "$@"; }
 
 # Readiness (Week 16 releases), or liveness (/up) for older releases that have no /api/health.
