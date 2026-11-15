@@ -1,0 +1,50 @@
+Run 2026-11-15 12:37:44 UTC, 48 requests, 40 passed, 8 failed, 24.9 s, base https://localhost:8443/api
+
+PASS T01  POST   /login                                   200   861ms  
+PASS T02  POST   /login                                   200   845ms  
+PASS T03  POST   /login                                   200   868ms  
+PASS T04  POST   /login                                   200   828ms  
+PASS T05  POST   /login                                   200   833ms  
+PASS T06  POST   /login                                   200   831ms  
+PASS T07  POST   /login                                   200   871ms  
+PASS T08  POST   /login                                   401   857ms  
+PASS T09  POST   /login                                   422   364ms  
+PASS T10  GET    /permits                                 401   340ms  
+PASS T11  GET    /permits                                 401   369ms  
+PASS T12  GET    /permit-types                            200   631ms  
+PASS T13  GET    /me                                      200   498ms  
+PASS T14  POST   /permits                                 201  1188ms  
+PASS T15  GET    /permits/PRM-20261115-7GXQR              200   769ms  
+PASS T16  GET    /permits                                 200   547ms  
+PASS T17  POST   /permits                                 422   416ms  
+PASS T18  POST   /permits                                 201   524ms  
+PASS T19  POST   /permits                                 422   433ms  
+PASS T20  POST   /permits                                 422   415ms  
+PASS T21  POST   /permits                                 422   406ms  
+PASS T22  POST   /permits                                 201   462ms  
+FAIL T23  POST   /permits                                 201   468ms  status 422 (got 201); has error.details.requested_start (missing)
+PASS T24  POST   /permits                                 422   412ms  
+PASS T25  POST   /permits                                 422   422ms  
+PASS T26  POST   /permits                                 422   392ms  
+PASS T27  POST   /permits                                 422   440ms  
+PASS T28  POST   /permits                                 403   390ms  
+PASS T29  POST   /permits/PRM-20261115-7GXQR/approve      403   539ms  
+PASS T30  GET    /permits/PRM-20261115-7GXQR              403   387ms  
+PASS T31  POST   /permits/PRM-20261115-7GXQR/endorse      403   410ms  
+PASS T32  GET    /admin/exceptions                        403   404ms  
+PASS T33  GET    /permits/PRM-20261115-7GXQR/verify       403   373ms  
+PASS T34  GET    /permits/PRM-NOPE                        404   442ms  
+FAIL T35  GET    /no-such-endpoint                        404   312ms  has error.correlation_id (missing)
+FAIL T36  DELETE /permits/PRM-20261115-7GXQR              405   302ms  has error.correlation_id (missing)
+PASS T37  POST   /permits/PRM-20261115-7GXQR/endorse      200   455ms  
+PASS T38  POST   /permits/PRM-20261115-7GXQR/endorse      409   495ms  
+PASS T39  POST   /permits                                 201   474ms  
+FAIL T40  POST   /permits                                 201   460ms  status 200 (got 201); data.reference equals dupRef (got "PRM-20261115-OSR8P")
+FAIL T41  POST   /permits                                 201   467ms  status 422 (got 201); error.code is "idempotency_key_reused" (got null)
+FAIL T42  GET    /me                                      200   369ms  header X-Content-Type-Options is nosniff (got null); header X-Frame-Options is DENY (got null); header Referrer-Policy is no-referrer (got null); header Content-Security-Policy present (missing)
+FAIL T43  GET    /me                                      200   360ms  no X-Powered-By header (present: PHP/8.4.12)
+PASS T44  POST   /permits/PRM-NOPE/approve                404   395ms  
+FAIL T45  GET    /me                                      200   363ms  header X-RateLimit-Limit present (missing)
+PASS T46  POST   /permits/PRM-20261115-7GXQR/approve      200   432ms  
+PASS T47  GET    /permits/PRM-20261115-7GXQR/verify       200   394ms  
+PASS T48  GET    /admin/exceptions                        200   395ms  

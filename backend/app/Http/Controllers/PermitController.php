@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Enums\PermitStatus;
 use App\Http\Resources\PermitResource;
+use App\Models\IdempotencyKey;
 use App\Models\Permit;
 use App\Models\PermitType;
 use App\Services\PermitWorkflow;
+use App\Support\StructuredLog;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\ValidationException;
 
 class PermitController extends Controller
 {
@@ -20,6 +25,7 @@ class PermitController extends Controller
         'purpose' => ['required', 'string', 'min:10', 'max:255'],
         'location' => ['required', 'string', 'max:120'],
         'details' => ['nullable', 'string', 'max:2000'],
+        // The upper limit is added in permitRules(): it depends on today's date (defect D1).
         'requested_start' => ['required', 'date_format:Y-m-d', 'after_or_equal:today'],
     ];
 
@@ -45,10 +51,62 @@ class PermitController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $data = $request->validate(self::PERMIT_RULES);
-        $permit = $this->workflow->submit($request->user(), PermitType::findOrFail($data['permit_type_id']), $data);
+        $data = $request->validate($this->permitRules());
+        $key = $request->header('Idempotency-Key');
 
-        return PermitResource::make($this->withRelations($permit))->response()->setStatusCode(201);
+        if ($key === null) {
+            $permit = $this->workflow->submit($request->user(), PermitType::findOrFail($data['permit_type_id']), $data);
+
+            return PermitResource::make($this->withRelations($permit))->response()->setStatusCode(201);
+        }
+
+        // Defect D3: the same key from the same user returns the permit it already created,
+        // so a double click or a retry after a lost response never makes a second permit.
+        if (strlen($key) > 100 || preg_match('/^[A-Za-z0-9._:-]+$/', $key) !== 1) {
+            throw ValidationException::withMessages(['idempotency_key' => 'Use up to 100 letters, digits, dots, colons, dashes or underscores.']);
+        }
+        ksort($data);
+        $hash = hash('sha256', json_encode($data));
+
+        try {
+            [$record, $created] = DB::transaction(function () use ($request, $data, $key, $hash) {
+                $existing = IdempotencyKey::where('user_id', $request->user()->id)->where('key', $key)->first();
+                if ($existing) {
+                    return [$existing, false];
+                }
+                $permit = $this->workflow->submit($request->user(), PermitType::findOrFail($data['permit_type_id']), $data);
+                $record = IdempotencyKey::create(['user_id' => $request->user()->id, 'key' => $key, 'request_hash' => $hash, 'permit_id' => $permit->id, 'created_at' => now()]);
+
+                return [$record, true];
+            });
+        } catch (UniqueConstraintViolationException) {
+            // Two identical requests raced: the other one won and its transaction (with its permit) stands.
+            [$record, $created] = [IdempotencyKey::where('user_id', $request->user()->id)->where('key', $key)->firstOrFail(), false];
+        }
+
+        if (! $created && ! hash_equals($record->request_hash, $hash)) {
+            return response()->json(['error' => [
+                'code' => 'idempotency_key_reused',
+                'message' => 'This request key was already used for a different submission.',
+                'correlation_id' => StructuredLog::correlationId(),
+            ]], 422);
+        }
+
+        $permit = $record->permit;
+        StructuredLog::event($created ? 'permit.submitted_with_key' : 'permit.duplicate_submission_replayed', ['permit' => $permit->reference]);
+
+        return PermitResource::make($this->withRelations($permit))->response()
+            ->setStatusCode($created ? 201 : 200)
+            ->header('Idempotent-Replayed', $created ? 'false' : 'true');
+    }
+
+    /** Validation for a new permit. The start date may be at most permit.max_days_ahead days away (defect D1). */
+    private function permitRules(): array
+    {
+        $rules = self::PERMIT_RULES;
+        $rules['requested_start'][] = 'before_or_equal:'.now()->addDays((int) config('permit.max_days_ahead'))->toDateString();
+
+        return $rules;
     }
 
     public function show(Permit $permit): PermitResource

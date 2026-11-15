@@ -1,0 +1,1212 @@
+[
+    {
+        "id": "T01",
+        "folder": "Authentication",
+        "name": "T01 Requester signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 200,
+        "ms": 7137,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            },
+            {
+                "check": "has data.token",
+                "pass": true,
+                "detail": "present"
+            },
+            {
+                "check": "has data.expires_at",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "3cd1e417-97a1-4a19-ae38-7d6e363d51ab",
+        "transport_error": null,
+        "response": "{\"data\":{\"token\":\"[redacted]\",\"expires_at\":\"2026-11-15T13:36:41+00:00\",\"user\":{\"id\":2,\"name\":\"Rico Requester\",\"role\":\"requester\"}}}"
+    },
+    {
+        "id": "T02",
+        "folder": "Authentication",
+        "name": "T02 Reviewer 1 signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 200,
+        "ms": 851,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            }
+        ],
+        "correlation_id": "a90b2d62-7723-4a36-8222-2c4ee0692122",
+        "transport_error": null,
+        "response": "{\"data\":{\"token\":\"[redacted]\",\"expires_at\":\"2026-11-15T13:36:44+00:00\",\"user\":{\"id\":4,\"name\":\"Rita Reviewer\",\"role\":\"reviewer\"}}}"
+    },
+    {
+        "id": "T03",
+        "folder": "Authentication",
+        "name": "T03 Reviewer 2 signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 200,
+        "ms": 832,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            }
+        ],
+        "correlation_id": "eb911805-adb5-4c3c-9158-5eb1866a9100",
+        "transport_error": null,
+        "response": "{\"data\":{\"token\":\"[redacted]\",\"expires_at\":\"2026-11-15T13:36:45+00:00\",\"user\":{\"id\":5,\"name\":\"Rey Reviewer\",\"role\":\"reviewer\"}}}"
+    },
+    {
+        "id": "T04",
+        "folder": "Authentication",
+        "name": "T04 Approver signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 200,
+        "ms": 831,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            }
+        ],
+        "correlation_id": "98fbb77a-d4c4-4689-8c52-f9347c51bfc5",
+        "transport_error": null,
+        "response": "{\"data\":{\"token\":\"[redacted]\",\"expires_at\":\"2026-11-15T13:36:45+00:00\",\"user\":{\"id\":6,\"name\":\"Alma Approver\",\"role\":\"approver\"}}}"
+    },
+    {
+        "id": "T05",
+        "folder": "Authentication",
+        "name": "T05 Admin signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 200,
+        "ms": 968,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            }
+        ],
+        "correlation_id": "8493e24e-27ad-419c-8c92-afdaba46fc28",
+        "transport_error": null,
+        "response": "{\"data\":{\"token\":\"[redacted]\",\"expires_at\":\"2026-11-15T13:36:46+00:00\",\"user\":{\"id\":1,\"name\":\"Ana Admin\",\"role\":\"admin\"}}}"
+    },
+    {
+        "id": "T06",
+        "folder": "Authentication",
+        "name": "T06 Inspector signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 200,
+        "ms": 864,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            }
+        ],
+        "correlation_id": "2a9698c5-b28c-46f2-aa4e-2a5d196a9dc1",
+        "transport_error": null,
+        "response": "{\"data\":{\"token\":\"[redacted]\",\"expires_at\":\"2026-11-15T13:36:47+00:00\",\"user\":{\"id\":8,\"name\":\"Ines Inspector\",\"role\":\"inspector\"}}}"
+    },
+    {
+        "id": "T07",
+        "folder": "Authentication",
+        "name": "T07 Second requester signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 200,
+        "ms": 861,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            }
+        ],
+        "correlation_id": "58202d52-cdfb-4406-89cd-83b72250e99b",
+        "transport_error": null,
+        "response": "{\"data\":{\"token\":\"[redacted]\",\"expires_at\":\"2026-11-15T13:36:48+00:00\",\"user\":{\"id\":3,\"name\":\"Bea Bounce\",\"role\":\"requester\"}}}"
+    },
+    {
+        "id": "T08",
+        "folder": "Authentication",
+        "name": "T08 Wrong password is refused without saying which part was wrong",
+        "method": "POST",
+        "path": "/login",
+        "status": 401,
+        "ms": 1068,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 401",
+                "pass": true,
+                "detail": "got 401"
+            },
+            {
+                "check": "error.code is \"invalid_credentials\"",
+                "pass": true,
+                "detail": "got \"invalid_credentials\""
+            }
+        ],
+        "correlation_id": "7fa84c0d-5128-4937-bb29-ab42ccd5561b",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"invalid_credentials\",\"message\":\"Email or password is incorrect.\",\"correlation_id\":\"7fa84c0d-5128-4937-bb29-ab42ccd5561b\"}}"
+    },
+    {
+        "id": "T09",
+        "folder": "Authentication",
+        "name": "T09 Missing login fields",
+        "method": "POST",
+        "path": "/login",
+        "status": 422,
+        "ms": 561,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": true,
+                "detail": "got 422"
+            },
+            {
+                "check": "has error.details.email",
+                "pass": true,
+                "detail": "present"
+            },
+            {
+                "check": "has error.details.password",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "867dcff3-4375-4bc0-99bc-da8388f94d24",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"validation_failed\",\"message\":\"Some fields need attention.\",\"details\":{\"email\":[\"The email field is required.\"],\"password\":[\"The password field is required.\"]},\"correlation_id\":\"867dcff3-4375-4bc0-99bc-da8388f94d24\"}}"
+    },
+    {
+        "id": "T10",
+        "folder": "Authentication",
+        "name": "T10 No token",
+        "method": "GET",
+        "path": "/permits",
+        "status": 401,
+        "ms": 1030,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 401",
+                "pass": true,
+                "detail": "got 401"
+            },
+            {
+                "check": "error.code is \"unauthenticated\"",
+                "pass": true,
+                "detail": "got \"unauthenticated\""
+            },
+            {
+                "check": "has error.correlation_id",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "5c01d110-773f-4e61-b4e0-6d1e989f0148",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"5c01d110-773f-4e61-b4e0-6d1e989f0148\"}}"
+    },
+    {
+        "id": "T11",
+        "folder": "Authentication",
+        "name": "T11 Made-up token",
+        "method": "GET",
+        "path": "/permits",
+        "status": 401,
+        "ms": 401,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 401",
+                "pass": true,
+                "detail": "got 401"
+            }
+        ],
+        "correlation_id": "b5a0ab0f-dd01-49eb-be0b-1404233bec9c",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"b5a0ab0f-dd01-49eb-be0b-1404233bec9c\"}}"
+    },
+    {
+        "id": "T12",
+        "folder": "Contract",
+        "name": "T12 Permit types list",
+        "method": "GET",
+        "path": "/permit-types",
+        "status": 401,
+        "ms": 370,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "has data.0.id",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "has data.0.validity_days",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": "a3a5407b-df33-4a5d-938d-9fac31711294",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"a3a5407b-df33-4a5d-938d-9fac31711294\"}}"
+    },
+    {
+        "id": "T13",
+        "folder": "Contract",
+        "name": "T13 Current user, without email",
+        "method": "GET",
+        "path": "/me",
+        "status": 401,
+        "ms": 375,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "data.role is \"requester\"",
+                "pass": false,
+                "detail": "got null"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            },
+            {
+                "check": "body does not contain @",
+                "pass": true,
+                "detail": "absent"
+            }
+        ],
+        "correlation_id": "abc38bb8-7beb-4e7e-a028-9dd999889b72",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"abc38bb8-7beb-4e7e-a028-9dd999889b72\"}}"
+    },
+    {
+        "id": "T14",
+        "folder": "Contract",
+        "name": "T14 Submit a valid permit",
+        "method": "POST",
+        "path": "/permits",
+        "status": 401,
+        "ms": 413,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 201",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "data.status is \"under_review\"",
+                "pass": false,
+                "detail": "got null"
+            },
+            {
+                "check": "has data.reference",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "has data.reviewer",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": "a869f9c3-cf1a-410c-b3e7-bf6c637dbfcd",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"a869f9c3-cf1a-410c-b3e7-bf6c637dbfcd\"}}"
+    },
+    {
+        "id": "T15",
+        "folder": "Contract",
+        "name": "T15 Read the permit with timeline and deliveries",
+        "method": "GET",
+        "path": "/permits/{{ref1}}",
+        "status": 401,
+        "ms": 386,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "has data.events.0.type",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "has data.notifications.0.status",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": "873a3ba6-9f8a-4010-8032-284ff862ddd2",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"873a3ba6-9f8a-4010-8032-284ff862ddd2\"}}"
+    },
+    {
+        "id": "T16",
+        "folder": "Contract",
+        "name": "T16 Permit list",
+        "method": "GET",
+        "path": "/permits",
+        "status": 401,
+        "ms": 389,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "has data.0.reference",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": "646d3a86-eeff-4865-989c-618f8584483b",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"646d3a86-eeff-4865-989c-618f8584483b\"}}"
+    },
+    {
+        "id": "T17",
+        "folder": "Validation",
+        "name": "T17 Purpose 9 characters (below minimum)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 401,
+        "ms": 385,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "has error.details.purpose",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": "b5084e9a-c485-40cb-81d2-50e5a4788c40",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"b5084e9a-c485-40cb-81d2-50e5a4788c40\"}}"
+    },
+    {
+        "id": "T18",
+        "folder": "Validation",
+        "name": "T18 Purpose 10 characters (minimum)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 401,
+        "ms": 364,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 201",
+                "pass": false,
+                "detail": "got 401"
+            }
+        ],
+        "correlation_id": "1f6cde4b-cf00-4b6c-92cf-abcca723acea",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"1f6cde4b-cf00-4b6c-92cf-abcca723acea\"}}"
+    },
+    {
+        "id": "T19",
+        "folder": "Validation",
+        "name": "T19 Purpose 256 characters (above maximum)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 401,
+        "ms": 359,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "has error.details.purpose",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": "32023335-25b9-401f-8e5b-0d2cbcd757f6",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"32023335-25b9-401f-8e5b-0d2cbcd757f6\"}}"
+    },
+    {
+        "id": "T20",
+        "folder": "Validation",
+        "name": "T20 Location 121 characters (above maximum)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 401,
+        "ms": 363,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "has error.details.location",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": "849227ca-9c2e-4ad7-ba6f-b3adcd45d279",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"849227ca-9c2e-4ad7-ba6f-b3adcd45d279\"}}"
+    },
+    {
+        "id": "T21",
+        "folder": "Validation",
+        "name": "T21 Start date yesterday",
+        "method": "POST",
+        "path": "/permits",
+        "status": 401,
+        "ms": 377,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "has error.details.requested_start",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": "d93f28dc-fde9-454b-ac31-2e284fe6fd81",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"d93f28dc-fde9-454b-ac31-2e284fe6fd81\"}}"
+    },
+    {
+        "id": "T22",
+        "folder": "Validation",
+        "name": "T22 Start date today (boundary, allowed)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 401,
+        "ms": 358,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 201",
+                "pass": false,
+                "detail": "got 401"
+            }
+        ],
+        "correlation_id": "aba603a9-11cd-412c-a6a8-fef56d330354",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"aba603a9-11cd-412c-a6a8-fef56d330354\"}}"
+    },
+    {
+        "id": "T23",
+        "folder": "Validation",
+        "name": "T23 Start date 366 days ahead (the form allows at most 365)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 401,
+        "ms": 389,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "has error.details.requested_start",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": "1a835613-7683-4994-8ae8-75b07df37ce1",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"1a835613-7683-4994-8ae8-75b07df37ce1\"}}"
+    },
+    {
+        "id": "T24",
+        "folder": "Validation",
+        "name": "T24 Permit type that does not exist",
+        "method": "POST",
+        "path": "/permits",
+        "status": 401,
+        "ms": 419,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "has error.details.permit_type_id",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": "000ba5e4-bb59-4305-b53c-408d3d4c7b96",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"000ba5e4-bb59-4305-b53c-408d3d4c7b96\"}}"
+    },
+    {
+        "id": "T25",
+        "folder": "Validation",
+        "name": "T25 Wrong data type for permit type",
+        "method": "POST",
+        "path": "/permits",
+        "status": 401,
+        "ms": 435,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "has error.details.permit_type_id",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": "46427761-4682-4436-8d41-fc1b452b47f9",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"46427761-4682-4436-8d41-fc1b452b47f9\"}}"
+    },
+    {
+        "id": "T26",
+        "folder": "Validation",
+        "name": "T26 Malformed JSON body",
+        "method": "POST",
+        "path": "/permits",
+        "status": 401,
+        "ms": 368,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": "c5400caa-c3a3-4a88-859d-ea78370c83f5",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"c5400caa-c3a3-4a88-859d-ea78370c83f5\"}}"
+    },
+    {
+        "id": "T27",
+        "folder": "Validation",
+        "name": "T27 Very large purpose (100,000 characters)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 401,
+        "ms": 386,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": "db26ac25-5851-4e2f-bd0f-5de8f95c615b",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"db26ac25-5851-4e2f-bd0f-5de8f95c615b\"}}"
+    },
+    {
+        "id": "T28",
+        "folder": "Authorization",
+        "name": "T28 Reviewer tries to submit a permit",
+        "method": "POST",
+        "path": "/permits",
+        "status": 401,
+        "ms": 380,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": false,
+                "detail": "got 401"
+            }
+        ],
+        "correlation_id": "1de72be8-205b-4c6e-a150-12b758d60117",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"1de72be8-205b-4c6e-a150-12b758d60117\"}}"
+    },
+    {
+        "id": "T29",
+        "folder": "Authorization",
+        "name": "T29 Requester tries to approve",
+        "method": "POST",
+        "path": "/permits/{{ref1}}/approve",
+        "status": 401,
+        "ms": 365,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": false,
+                "detail": "got 401"
+            }
+        ],
+        "correlation_id": "e17ddc7b-b869-43af-a7d9-3ea6041cfbfd",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"e17ddc7b-b869-43af-a7d9-3ea6041cfbfd\"}}"
+    },
+    {
+        "id": "T30",
+        "folder": "Authorization",
+        "name": "T30 Another requester reads someone else's permit",
+        "method": "GET",
+        "path": "/permits/{{ref1}}",
+        "status": 401,
+        "ms": 367,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": false,
+                "detail": "got 401"
+            }
+        ],
+        "correlation_id": "1cf1b951-b1fb-415e-bbf2-ff6e916fa1ce",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"1cf1b951-b1fb-415e-bbf2-ff6e916fa1ce\"}}"
+    },
+    {
+        "id": "T31",
+        "folder": "Authorization",
+        "name": "T31 Reviewer who is not assigned tries to endorse",
+        "method": "POST",
+        "path": "/permits/{{ref1}}/endorse",
+        "status": 401,
+        "ms": 367,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": false,
+                "detail": "got 401"
+            }
+        ],
+        "correlation_id": "679e7eba-27de-468a-8f7a-68e9aad4de1c",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"679e7eba-27de-468a-8f7a-68e9aad4de1c\"}}"
+    },
+    {
+        "id": "T32",
+        "folder": "Authorization",
+        "name": "T32 Requester opens the admin list",
+        "method": "GET",
+        "path": "/admin/exceptions",
+        "status": 401,
+        "ms": 407,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": false,
+                "detail": "got 401"
+            }
+        ],
+        "correlation_id": "806bc7ef-5728-40a5-9ebb-566f36500058",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"806bc7ef-5728-40a5-9ebb-566f36500058\"}}"
+    },
+    {
+        "id": "T33",
+        "folder": "Authorization",
+        "name": "T33 Requester calls the inspector check",
+        "method": "GET",
+        "path": "/permits/{{ref1}}/verify",
+        "status": 401,
+        "ms": 401,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": false,
+                "detail": "got 401"
+            }
+        ],
+        "correlation_id": "e0a99da9-627e-4c2a-8f48-af3e4d0bf3bf",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"e0a99da9-627e-4c2a-8f48-af3e4d0bf3bf\"}}"
+    },
+    {
+        "id": "T34",
+        "folder": "Not found",
+        "name": "T34 Unknown permit reference",
+        "method": "GET",
+        "path": "/permits/PRM-NOPE",
+        "status": 401,
+        "ms": 359,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 404",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "error.code is \"http_404\"",
+                "pass": false,
+                "detail": "got \"unauthenticated\""
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": "893fdfe7-8d6e-474d-baec-c933d34abdc2",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"893fdfe7-8d6e-474d-baec-c933d34abdc2\"}}"
+    },
+    {
+        "id": "T35",
+        "folder": "Not found",
+        "name": "T35 Unknown API path",
+        "method": "GET",
+        "path": "/no-such-endpoint",
+        "status": 404,
+        "ms": 422,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 404",
+                "pass": true,
+                "detail": "got 404"
+            },
+            {
+                "check": "has error.correlation_id",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"http_404\",\"message\":\"That item was not found.\"}}"
+    },
+    {
+        "id": "T36",
+        "folder": "Not found",
+        "name": "T36 Method not allowed",
+        "method": "DELETE",
+        "path": "/permits/{{ref1}}",
+        "status": 405,
+        "ms": 346,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 405",
+                "pass": true,
+                "detail": "got 405"
+            },
+            {
+                "check": "has error.correlation_id",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"http_405\",\"message\":\"The request could not be completed.\"}}"
+    },
+    {
+        "id": "T37",
+        "folder": "Duplicates",
+        "name": "T37 Assigned reviewer endorses",
+        "method": "POST",
+        "path": "/permits/{{ref1}}/endorse",
+        "status": 401,
+        "ms": 362,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "data.status is \"pending_approval\"",
+                "pass": false,
+                "detail": "got null"
+            }
+        ],
+        "correlation_id": "5cd564d9-6148-4a74-9b50-e8bea09c7e4e",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"5cd564d9-6148-4a74-9b50-e8bea09c7e4e\"}}"
+    },
+    {
+        "id": "T38",
+        "folder": "Duplicates",
+        "name": "T38 Same endorsement again",
+        "method": "POST",
+        "path": "/permits/{{ref1}}/endorse",
+        "status": 401,
+        "ms": 371,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 409",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "error.code is \"invalid_transition\"",
+                "pass": false,
+                "detail": "got \"unauthenticated\""
+            }
+        ],
+        "correlation_id": "a70808d1-7386-4363-9731-15eebdfac327",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"a70808d1-7386-4363-9731-15eebdfac327\"}}"
+    },
+    {
+        "id": "T39",
+        "folder": "Duplicates",
+        "name": "T39 Submit with an Idempotency-Key",
+        "method": "POST",
+        "path": "/permits",
+        "status": 401,
+        "ms": 391,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 201",
+                "pass": false,
+                "detail": "got 401"
+            }
+        ],
+        "correlation_id": "365aeb99-34cc-409c-a94d-50d8ee707371",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"365aeb99-34cc-409c-a94d-50d8ee707371\"}}"
+    },
+    {
+        "id": "T40",
+        "folder": "Duplicates",
+        "name": "T40 Same submission resent (double click or retry)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 401,
+        "ms": 365,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "data.reference equals dupRef",
+                "pass": false,
+                "detail": "got null"
+            }
+        ],
+        "correlation_id": "5b2deada-3280-4ee0-9f53-f8a069ca8dbc",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"5b2deada-3280-4ee0-9f53-f8a069ca8dbc\"}}"
+    },
+    {
+        "id": "T41",
+        "folder": "Duplicates",
+        "name": "T41 Same key reused for a different submission",
+        "method": "POST",
+        "path": "/permits",
+        "status": 401,
+        "ms": 369,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "error.code is \"idempotency_key_reused\"",
+                "pass": false,
+                "detail": "got \"unauthenticated\""
+            }
+        ],
+        "correlation_id": "6c22725f-ee6e-4ba4-88f5-6db85b2e1179",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"6c22725f-ee6e-4ba4-88f5-6db85b2e1179\"}}"
+    },
+    {
+        "id": "T42",
+        "folder": "Hardening",
+        "name": "T42 Security headers on API responses",
+        "method": "GET",
+        "path": "/me",
+        "status": 401,
+        "ms": 372,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "header X-Content-Type-Options is nosniff",
+                "pass": false,
+                "detail": "got null"
+            },
+            {
+                "check": "header X-Frame-Options is DENY",
+                "pass": false,
+                "detail": "got null"
+            },
+            {
+                "check": "header Referrer-Policy is no-referrer",
+                "pass": false,
+                "detail": "got null"
+            },
+            {
+                "check": "header Content-Security-Policy present",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": "02f9dde9-8b11-467c-bf39-b4a1e4ce403e",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"02f9dde9-8b11-467c-bf39-b4a1e4ce403e\"}}"
+    },
+    {
+        "id": "T43",
+        "folder": "Hardening",
+        "name": "T43 No server version disclosed",
+        "method": "GET",
+        "path": "/me",
+        "status": 401,
+        "ms": 365,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "no X-Powered-By header",
+                "pass": false,
+                "detail": "present: PHP/8.4.12"
+            }
+        ],
+        "correlation_id": "d34897c2-0747-4a0a-bcb3-3988c96dd1bd",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"d34897c2-0747-4a0a-bcb3-3988c96dd1bd\"}}"
+    },
+    {
+        "id": "T44",
+        "folder": "Hardening",
+        "name": "T44 Error responses carry a correlation ID and no internals",
+        "method": "POST",
+        "path": "/permits/PRM-NOPE/approve",
+        "status": 401,
+        "ms": 377,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 404",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "has error.correlation_id",
+                "pass": true,
+                "detail": "present"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": "9ad32afb-2e02-40d2-a45e-df8322b045e5",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"9ad32afb-2e02-40d2-a45e-df8322b045e5\"}}"
+    },
+    {
+        "id": "T45",
+        "folder": "Hardening",
+        "name": "T45 Rate-limit headers on authenticated calls",
+        "method": "GET",
+        "path": "/me",
+        "status": 401,
+        "ms": 365,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "header X-RateLimit-Limit present",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": "c885d27b-eda2-4d76-9483-d9c1c978100c",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"c885d27b-eda2-4d76-9483-d9c1c978100c\"}}"
+    },
+    {
+        "id": "T46",
+        "folder": "Recovery",
+        "name": "T46 Approver issues the endorsed permit",
+        "method": "POST",
+        "path": "/permits/{{ref1}}/approve",
+        "status": 401,
+        "ms": 391,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "data.status is \"issued\"",
+                "pass": false,
+                "detail": "got null"
+            }
+        ],
+        "correlation_id": "f72cc37f-4893-4647-8dbd-01d39a7be371",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"f72cc37f-4893-4647-8dbd-01d39a7be371\"}}"
+    },
+    {
+        "id": "T47",
+        "folder": "Recovery",
+        "name": "T47 Inspector verifies it",
+        "method": "GET",
+        "path": "/permits/{{ref1}}/verify",
+        "status": 401,
+        "ms": 365,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "data.valid is true",
+                "pass": false,
+                "detail": "got null"
+            }
+        ],
+        "correlation_id": "fcb0e8b3-9597-4586-aa21-7a177d49349d",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"fcb0e8b3-9597-4586-aa21-7a177d49349d\"}}"
+    },
+    {
+        "id": "T48",
+        "folder": "Recovery",
+        "name": "T48 Admin exception list loads",
+        "method": "GET",
+        "path": "/admin/exceptions",
+        "status": 401,
+        "ms": 371,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 401"
+            },
+            {
+                "check": "has data.notifications",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "has data.permits",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": "6636113b-7cef-4058-97d9-47385d195fca",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"6636113b-7cef-4058-97d9-47385d195fca\"}}"
+    }
+]

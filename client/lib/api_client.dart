@@ -35,9 +35,16 @@ class ApiClient {
 
   Future<dynamic> get(String path) => _send('GET', path);
 
-  Future<dynamic> post(String path, [Map<String, dynamic>? body]) => _send('POST', path, body);
+  /// [idempotencyKey]: send the same key when repeating the same submission, so the server
+  /// returns the first result instead of creating a duplicate (Week 15).
+  Future<dynamic> post(String path, [Map<String, dynamic>? body, String? idempotencyKey]) =>
+      _send('POST', path, body, idempotencyKey);
 
-  Future<dynamic> _send(String method, String path, [Map<String, dynamic>? body]) async {
+  /// A random key for one form submission.
+  String newIdempotencyKey() =>
+      'web-${DateTime.now().millisecondsSinceEpoch}-${_random.nextInt(1 << 30)}-${_random.nextInt(1 << 30)}';
+
+  Future<dynamic> _send(String method, String path, [Map<String, dynamic>? body, String? idempotencyKey]) async {
     final uri = Uri.parse('$apiBaseUrl$path');
     final bearer = token == null ? null : 'Bearer $token';
     final headers = {
@@ -45,6 +52,7 @@ class ApiClient {
       'Content-Type': 'application/json',
       'X-Correlation-Id': 'web-${DateTime.now().millisecondsSinceEpoch}-${_random.nextInt(1 << 30)}',
       'Authorization': ?bearer,
+      'Idempotency-Key': ?idempotencyKey,
     };
 
     http.Response response;

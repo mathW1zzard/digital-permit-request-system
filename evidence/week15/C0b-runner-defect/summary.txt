@@ -1,0 +1,50 @@
+Run 2026-11-15 12:37:05 UTC, 48 requests, 11 passed, 37 failed, 29.4 s, base https://localhost:8443/api
+
+PASS T01  POST   /login                                   200  7137ms  
+PASS T02  POST   /login                                   200   851ms  
+PASS T03  POST   /login                                   200   832ms  
+PASS T04  POST   /login                                   200   831ms  
+PASS T05  POST   /login                                   200   968ms  
+PASS T06  POST   /login                                   200   864ms  
+PASS T07  POST   /login                                   200   861ms  
+PASS T08  POST   /login                                   401  1068ms  
+PASS T09  POST   /login                                   422   561ms  
+PASS T10  GET    /permits                                 401  1030ms  
+PASS T11  GET    /permits                                 401   401ms  
+FAIL T12  GET    /permit-types                            401   370ms  status 200 (got 401); has data.0.id (missing); has data.0.validity_days (missing)
+FAIL T13  GET    /me                                      401   375ms  status 200 (got 401); data.role is "requester" (got null)
+FAIL T14  POST   /permits                                 401   413ms  status 201 (got 401); data.status is "under_review" (got null); has data.reference (missing); has data.reviewer (missing)
+FAIL T15  GET    /permits/{{ref1}}                        401   386ms  status 200 (got 401); has data.events.0.type (missing); has data.notifications.0.status (missing)
+FAIL T16  GET    /permits                                 401   389ms  status 200 (got 401); has data.0.reference (missing)
+FAIL T17  POST   /permits                                 401   385ms  status 422 (got 401); has error.details.purpose (missing)
+FAIL T18  POST   /permits                                 401   364ms  status 201 (got 401)
+FAIL T19  POST   /permits                                 401   359ms  status 422 (got 401); has error.details.purpose (missing)
+FAIL T20  POST   /permits                                 401   363ms  status 422 (got 401); has error.details.location (missing)
+FAIL T21  POST   /permits                                 401   377ms  status 422 (got 401); has error.details.requested_start (missing)
+FAIL T22  POST   /permits                                 401   358ms  status 201 (got 401)
+FAIL T23  POST   /permits                                 401   389ms  status 422 (got 401); has error.details.requested_start (missing)
+FAIL T24  POST   /permits                                 401   419ms  status 422 (got 401); has error.details.permit_type_id (missing)
+FAIL T25  POST   /permits                                 401   435ms  status 422 (got 401); has error.details.permit_type_id (missing)
+FAIL T26  POST   /permits                                 401   368ms  status 422 (got 401)
+FAIL T27  POST   /permits                                 401   386ms  status 422 (got 401)
+FAIL T28  POST   /permits                                 401   380ms  status 403 (got 401)
+FAIL T29  POST   /permits/{{ref1}}/approve                401   365ms  status 403 (got 401)
+FAIL T30  GET    /permits/{{ref1}}                        401   367ms  status 403 (got 401)
+FAIL T31  POST   /permits/{{ref1}}/endorse                401   367ms  status 403 (got 401)
+FAIL T32  GET    /admin/exceptions                        401   407ms  status 403 (got 401)
+FAIL T33  GET    /permits/{{ref1}}/verify                 401   401ms  status 403 (got 401)
+FAIL T34  GET    /permits/PRM-NOPE                        401   359ms  status 404 (got 401); error.code is "http_404" (got "unauthenticated")
+FAIL T35  GET    /no-such-endpoint                        404   422ms  has error.correlation_id (missing)
+FAIL T36  DELETE /permits/{{ref1}}                        405   346ms  has error.correlation_id (missing)
+FAIL T37  POST   /permits/{{ref1}}/endorse                401   362ms  status 200 (got 401); data.status is "pending_approval" (got null)
+FAIL T38  POST   /permits/{{ref1}}/endorse                401   371ms  status 409 (got 401); error.code is "invalid_transition" (got "unauthenticated")
+FAIL T39  POST   /permits                                 401   391ms  status 201 (got 401)
+FAIL T40  POST   /permits                                 401   365ms  status 200 (got 401); data.reference equals dupRef (got null)
+FAIL T41  POST   /permits                                 401   369ms  status 422 (got 401); error.code is "idempotency_key_reused" (got "unauthenticated")
+FAIL T42  GET    /me                                      401   372ms  status 200 (got 401); header X-Content-Type-Options is nosniff (got null); header X-Frame-Options is DENY (got null); header Referrer-Policy is no-referrer (got null); header Content-Security-Policy present (missing)
+FAIL T43  GET    /me                                      401   365ms  status 200 (got 401); no X-Powered-By header (present: PHP/8.4.12)
+FAIL T44  POST   /permits/PRM-NOPE/approve                401   377ms  status 404 (got 401)
+FAIL T45  GET    /me                                      401   365ms  status 200 (got 401); header X-RateLimit-Limit present (missing)
+FAIL T46  POST   /permits/{{ref1}}/approve                401   391ms  status 200 (got 401); data.status is "issued" (got null)
+FAIL T47  GET    /permits/{{ref1}}/verify                 401   365ms  status 200 (got 401); data.valid is true (got null)
+FAIL T48  GET    /admin/exceptions                        401   371ms  status 200 (got 401); has data.notifications (missing); has data.permits (missing)

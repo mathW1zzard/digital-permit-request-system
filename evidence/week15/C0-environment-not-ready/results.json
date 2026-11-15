@@ -1,0 +1,1212 @@
+[
+    {
+        "id": "T01",
+        "folder": "Authentication",
+        "name": "T01 Requester signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 502,
+        "ms": 50,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "has data.token",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "has data.expires_at",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T02",
+        "folder": "Authentication",
+        "name": "T02 Reviewer 1 signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 502,
+        "ms": 12,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T03",
+        "folder": "Authentication",
+        "name": "T03 Reviewer 2 signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 502,
+        "ms": 15,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T04",
+        "folder": "Authentication",
+        "name": "T04 Approver signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 502,
+        "ms": 13,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T05",
+        "folder": "Authentication",
+        "name": "T05 Admin signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 502,
+        "ms": 13,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T06",
+        "folder": "Authentication",
+        "name": "T06 Inspector signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 502,
+        "ms": 9,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T07",
+        "folder": "Authentication",
+        "name": "T07 Second requester signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 502,
+        "ms": 11,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T08",
+        "folder": "Authentication",
+        "name": "T08 Wrong password is refused without saying which part was wrong",
+        "method": "POST",
+        "path": "/login",
+        "status": 502,
+        "ms": 11,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 401",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "error.code is \"invalid_credentials\"",
+                "pass": false,
+                "detail": "got \"upstream_unavailable\""
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T09",
+        "folder": "Authentication",
+        "name": "T09 Missing login fields",
+        "method": "POST",
+        "path": "/login",
+        "status": 502,
+        "ms": 10,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "has error.details.email",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "has error.details.password",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T10",
+        "folder": "Authentication",
+        "name": "T10 No token",
+        "method": "GET",
+        "path": "/permits",
+        "status": 502,
+        "ms": 11,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 401",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "error.code is \"unauthenticated\"",
+                "pass": false,
+                "detail": "got \"upstream_unavailable\""
+            },
+            {
+                "check": "has error.correlation_id",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T11",
+        "folder": "Authentication",
+        "name": "T11 Made-up token",
+        "method": "GET",
+        "path": "/permits",
+        "status": 502,
+        "ms": 10,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 401",
+                "pass": false,
+                "detail": "got 502"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T12",
+        "folder": "Contract",
+        "name": "T12 Permit types list",
+        "method": "GET",
+        "path": "/permit-types",
+        "status": 502,
+        "ms": 11,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "has data.0.id",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "has data.0.validity_days",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T13",
+        "folder": "Contract",
+        "name": "T13 Current user, without email",
+        "method": "GET",
+        "path": "/me",
+        "status": 502,
+        "ms": 10,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "data.role is \"requester\"",
+                "pass": false,
+                "detail": "got null"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            },
+            {
+                "check": "body does not contain @",
+                "pass": true,
+                "detail": "absent"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T14",
+        "folder": "Contract",
+        "name": "T14 Submit a valid permit",
+        "method": "POST",
+        "path": "/permits",
+        "status": 502,
+        "ms": 10,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 201",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "data.status is \"under_review\"",
+                "pass": false,
+                "detail": "got null"
+            },
+            {
+                "check": "has data.reference",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "has data.reviewer",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T15",
+        "folder": "Contract",
+        "name": "T15 Read the permit with timeline and deliveries",
+        "method": "GET",
+        "path": "/permits/{{ref1}}",
+        "status": 502,
+        "ms": 14,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "has data.events.0.type",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "has data.notifications.0.status",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T16",
+        "folder": "Contract",
+        "name": "T16 Permit list",
+        "method": "GET",
+        "path": "/permits",
+        "status": 502,
+        "ms": 10,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "has data.0.reference",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T17",
+        "folder": "Validation",
+        "name": "T17 Purpose 9 characters (below minimum)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 502,
+        "ms": 10,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "has error.details.purpose",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T18",
+        "folder": "Validation",
+        "name": "T18 Purpose 10 characters (minimum)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 502,
+        "ms": 9,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 201",
+                "pass": false,
+                "detail": "got 502"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T19",
+        "folder": "Validation",
+        "name": "T19 Purpose 256 characters (above maximum)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 502,
+        "ms": 11,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "has error.details.purpose",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T20",
+        "folder": "Validation",
+        "name": "T20 Location 121 characters (above maximum)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 502,
+        "ms": 9,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "has error.details.location",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T21",
+        "folder": "Validation",
+        "name": "T21 Start date yesterday",
+        "method": "POST",
+        "path": "/permits",
+        "status": 502,
+        "ms": 9,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "has error.details.requested_start",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T22",
+        "folder": "Validation",
+        "name": "T22 Start date today (boundary, allowed)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 502,
+        "ms": 9,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 201",
+                "pass": false,
+                "detail": "got 502"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T23",
+        "folder": "Validation",
+        "name": "T23 Start date 366 days ahead (the form allows at most 365)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 502,
+        "ms": 10,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "has error.details.requested_start",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T24",
+        "folder": "Validation",
+        "name": "T24 Permit type that does not exist",
+        "method": "POST",
+        "path": "/permits",
+        "status": 502,
+        "ms": 9,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "has error.details.permit_type_id",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T25",
+        "folder": "Validation",
+        "name": "T25 Wrong data type for permit type",
+        "method": "POST",
+        "path": "/permits",
+        "status": 502,
+        "ms": 15,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "has error.details.permit_type_id",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T26",
+        "folder": "Validation",
+        "name": "T26 Malformed JSON body",
+        "method": "POST",
+        "path": "/permits",
+        "status": 502,
+        "ms": 10,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T27",
+        "folder": "Validation",
+        "name": "T27 Very large purpose (100,000 characters)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 502,
+        "ms": 11,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T28",
+        "folder": "Authorization",
+        "name": "T28 Reviewer tries to submit a permit",
+        "method": "POST",
+        "path": "/permits",
+        "status": 502,
+        "ms": 13,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": false,
+                "detail": "got 502"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T29",
+        "folder": "Authorization",
+        "name": "T29 Requester tries to approve",
+        "method": "POST",
+        "path": "/permits/{{ref1}}/approve",
+        "status": 502,
+        "ms": 13,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": false,
+                "detail": "got 502"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T30",
+        "folder": "Authorization",
+        "name": "T30 Another requester reads someone else's permit",
+        "method": "GET",
+        "path": "/permits/{{ref1}}",
+        "status": 502,
+        "ms": 10,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": false,
+                "detail": "got 502"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T31",
+        "folder": "Authorization",
+        "name": "T31 Reviewer who is not assigned tries to endorse",
+        "method": "POST",
+        "path": "/permits/{{ref1}}/endorse",
+        "status": 502,
+        "ms": 10,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": false,
+                "detail": "got 502"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T32",
+        "folder": "Authorization",
+        "name": "T32 Requester opens the admin list",
+        "method": "GET",
+        "path": "/admin/exceptions",
+        "status": 502,
+        "ms": 25,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": false,
+                "detail": "got 502"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T33",
+        "folder": "Authorization",
+        "name": "T33 Requester calls the inspector check",
+        "method": "GET",
+        "path": "/permits/{{ref1}}/verify",
+        "status": 502,
+        "ms": 9,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": false,
+                "detail": "got 502"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T34",
+        "folder": "Not found",
+        "name": "T34 Unknown permit reference",
+        "method": "GET",
+        "path": "/permits/PRM-NOPE",
+        "status": 502,
+        "ms": 9,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 404",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "error.code is \"http_404\"",
+                "pass": false,
+                "detail": "got \"upstream_unavailable\""
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T35",
+        "folder": "Not found",
+        "name": "T35 Unknown API path",
+        "method": "GET",
+        "path": "/no-such-endpoint",
+        "status": 502,
+        "ms": 9,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 404",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "has error.correlation_id",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T36",
+        "folder": "Not found",
+        "name": "T36 Method not allowed",
+        "method": "DELETE",
+        "path": "/permits/{{ref1}}",
+        "status": 502,
+        "ms": 9,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 405",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "has error.correlation_id",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T37",
+        "folder": "Duplicates",
+        "name": "T37 Assigned reviewer endorses",
+        "method": "POST",
+        "path": "/permits/{{ref1}}/endorse",
+        "status": 502,
+        "ms": 12,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "data.status is \"pending_approval\"",
+                "pass": false,
+                "detail": "got null"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T38",
+        "folder": "Duplicates",
+        "name": "T38 Same endorsement again",
+        "method": "POST",
+        "path": "/permits/{{ref1}}/endorse",
+        "status": 502,
+        "ms": 11,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 409",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "error.code is \"invalid_transition\"",
+                "pass": false,
+                "detail": "got \"upstream_unavailable\""
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T39",
+        "folder": "Duplicates",
+        "name": "T39 Submit with an Idempotency-Key",
+        "method": "POST",
+        "path": "/permits",
+        "status": 502,
+        "ms": 10,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 201",
+                "pass": false,
+                "detail": "got 502"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T40",
+        "folder": "Duplicates",
+        "name": "T40 Same submission resent (double click or retry)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 502,
+        "ms": 13,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "data.reference equals dupRef",
+                "pass": false,
+                "detail": "got null"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T41",
+        "folder": "Duplicates",
+        "name": "T41 Same key reused for a different submission",
+        "method": "POST",
+        "path": "/permits",
+        "status": 502,
+        "ms": 9,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "error.code is \"idempotency_key_reused\"",
+                "pass": false,
+                "detail": "got \"upstream_unavailable\""
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T42",
+        "folder": "Hardening",
+        "name": "T42 Security headers on API responses",
+        "method": "GET",
+        "path": "/me",
+        "status": 502,
+        "ms": 8,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "header X-Content-Type-Options is nosniff",
+                "pass": false,
+                "detail": "got null"
+            },
+            {
+                "check": "header X-Frame-Options is DENY",
+                "pass": false,
+                "detail": "got null"
+            },
+            {
+                "check": "header Referrer-Policy is no-referrer",
+                "pass": false,
+                "detail": "got null"
+            },
+            {
+                "check": "header Content-Security-Policy present",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T43",
+        "folder": "Hardening",
+        "name": "T43 No server version disclosed",
+        "method": "GET",
+        "path": "/me",
+        "status": 502,
+        "ms": 9,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "no X-Powered-By header",
+                "pass": true,
+                "detail": "absent"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T44",
+        "folder": "Hardening",
+        "name": "T44 Error responses carry a correlation ID and no internals",
+        "method": "POST",
+        "path": "/permits/PRM-NOPE/approve",
+        "status": 502,
+        "ms": 8,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 404",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "has error.correlation_id",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T45",
+        "folder": "Hardening",
+        "name": "T45 Rate-limit headers on authenticated calls",
+        "method": "GET",
+        "path": "/me",
+        "status": 502,
+        "ms": 10,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "header X-RateLimit-Limit present",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T46",
+        "folder": "Recovery",
+        "name": "T46 Approver issues the endorsed permit",
+        "method": "POST",
+        "path": "/permits/{{ref1}}/approve",
+        "status": 502,
+        "ms": 11,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "data.status is \"issued\"",
+                "pass": false,
+                "detail": "got null"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T47",
+        "folder": "Recovery",
+        "name": "T47 Inspector verifies it",
+        "method": "GET",
+        "path": "/permits/{{ref1}}/verify",
+        "status": 502,
+        "ms": 9,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "data.valid is true",
+                "pass": false,
+                "detail": "got null"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    },
+    {
+        "id": "T48",
+        "folder": "Recovery",
+        "name": "T48 Admin exception list loads",
+        "method": "GET",
+        "path": "/admin/exceptions",
+        "status": 502,
+        "ms": 11,
+        "pass": false,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": false,
+                "detail": "got 502"
+            },
+            {
+                "check": "has data.notifications",
+                "pass": false,
+                "detail": "missing"
+            },
+            {
+                "check": "has data.permits",
+                "pass": false,
+                "detail": "missing"
+            }
+        ],
+        "correlation_id": null,
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"upstream_unavailable\",\"message\":\"The service behind the proxy is not running.\"}}"
+    }
+]

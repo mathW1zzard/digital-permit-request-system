@@ -92,8 +92,8 @@ class AppState extends ChangeNotifier {
     return Permit.fromJson(body['data'] as Map<String, dynamic>);
   }
 
-  Future<Permit> submitPermit(Map<String, dynamic> form) async {
-    final body = await api.post('/permits', form);
+  Future<Permit> submitPermit(Map<String, dynamic> form, {String? idempotencyKey}) async {
+    final body = await api.post('/permits', form, idempotencyKey);
     final permit = Permit.fromJson(body['data'] as Map<String, dynamic>);
     await loadPermits();
     select(permit.reference);

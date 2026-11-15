@@ -59,4 +59,21 @@ void main() {
     expect(state.sessionExpired, isTrue);
     expect(state.api.token, isNull);
   });
+
+  test('A resent submission carries the same Idempotency-Key', () async {
+    final keys = <String?>[];
+    final client = MockClient((request) async {
+      keys.add(request.headers['Idempotency-Key']);
+      return http.Response('{"data":{}}', 201);
+    });
+    final api = ApiClient(client: client);
+    final key = api.newIdempotencyKey();
+
+    await api.post('/permits', {'purpose': 'Same form'}, key);
+    await api.post('/permits', {'purpose': 'Same form'}, key);
+    await api.post('/permit-types');
+
+    expect(keys, [key, key, null]);
+    expect(api.newIdempotencyKey(), isNot(key));
+  });
 }

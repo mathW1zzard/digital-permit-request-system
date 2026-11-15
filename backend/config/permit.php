@@ -7,6 +7,12 @@ return [
     // Week 14: refuse API calls that did not arrive over HTTPS (set false only in tests).
     'require_https' => (bool) env('REQUIRE_HTTPS', true),
 
+    // Week 15: requests per minute for each signed-in user (sign-in has its own stricter limit).
+    'api_rate_per_minute' => (int) env('API_RATE_PER_MINUTE', 60),
+
+    // Week 15: the furthest ahead a permit may start; the Flutter form uses the same limit.
+    'max_days_ahead' => 365,
+
     'gateway' => [
         'url' => env('GATEWAY_URL', 'https://127.0.0.1:9443/send'),
         'api_key' => env('GATEWAY_API_KEY', ''),

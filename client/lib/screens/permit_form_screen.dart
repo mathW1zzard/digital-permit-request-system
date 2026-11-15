@@ -21,6 +21,11 @@ class _PermitFormScreenState extends State<PermitFormScreen> {
   Map<String, String> _serverErrors = {};
   bool _busy = false;
 
+  // Same content sent again (double click, retry after a lost answer) reuses the key, so the
+  // server returns the permit it already made. Changed content gets a new key.
+  String? _lastSubmitted;
+  String? _idempotencyKey;
+
   DateTime get _today {
     final now = DateTime.now();
     return DateTime(now.year, now.month, now.day);
@@ -53,15 +58,21 @@ class _PermitFormScreenState extends State<PermitFormScreen> {
     final state = context.read<AppState>();
     final navigator = Navigator.of(context);
     final messenger = ScaffoldMessenger.of(context);
+    final form = <String, dynamic>{
+      'permit_type_id': _typeId,
+      'purpose': _purpose.text.trim(),
+      'location': _location.text.trim(),
+      if (_details.text.trim().isNotEmpty) 'details': _details.text.trim(),
+      'requested_start': _iso(_start!),
+    };
+    final content = form.toString();
+    if (content != _lastSubmitted) {
+      _lastSubmitted = content;
+      _idempotencyKey = state.api.newIdempotencyKey();
+    }
     setState(() => _busy = true);
     try {
-      final permit = await state.submitPermit({
-        'permit_type_id': _typeId,
-        'purpose': _purpose.text.trim(),
-        'location': _location.text.trim(),
-        if (_details.text.trim().isNotEmpty) 'details': _details.text.trim(),
-        'requested_start': _iso(_start!),
-      });
+      final permit = await state.submitPermit(form, idempotencyKey: _idempotencyKey);
       messenger.showSnackBar(SnackBar(content: Text('Submitted ${permit.reference}. It is now under review.')));
       navigator.pop();
     } on ApiError catch (e) {

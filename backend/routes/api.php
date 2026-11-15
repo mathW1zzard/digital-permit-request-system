@@ -7,10 +7,10 @@ use App\Models\PermitType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// Every route here already passed CorrelationId and RequireHttps (see bootstrap/app.php).
+// Every route here already passed CorrelationId, SecurityHeaders and RequireHttps (see bootstrap/app.php).
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', fn (Request $request) => ['data' => $request->user()->only(['id', 'name', 'role'])]);
     Route::get('/permit-types', fn () => ['data' => PermitType::orderBy('name')->get(['id', 'code', 'name', 'validity_days'])]);
