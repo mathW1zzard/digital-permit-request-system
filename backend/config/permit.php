@@ -30,6 +30,9 @@ return [
         'ca_file' => env('GATEWAY_CA_FILE', ''),
         'timeout' => (int) env('GATEWAY_TIMEOUT_SECONDS', 3),
         'max_attempts' => (int) env('GATEWAY_MAX_ATTEMPTS', 4),
+        // Week 16: notifications sent per dispatch run (one run a minute). 50 a minute fell behind the
+        // W2 peak, which created about 180 a minute.
+        'dispatch_batch' => (int) env('GATEWAY_DISPATCH_BATCH', 50),
         'backoff_base' => (int) env('GATEWAY_BACKOFF_BASE_SECONDS', 5),
         'backoff_cap' => (int) env('GATEWAY_BACKOFF_CAP_SECONDS', 300),
         // Week 14: key for the encrypted message payload (XChaCha20-Poly1305), 32 bytes, base64.

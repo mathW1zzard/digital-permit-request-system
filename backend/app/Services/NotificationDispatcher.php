@@ -18,8 +18,9 @@ final class NotificationDispatcher
     private const PAUSE_AFTER_TRANSIENT_IN_A_ROW = 3;
 
     /** @return array<string, int> */
-    public function dispatchDue(int $limit = 50): array
+    public function dispatchDue(?int $limit = null): array
     {
+        $limit ??= (int) config('permit.gateway.dispatch_batch', 50);
         $stats = ['sent' => 0, 'retry_scheduled' => 0, 'manual_action' => 0, 'skipped' => 0, 'paused' => 0];
         $transientInARow = 0;
 
@@ -79,7 +80,7 @@ final class NotificationDispatcher
 
         try {
             $response = Http::withToken($cfg['api_key'])
-                ->withOptions(['verify' => $cfg['ca_file'] !== '' ? base_path($cfg['ca_file']) : true])
+                ->withOptions(['verify' => self::caBundle($cfg['ca_file'])])
                 ->withHeaders([
                     'Idempotency-Key' => $n->dedupe_key, // same key on every retry: the gateway delivers once
                     'X-Correlation-Id' => $n->correlation_id ?? (string) Str::uuid(),
@@ -152,5 +153,20 @@ final class NotificationDispatcher
         $delay = min($cfg['backoff_cap'], $cfg['backoff_base'] * (2 ** ($attempt - 1)));
 
         return max(1, (int) round($delay * random_int(80, 120) / 100));
+    }
+
+    /**
+     * Week 16 (defect S2): GATEWAY_CA_FILE may be relative to the backend folder (development,
+     * "../certs/dev-ca.pem") or absolute (staging). Only a relative path is resolved; an absolute
+     * one used to become "<backend>/C:/..." and every dispatch run failed before sending anything.
+     */
+    public static function caBundle(string $file): string|bool
+    {
+        if ($file === '') {
+            return true; // the system certificate store
+        }
+        $absolute = preg_match('#^([A-Za-z]:[\\\\/]|[\\\\/])#', $file) === 1; // C:\ C:/ \\server /
+
+        return $absolute ? $file : base_path($file);
     }
 }

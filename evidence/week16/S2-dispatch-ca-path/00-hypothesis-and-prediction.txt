@@ -1,0 +1,24 @@
+Defect S2, written before the fix (2026-11-15 23:05 UTC).
+
+Observed: on staging, notifications:dispatch has failed every minute since the scheduler started
+(39 x GuzzleHttp InvalidArgumentException at CurlFactory, each followed by a scheduler "command
+failed"). GET /api/health has said "degraded" with scheduler_dispatch "stale" and the outbox
+"backlog" (2,140 overdue), but nothing alerted on "degraded", so it went unnoticed for hours of
+testing. No notification has been sent from staging.
+
+Cause: NotificationDispatcher passes GATEWAY_CA_FILE through base_path() unconditionally. That
+works for development's relative "../certs/dev-ca.pem" but turns staging's absolute
+"C:/.../certs/dev-ca.pem" into "<release>/backend/C:/.../dev-ca.pem", which does not exist. Guzzle
+refuses to build the request ("SSL CA bundle not found"), the exception is not one the dispatcher
+classifies, and the whole run stops before any delivery.
+
+Why tests missed it: tests and development use the relative path; the environment difference only
+exists in staging. This is exactly the kind of defect an environment comparison should find.
+
+Fix: use the path as given when it is absolute (drive letter, UNC or leading slash); otherwise
+resolve it against the backend folder as before. Unit test for both forms.
+
+Prediction after deploying the fix to staging: within 2 minutes, dispatch runs complete
+(dispatch.run_completed in the log), the overdue count falls on every run, no new
+InvalidArgumentException lines, and scheduler_dispatch becomes "ok". The backlog drains at the
+dispatcher's batch size per minute, so "outbox: ok" may take several minutes.

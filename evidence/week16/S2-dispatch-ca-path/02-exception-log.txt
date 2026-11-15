@@ -1,0 +1,6 @@
+Grouped exception log lines on staging, 2026-11-15T23:03Z (class and location only, as logged):
+  39 GuzzleHttp\Exception\InvalidArgumentException at CurlFactory.php:2591  first 2026-11-15T17:35:03  last 2026-11-15T23:03:03
+  39 Exception at ScheduleRunCommand.php:211  first 2026-11-15T17:35:03  last 2026-11-15T23:03:03
+  30 Illuminate\Database\QueryException at Connection.php:864  first 2026-11-15T17:39:03  last 2026-11-15T17:39:04
+
+The 30 QueryException lines (17:39:03-04) were caused by recreating the staging database while the scheduler was running (lab log). The other two groups are S2.

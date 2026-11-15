@@ -1,0 +1,1 @@
+{"status":"degraded","checks":{"database":{"status":"ok"},"scheduler_automation":{"status":"ok","age_seconds":223},"scheduler_dispatch":{"status":"stale","age_seconds":null},"outbox":{"status":"backlog","overdue":2140,"manual_action":0}},"checked_at":"2026-11-15T23:03:45+00:00"}
