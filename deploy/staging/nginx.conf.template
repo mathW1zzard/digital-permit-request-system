@@ -23,11 +23,12 @@ http {
     limit_req_zone $binary_remote_addr zone=health:1m rate=1r/s;
 
     upstream php_workers {
-        server 127.0.0.1:9101;
-        server 127.0.0.1:9102;
-        server 127.0.0.1:9103;
-        server 127.0.0.1:9104;
-        keepalive 8;
+        # No keepalive here (defect S1): php-cgi on Windows serves one connection at a time and holds a
+        # kept-alive connection open, so a second connection to the same worker waits until it times out.
+        server 127.0.0.1:9101 max_fails=3 fail_timeout=10s;
+        server 127.0.0.1:9102 max_fails=3 fail_timeout=10s;
+        server 127.0.0.1:9103 max_fails=3 fail_timeout=10s;
+        server 127.0.0.1:9104 max_fails=3 fail_timeout=10s;
     }
 
     server {
@@ -47,7 +48,6 @@ http {
             include "@NGINX_HOME@/conf/fastcgi_params";
             fastcgi_param SCRIPT_FILENAME "@STAGING@/current/backend/public/index.php";
             fastcgi_param HTTPS on;
-            fastcgi_keep_conn on;
             fastcgi_pass php_workers;
         }
 
@@ -55,7 +55,6 @@ http {
             include "@NGINX_HOME@/conf/fastcgi_params";
             fastcgi_param SCRIPT_FILENAME "@STAGING@/current/backend/public/index.php";
             fastcgi_param HTTPS on;
-            fastcgi_keep_conn on;
             fastcgi_read_timeout 30s;
             fastcgi_pass php_workers;
         }
