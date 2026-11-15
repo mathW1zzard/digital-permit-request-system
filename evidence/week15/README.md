@@ -2,7 +2,7 @@
 
 **Who produced this:** Claude Code (AI assistant) wrote the test collection, runner and failure scripts, ran every test and scenario, fixed the defects, and wrote the reports, all at the student's request on the student's laptop. The outputs are unedited, except that the runner replaces access tokens with `[redacted]` before saving. See `lab-log.md`.
 
-**Build:** branch `week15-hardening`. Fixes D1–D6 are in commit `24af5dc`; fix D7 and the reports are in the following commit. Tagged commit: see the tag `week15-ia6` on GitHub. Environment: `00-environment.txt` (PHP 8.4.12, Laravel 13.39.0, Node 22, Flutter 3.47.8, Windows 11). Every collection run used the HTTPS proxy at `https://localhost:8443/api` and started from `php artisan migrate:fresh --seed`.
+**Build:** branch `week15-hardening`. Fixes D1–D6 are in commit `24af5dc`; fix D7 and the reports are in `18e198e`. Tagged commit: `18e198e` (tag `week15-ia6`). Environment: `00-environment.txt` (PHP 8.4.12, Laravel 13.39.0, Node 22, Flutter 3.47.8, Windows 11). Every collection run used the HTTPS proxy at `https://localhost:8443/api` and started from `php artisan migrate:fresh --seed`.
 
 ## API collection runs (`api-tests/project32.postman_collection.json`, 48 requests)
 
