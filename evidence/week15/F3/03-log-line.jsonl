@@ -1,0 +1,1 @@
+{"message":"exception.unhandled","context":{"exception":"Illuminate\\Database\\QueryException","at":"Connection.php:864","correlation_id":"5fe7edfc-5aab-4a92-8e56-e392ba6b48fe"},"level":400,"level_name":"ERROR","channel":"local","datetime":"2026-11-15T12:46:40.509565+00:00","extra":{}}

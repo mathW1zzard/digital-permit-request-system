@@ -1,0 +1,2 @@
+Prediction: two endorsements of the same permit sent at the same moment. One succeeds (200) and the other is refused (409); the timeline holds exactly one 'endorsed' event. Note: php artisan serve handles one request at a time on Windows, so the requests are queued rather than truly parallel.
+Run note: the first script hung after F4's requests because 'wait' also waited for the gateway restarted in F2. Stopped at 14:45:36 UTC and resumed from the F4 event count.

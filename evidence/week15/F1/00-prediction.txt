@@ -1,0 +1,1 @@
+Prediction: the gateway takes 5 s, longer than the 3 s timeout. Attempt 1 is recorded as a transient failure (gateway_unreachable) and retried; attempt 2 is sent; the gateway delivers once and marks the retry duplicate_ignored.

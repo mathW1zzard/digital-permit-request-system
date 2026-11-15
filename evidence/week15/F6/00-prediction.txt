@@ -1,0 +1,1 @@
+Prediction: one user sends 65 requests within a minute. Requests 1-60 get 200; from 61 on they get 429 in the safe error shape with a Retry-After header. Other users are not affected.

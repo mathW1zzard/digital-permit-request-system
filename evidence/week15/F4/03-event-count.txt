@@ -1,0 +1,4 @@
+endorsed events: 1
+
+statuses: 200 409
+(The first count query in this file's earlier version used a relation that does not exist on PermitEvent; it was a test-script error and was re-run with Permit::events().)

@@ -1,0 +1,17 @@
+HTTP/1.1 500 Internal Server Error
+host: localhost:8443
+connection: close
+cache-control: no-store, private
+date: Sun, 15 Nov 2026 12:46:40 GMT
+content-type: application/json
+strict-transport-security: max-age=31536000
+access-control-allow-origin: http://localhost:5000
+access-control-expose-headers: X-Correlation-Id
+x-content-type-options: nosniff
+x-frame-options: DENY
+referrer-policy: no-referrer
+content-security-policy: default-src 'none'; frame-ancestors 'none'
+x-correlation-id: 5fe7edfc-5aab-4a92-8e56-e392ba6b48fe
+Transfer-Encoding: chunked
+
+{"error":{"code":"server_error","message":"Something went wrong on our side. Quote the correlation ID if you report it.","correlation_id":"5fe7edfc-5aab-4a92-8e56-e392ba6b48fe"}}

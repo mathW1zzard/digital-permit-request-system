@@ -1,0 +1,6 @@
+HTTP/1.1 429 Too Many Requests
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 0
+retry-after: 17
+x-ratelimit-reset: 1794754033
+{"error":{"code":"http_429","message":"Too many requests. Try again shortly.","correlation_id":"1d160d72-9a9f-424b-b528-9288da5efa34"}}

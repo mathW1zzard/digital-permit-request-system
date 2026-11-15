@@ -2,6 +2,7 @@
 
 use App\Exceptions\InvalidTransition;
 use App\Http\Middleware\CorrelationId;
+use App\Http\Middleware\LimitRequestSize;
 use App\Http\Middleware\RequireHttps;
 use App\Http\Middleware\RequireRole;
 use App\Http\Middleware\SecurityHeaders;
@@ -28,7 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(at: ['127.0.0.1', '::1']);
         // Global, not API-only (defect D2): unknown paths and wrong methods never reach the API group,
         // but their error responses still need a correlation ID and the security headers.
-        $middleware->prepend([CorrelationId::class, SecurityHeaders::class]);
+        $middleware->prepend([CorrelationId::class, SecurityHeaders::class, LimitRequestSize::class]);
         $middleware->api(prepend: [RequireHttps::class]);
         $middleware->alias(['role' => RequireRole::class]);
     })
@@ -71,6 +72,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     404 => 'That item was not found.',
                     409 => 'This action is not available right now.',
                     405 => 'This action is not supported here.',
+                    413 => 'The request is too large.',
                     426 => 'Use HTTPS to connect to this service.',
                     429 => 'Too many requests. Try again shortly.',
                     default => 'The request could not be completed.',

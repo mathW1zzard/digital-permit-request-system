@@ -29,7 +29,7 @@ Limits used in the demo: 4 attempts per notification, a 3 s timeout per attempt,
 | --- | --- | --- | --- |
 | 13 | `week13-sa7` | Backend API with roles and audit trail, approval routing, reminder and expiry automation (scheduler, outbox, bounded retries, manual handling), mock gateway, Flutter screens for all roles | Done |
 | 14 | `week14-sa8` | Password login with expiring tokens, HTTPS with a local TLS proxy, encrypted and tamper-checked gateway messages, encryption at rest, security tests | Done (branch `week14-security`) |
-| 15 | - | Integration testing and security hardening | Not started |
+| 15 | `week15-ia6` | Postman API test collection (48 requests) with a PHP runner, failure injection, idempotent submissions, security headers, API rate limit, request size limit, 365-day start limit | Done (branch `week15-hardening`) |
 | 16 | - | Performance, reliability and deployment | Not started |
 | 17 | - | Final integration, UAT and evaluation | Not started |
 | 18 | - | Final review, demo and technical defense | Not started |
@@ -41,6 +41,7 @@ To see the project as it was in a given week, open the tag on GitHub, or run `gi
 ```
 backend/        Laravel API
 tls-proxy/      Local HTTPS proxy and certificate script (Week 14)
+api-tests/      Postman collection, environment example and PHP runner (Week 15)
 client/         Flutter Web app
 mock-gateway/   Fake notification service for failure testing (plain PHP)
 docs/           Boundary map, diagrams, decision records, policies, API contract
@@ -124,13 +125,21 @@ cd backend && php artisan test
 cd client && flutter test
 ```
 
+**API test collection (Week 15).** With the API, gateway and proxy running and the database freshly seeded (`php artisan migrate:fresh --seed` in `backend\`), from the project folder:
+
+```
+php api-testsun-collection.php api-testsesults
+```
+
+It runs the 48 requests in `api-tests\project32.postman_collection.json` and writes `results.json` and `summary.txt` (tokens redacted). The same file can be imported into Postman with `project32.postman_environment.example.json`; type the demo password into the environment there and never save it in the file. To change the requests, edit `api-tests\build-collection.php` and run it again.
+
 ## Configuration and secrets
 
 The real `.env` file is never committed. Use `backend\.env.example` as the template. No API keys, passwords, tokens or real personal data belong in this repository, including screenshots and logs. Since Week 14, users sign in with a password and receive a token that expires after 60 minutes; the token is kept in browser memory only. Keys and the demo password live in `backend\.env`, and certificates in `certs\`; both are git-ignored. See `docs\week14\12-key-lifecycle.md`.
 
 ## Evidence
 
-Evidence is listed in `evidence\week13\README.md` and `evidence\week14\README.md`, each with a lab log. Outputs and screenshots for scenarios S1-S10 are kept in that folder. Design documents are in `docs\`, and known limitations are in `docs\09-known-limitations.md`. This is a classroom prototype and is not production-ready.
+Evidence is listed in `evidence\week13\README.md`, `evidence\week14\README.md` and `evidence\week15\README.md`, each with a lab log. Outputs and screenshots for scenarios S1-S10 are kept in that folder. Design documents are in `docs\`, and known limitations are in `docs\09-known-limitations.md`. This is a classroom prototype and is not production-ready.
 
 ## AI assistance and third-party code
 

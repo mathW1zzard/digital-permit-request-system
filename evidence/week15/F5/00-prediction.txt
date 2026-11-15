@@ -1,0 +1,1 @@
+Prediction: the same submission with the same Idempotency-Key sent twice at once. Exactly one permit is created; one response is 201 and the other 200 with Idempotent-Replayed: true, both with the same reference.

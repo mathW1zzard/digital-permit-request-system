@@ -1,0 +1,21 @@
+HTTP/1.1 100 Continue
+
+HTTP/1.1 422 Unprocessable Entity
+host: localhost:8443
+connection: close
+cache-control: no-store, private
+date: Sun, 15 Nov 2026 14:47:02 GMT
+content-type: application/json
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 56
+strict-transport-security: max-age=31536000
+access-control-allow-origin: http://localhost:5000
+access-control-expose-headers: X-Correlation-Id
+x-content-type-options: nosniff
+x-frame-options: DENY
+referrer-policy: no-referrer
+content-security-policy: default-src 'none'; frame-ancestors 'none'
+x-correlation-id: d0bf426e-3590-47ca-98dc-468fdffc6087
+Transfer-Encoding: chunked
+
+{"error":{"code":"validation_failed","message":"Some fields need attention.","details":{"purpose":["The purpose field must not be greater than 255 characters."]},"correlation_id":"d0bf426e-3590-47ca-98dc-468fdffc6087"}}

@@ -1,0 +1,19 @@
+HTTP/1.1 200 OK
+host: localhost:8443
+connection: close
+cache-control: no-store, private
+date: Sun, 15 Nov 2026 14:46:07 GMT
+content-type: application/json
+idempotent-replayed: true
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 58
+strict-transport-security: max-age=31536000
+access-control-allow-origin: http://localhost:5000
+access-control-expose-headers: X-Correlation-Id
+x-content-type-options: nosniff
+x-frame-options: DENY
+referrer-policy: no-referrer
+content-security-policy: default-src 'none'; frame-ancestors 'none'
+x-correlation-id: d9f33473-db8f-4dfd-b9b7-07630fdb3d74
+Transfer-Encoding: chunked
+

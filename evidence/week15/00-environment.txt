@@ -1,0 +1,9 @@
+Captured 2026-11-15 22:50:34 MPST
+week15-hardening
+HEAD 24af5dc Week 15: API test collection and fixes for six baseline defects
+PHP 8.4.12 (cli) (built: Aug 26 2025 21:19:14) (NTS Visual C++ 2022 x64)
+Laravel Framework 13.39.0
+post_max_size=2G
+v22.22.0
+Flutter 3.47.8 • channel stable • https://github.com/flutter/flutter.git
+OS: Windows 11 Home 10.0.26200

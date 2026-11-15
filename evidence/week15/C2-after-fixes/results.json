@@ -1,0 +1,1212 @@
+[
+    {
+        "id": "T01",
+        "folder": "Authentication",
+        "name": "T01 Requester signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 200,
+        "ms": 1099,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            },
+            {
+                "check": "has data.token",
+                "pass": true,
+                "detail": "present"
+            },
+            {
+                "check": "has data.expires_at",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "bdc57293-ac5d-4636-83ee-4385d031f338",
+        "transport_error": null,
+        "response": "{\"data\":{\"token\":\"[redacted]\",\"expires_at\":\"2026-11-15T13:43:31+00:00\",\"user\":{\"id\":2,\"name\":\"Rico Requester\",\"role\":\"requester\"}}}"
+    },
+    {
+        "id": "T02",
+        "folder": "Authentication",
+        "name": "T02 Reviewer 1 signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 200,
+        "ms": 858,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            }
+        ],
+        "correlation_id": "fb17e620-889b-4fb8-bf7c-3b90b002b73b",
+        "transport_error": null,
+        "response": "{\"data\":{\"token\":\"[redacted]\",\"expires_at\":\"2026-11-15T13:43:32+00:00\",\"user\":{\"id\":4,\"name\":\"Rita Reviewer\",\"role\":\"reviewer\"}}}"
+    },
+    {
+        "id": "T03",
+        "folder": "Authentication",
+        "name": "T03 Reviewer 2 signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 200,
+        "ms": 837,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            }
+        ],
+        "correlation_id": "688fd9d5-60a0-4815-8691-50befe2862ca",
+        "transport_error": null,
+        "response": "{\"data\":{\"token\":\"[redacted]\",\"expires_at\":\"2026-11-15T13:43:33+00:00\",\"user\":{\"id\":5,\"name\":\"Rey Reviewer\",\"role\":\"reviewer\"}}}"
+    },
+    {
+        "id": "T04",
+        "folder": "Authentication",
+        "name": "T04 Approver signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 200,
+        "ms": 821,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            }
+        ],
+        "correlation_id": "49203222-b242-444b-a662-2dbcddeebc88",
+        "transport_error": null,
+        "response": "{\"data\":{\"token\":\"[redacted]\",\"expires_at\":\"2026-11-15T13:43:34+00:00\",\"user\":{\"id\":6,\"name\":\"Alma Approver\",\"role\":\"approver\"}}}"
+    },
+    {
+        "id": "T05",
+        "folder": "Authentication",
+        "name": "T05 Admin signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 200,
+        "ms": 832,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            }
+        ],
+        "correlation_id": "4ad0e483-8331-4a22-90bb-a72ded18007e",
+        "transport_error": null,
+        "response": "{\"data\":{\"token\":\"[redacted]\",\"expires_at\":\"2026-11-15T13:43:34+00:00\",\"user\":{\"id\":1,\"name\":\"Ana Admin\",\"role\":\"admin\"}}}"
+    },
+    {
+        "id": "T06",
+        "folder": "Authentication",
+        "name": "T06 Inspector signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 200,
+        "ms": 849,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            }
+        ],
+        "correlation_id": "0390617e-418a-4836-a4d3-8761d1a77d71",
+        "transport_error": null,
+        "response": "{\"data\":{\"token\":\"[redacted]\",\"expires_at\":\"2026-11-15T13:43:35+00:00\",\"user\":{\"id\":8,\"name\":\"Ines Inspector\",\"role\":\"inspector\"}}}"
+    },
+    {
+        "id": "T07",
+        "folder": "Authentication",
+        "name": "T07 Second requester signs in",
+        "method": "POST",
+        "path": "/login",
+        "status": 200,
+        "ms": 869,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            }
+        ],
+        "correlation_id": "545df2c6-77ea-4536-aea6-c5450193d8a7",
+        "transport_error": null,
+        "response": "{\"data\":{\"token\":\"[redacted]\",\"expires_at\":\"2026-11-15T13:43:36+00:00\",\"user\":{\"id\":3,\"name\":\"Bea Bounce\",\"role\":\"requester\"}}}"
+    },
+    {
+        "id": "T08",
+        "folder": "Authentication",
+        "name": "T08 Wrong password is refused without saying which part was wrong",
+        "method": "POST",
+        "path": "/login",
+        "status": 401,
+        "ms": 879,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 401",
+                "pass": true,
+                "detail": "got 401"
+            },
+            {
+                "check": "error.code is \"invalid_credentials\"",
+                "pass": true,
+                "detail": "got \"invalid_credentials\""
+            }
+        ],
+        "correlation_id": "0df14df8-23ff-4d9a-b10a-41fa69b5e2b1",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"invalid_credentials\",\"message\":\"Email or password is incorrect.\",\"correlation_id\":\"0df14df8-23ff-4d9a-b10a-41fa69b5e2b1\"}}"
+    },
+    {
+        "id": "T09",
+        "folder": "Authentication",
+        "name": "T09 Missing login fields",
+        "method": "POST",
+        "path": "/login",
+        "status": 422,
+        "ms": 375,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": true,
+                "detail": "got 422"
+            },
+            {
+                "check": "has error.details.email",
+                "pass": true,
+                "detail": "present"
+            },
+            {
+                "check": "has error.details.password",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "454a5e58-da68-4f47-847f-969638d2c97d",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"validation_failed\",\"message\":\"Some fields need attention.\",\"details\":{\"email\":[\"The email field is required.\"],\"password\":[\"The password field is required.\"]},\"correlation_id\":\"454a5e58-da68-4f47-847f-969638d2c97d\"}}"
+    },
+    {
+        "id": "T10",
+        "folder": "Authentication",
+        "name": "T10 No token",
+        "method": "GET",
+        "path": "/permits",
+        "status": 401,
+        "ms": 349,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 401",
+                "pass": true,
+                "detail": "got 401"
+            },
+            {
+                "check": "error.code is \"unauthenticated\"",
+                "pass": true,
+                "detail": "got \"unauthenticated\""
+            },
+            {
+                "check": "has error.correlation_id",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "83616e69-42a5-43b1-9bf0-71db3b9fc4ba",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"83616e69-42a5-43b1-9bf0-71db3b9fc4ba\"}}"
+    },
+    {
+        "id": "T11",
+        "folder": "Authentication",
+        "name": "T11 Made-up token",
+        "method": "GET",
+        "path": "/permits",
+        "status": 401,
+        "ms": 363,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 401",
+                "pass": true,
+                "detail": "got 401"
+            }
+        ],
+        "correlation_id": "6c6bae6a-b7a2-40e4-a600-fde941a1eeff",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"unauthenticated\",\"message\":\"Sign in to continue.\",\"correlation_id\":\"6c6bae6a-b7a2-40e4-a600-fde941a1eeff\"}}"
+    },
+    {
+        "id": "T12",
+        "folder": "Contract",
+        "name": "T12 Permit types list",
+        "method": "GET",
+        "path": "/permit-types",
+        "status": 200,
+        "ms": 404,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            },
+            {
+                "check": "has data.0.id",
+                "pass": true,
+                "detail": "present"
+            },
+            {
+                "check": "has data.0.validity_days",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "2b370164-f7eb-42fa-a06c-6af314b4829b",
+        "transport_error": null,
+        "response": "{\"data\":[{\"id\":1,\"code\":\"FAC-USE\",\"name\":\"Facility Use Permit\",\"validity_days\":30},{\"id\":2,\"code\":\"HOT-WORK\",\"name\":\"Hot Work Permit\",\"validity_days\":7},{\"id\":3,\"code\":\"MINOR-CONST\",\"name\":\"Minor Construction Permit\",\"validity_days\":60}]}"
+    },
+    {
+        "id": "T13",
+        "folder": "Contract",
+        "name": "T13 Current user, without email",
+        "method": "GET",
+        "path": "/me",
+        "status": 200,
+        "ms": 390,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            },
+            {
+                "check": "data.role is \"requester\"",
+                "pass": true,
+                "detail": "got \"requester\""
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            },
+            {
+                "check": "body does not contain @",
+                "pass": true,
+                "detail": "absent"
+            }
+        ],
+        "correlation_id": "5b99846b-8458-47bc-a3af-be08b83b9abc",
+        "transport_error": null,
+        "response": "{\"data\":{\"id\":2,\"name\":\"Rico Requester\",\"role\":\"requester\"}}"
+    },
+    {
+        "id": "T14",
+        "folder": "Contract",
+        "name": "T14 Submit a valid permit",
+        "method": "POST",
+        "path": "/permits",
+        "status": 201,
+        "ms": 505,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 201",
+                "pass": true,
+                "detail": "got 201"
+            },
+            {
+                "check": "data.status is \"under_review\"",
+                "pass": true,
+                "detail": "got \"under_review\""
+            },
+            {
+                "check": "has data.reference",
+                "pass": true,
+                "detail": "present"
+            },
+            {
+                "check": "has data.reviewer",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "01881354-9f20-44e5-b55a-c5dad5e8ddad",
+        "transport_error": null,
+        "response": "{\"data\":{\"reference\":\"PRM-20261115-YYZF8\",\"type\":{\"id\":1,\"code\":\"FAC-USE\",\"name\":\"Facility Use Permit\"},\"purpose\":\"Basketball clinic for first-year students\",\"location\":\"Gym A\",\"details\":null,\"requested_start\":\"2026-11-16\",\"status\":\"under_review\",\"revision_count\":0,\"reviewer\":\"Rita Reviewer\",\"approver\":null,\"valid_from\":null,\"valid_until\":null,\"needs_manual_action\":false,\"manual_action_reason\":null}}"
+    },
+    {
+        "id": "T15",
+        "folder": "Contract",
+        "name": "T15 Read the permit with timeline and deliveries",
+        "method": "GET",
+        "path": "/permits/PRM-20261115-YYZF8",
+        "status": 200,
+        "ms": 426,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            },
+            {
+                "check": "has data.events.0.type",
+                "pass": true,
+                "detail": "present"
+            },
+            {
+                "check": "has data.notifications.0.status",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "4cbd1cf3-aa96-4134-ba36-abcc73572d88",
+        "transport_error": null,
+        "response": "{\"data\":{\"reference\":\"PRM-20261115-YYZF8\",\"type\":{\"id\":1,\"code\":\"FAC-USE\",\"name\":\"Facility Use Permit\"},\"purpose\":\"Basketball clinic for first-year students\",\"location\":\"Gym A\",\"details\":null,\"requested_start\":\"2026-11-16\",\"status\":\"under_review\",\"revision_count\":0,\"reviewer\":\"Rita Reviewer\",\"approver\":null,\"valid_from\":null,\"valid_until\":null,\"needs_manual_action\":false,\"manual_action_reason\":null,\"events\":[{\"type\":\"submitted\",\"from\":null,\"to\":\"under_review\",\"at\":\"2026-11-15T12:43:39+00:00\"},{\"type\":\"routed_to_reviewer\",\"from\":null,\"to\":null,\"at\":\"2026-11-15T12:43:39+00:00\"}],\"notifications\":"
+    },
+    {
+        "id": "T16",
+        "folder": "Contract",
+        "name": "T16 Permit list",
+        "method": "GET",
+        "path": "/permits",
+        "status": 200,
+        "ms": 392,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            },
+            {
+                "check": "has data.0.reference",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "9a961974-9165-4ec7-844c-3f216afd9fa1",
+        "transport_error": null,
+        "response": "{\"data\":[{\"reference\":\"PRM-20261115-YYZF8\",\"type\":{\"id\":1,\"code\":\"FAC-USE\",\"name\":\"Facility Use Permit\"},\"purpose\":\"Basketball clinic for first-year students\",\"location\":\"Gym A\",\"details\":null,\"requested_start\":\"2026-11-16\",\"status\":\"under_review\",\"revision_count\":0,\"reviewer\":\"Rita Reviewer\",\"approver\":null,\"valid_from\":null,\"valid_until\":null,\"needs_manual_action\":false,\"manual_action_reason\":null}]}"
+    },
+    {
+        "id": "T17",
+        "folder": "Validation",
+        "name": "T17 Purpose 9 characters (below minimum)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 422,
+        "ms": 449,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": true,
+                "detail": "got 422"
+            },
+            {
+                "check": "has error.details.purpose",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "b17b5b70-872c-48c6-9bb1-927b23458041",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"validation_failed\",\"message\":\"Some fields need attention.\",\"details\":{\"purpose\":[\"The purpose field must be at least 10 characters.\"]},\"correlation_id\":\"b17b5b70-872c-48c6-9bb1-927b23458041\"}}"
+    },
+    {
+        "id": "T18",
+        "folder": "Validation",
+        "name": "T18 Purpose 10 characters (minimum)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 201,
+        "ms": 462,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 201",
+                "pass": true,
+                "detail": "got 201"
+            }
+        ],
+        "correlation_id": "efcb1c1c-b675-4fe8-8439-113be6f2069c",
+        "transport_error": null,
+        "response": "{\"data\":{\"reference\":\"PRM-20261115-0GN9Y\",\"type\":{\"id\":1,\"code\":\"FAC-USE\",\"name\":\"Facility Use Permit\"},\"purpose\":\"bbbbbbbbbb\",\"location\":\"Gym A\",\"details\":null,\"requested_start\":\"2026-11-16\",\"status\":\"under_review\",\"revision_count\":0,\"reviewer\":\"Rey Reviewer\",\"approver\":null,\"valid_from\":null,\"valid_until\":null,\"needs_manual_action\":false,\"manual_action_reason\":null}}"
+    },
+    {
+        "id": "T19",
+        "folder": "Validation",
+        "name": "T19 Purpose 256 characters (above maximum)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 422,
+        "ms": 473,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": true,
+                "detail": "got 422"
+            },
+            {
+                "check": "has error.details.purpose",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "c0b6c100-f920-4891-a198-b7c42dda75f9",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"validation_failed\",\"message\":\"Some fields need attention.\",\"details\":{\"purpose\":[\"The purpose field must not be greater than 255 characters.\"]},\"correlation_id\":\"c0b6c100-f920-4891-a198-b7c42dda75f9\"}}"
+    },
+    {
+        "id": "T20",
+        "folder": "Validation",
+        "name": "T20 Location 121 characters (above maximum)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 422,
+        "ms": 426,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": true,
+                "detail": "got 422"
+            },
+            {
+                "check": "has error.details.location",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "16603246-c1a3-4fc9-a077-7d40273d15ad",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"validation_failed\",\"message\":\"Some fields need attention.\",\"details\":{\"location\":[\"The location field must not be greater than 120 characters.\"]},\"correlation_id\":\"16603246-c1a3-4fc9-a077-7d40273d15ad\"}}"
+    },
+    {
+        "id": "T21",
+        "folder": "Validation",
+        "name": "T21 Start date yesterday",
+        "method": "POST",
+        "path": "/permits",
+        "status": 422,
+        "ms": 419,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": true,
+                "detail": "got 422"
+            },
+            {
+                "check": "has error.details.requested_start",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "5d0c1d19-709b-43e1-ab5d-e9fc7c34b936",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"validation_failed\",\"message\":\"Some fields need attention.\",\"details\":{\"requested_start\":[\"The requested start field must be a date after or equal to today.\"]},\"correlation_id\":\"5d0c1d19-709b-43e1-ab5d-e9fc7c34b936\"}}"
+    },
+    {
+        "id": "T22",
+        "folder": "Validation",
+        "name": "T22 Start date today (boundary, allowed)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 201,
+        "ms": 473,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 201",
+                "pass": true,
+                "detail": "got 201"
+            }
+        ],
+        "correlation_id": "400728c9-a394-49cf-9d26-21e755c179c2",
+        "transport_error": null,
+        "response": "{\"data\":{\"reference\":\"PRM-20261115-9DNFR\",\"type\":{\"id\":1,\"code\":\"FAC-USE\",\"name\":\"Facility Use Permit\"},\"purpose\":\"Basketball clinic for first-year students\",\"location\":\"Gym A\",\"details\":null,\"requested_start\":\"2026-11-15\",\"status\":\"under_review\",\"revision_count\":0,\"reviewer\":\"Rita Reviewer\",\"approver\":null,\"valid_from\":null,\"valid_until\":null,\"needs_manual_action\":false,\"manual_action_reason\":null}}"
+    },
+    {
+        "id": "T23",
+        "folder": "Validation",
+        "name": "T23 Start date 366 days ahead (the form allows at most 365)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 422,
+        "ms": 429,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": true,
+                "detail": "got 422"
+            },
+            {
+                "check": "has error.details.requested_start",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "fd9ba9f9-cb23-4f17-9dcc-e374f84d537d",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"validation_failed\",\"message\":\"Some fields need attention.\",\"details\":{\"requested_start\":[\"The requested start field must be a date before or equal to 2027-11-15.\"]},\"correlation_id\":\"fd9ba9f9-cb23-4f17-9dcc-e374f84d537d\"}}"
+    },
+    {
+        "id": "T24",
+        "folder": "Validation",
+        "name": "T24 Permit type that does not exist",
+        "method": "POST",
+        "path": "/permits",
+        "status": 422,
+        "ms": 435,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": true,
+                "detail": "got 422"
+            },
+            {
+                "check": "has error.details.permit_type_id",
+                "pass": true,
+                "detail": "present"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": "af6614af-0e18-42a1-8a88-dc94650d027e",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"validation_failed\",\"message\":\"Some fields need attention.\",\"details\":{\"permit_type_id\":[\"The selected permit type id is invalid.\"]},\"correlation_id\":\"af6614af-0e18-42a1-8a88-dc94650d027e\"}}"
+    },
+    {
+        "id": "T25",
+        "folder": "Validation",
+        "name": "T25 Wrong data type for permit type",
+        "method": "POST",
+        "path": "/permits",
+        "status": 422,
+        "ms": 414,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": true,
+                "detail": "got 422"
+            },
+            {
+                "check": "has error.details.permit_type_id",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "3f1a9fc0-8e66-490b-a619-568e1f7e6735",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"validation_failed\",\"message\":\"Some fields need attention.\",\"details\":{\"permit_type_id\":[\"The permit type id field must be an integer.\"]},\"correlation_id\":\"3f1a9fc0-8e66-490b-a619-568e1f7e6735\"}}"
+    },
+    {
+        "id": "T26",
+        "folder": "Validation",
+        "name": "T26 Malformed JSON body",
+        "method": "POST",
+        "path": "/permits",
+        "status": 422,
+        "ms": 435,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": true,
+                "detail": "got 422"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": "2193647b-8677-49ef-8906-3e56bc62f25d",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"validation_failed\",\"message\":\"Some fields need attention.\",\"details\":{\"permit_type_id\":[\"The permit type id field is required.\"],\"purpose\":[\"The purpose field is required.\"],\"location\":[\"The location field is required.\"],\"requested_start\":[\"The requested start field is required.\"]},\"correlation_id\":\"2193647b-8677-49ef-8906-3e56bc62f25d\"}}"
+    },
+    {
+        "id": "T27",
+        "folder": "Validation",
+        "name": "T27 Very large purpose (100,000 characters)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 422,
+        "ms": 437,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": true,
+                "detail": "got 422"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": "d7dd157a-9b8d-4e07-8846-3dce976f6b92",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"validation_failed\",\"message\":\"Some fields need attention.\",\"details\":{\"purpose\":[\"The purpose field must not be greater than 255 characters.\"]},\"correlation_id\":\"d7dd157a-9b8d-4e07-8846-3dce976f6b92\"}}"
+    },
+    {
+        "id": "T28",
+        "folder": "Authorization",
+        "name": "T28 Reviewer tries to submit a permit",
+        "method": "POST",
+        "path": "/permits",
+        "status": 403,
+        "ms": 419,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": true,
+                "detail": "got 403"
+            }
+        ],
+        "correlation_id": "abc5d7b3-11db-4ed1-837d-98ea8f246062",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"http_403\",\"message\":\"You are not allowed to do this.\",\"correlation_id\":\"abc5d7b3-11db-4ed1-837d-98ea8f246062\"}}"
+    },
+    {
+        "id": "T29",
+        "folder": "Authorization",
+        "name": "T29 Requester tries to approve",
+        "method": "POST",
+        "path": "/permits/PRM-20261115-YYZF8/approve",
+        "status": 403,
+        "ms": 423,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": true,
+                "detail": "got 403"
+            }
+        ],
+        "correlation_id": "38a23f84-5b88-499c-9fad-9b01b6822207",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"http_403\",\"message\":\"You are not allowed to do this.\",\"correlation_id\":\"38a23f84-5b88-499c-9fad-9b01b6822207\"}}"
+    },
+    {
+        "id": "T30",
+        "folder": "Authorization",
+        "name": "T30 Another requester reads someone else's permit",
+        "method": "GET",
+        "path": "/permits/PRM-20261115-YYZF8",
+        "status": 403,
+        "ms": 419,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": true,
+                "detail": "got 403"
+            }
+        ],
+        "correlation_id": "5a76931a-f522-4af6-acad-44ff9c11483c",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"http_403\",\"message\":\"You are not allowed to do this.\",\"correlation_id\":\"5a76931a-f522-4af6-acad-44ff9c11483c\"}}"
+    },
+    {
+        "id": "T31",
+        "folder": "Authorization",
+        "name": "T31 Reviewer who is not assigned tries to endorse",
+        "method": "POST",
+        "path": "/permits/PRM-20261115-YYZF8/endorse",
+        "status": 403,
+        "ms": 510,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": true,
+                "detail": "got 403"
+            }
+        ],
+        "correlation_id": "424434ce-cc2c-40ed-82ed-e6d1c8e9db21",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"http_403\",\"message\":\"You are not allowed to do this.\",\"correlation_id\":\"424434ce-cc2c-40ed-82ed-e6d1c8e9db21\"}}"
+    },
+    {
+        "id": "T32",
+        "folder": "Authorization",
+        "name": "T32 Requester opens the admin list",
+        "method": "GET",
+        "path": "/admin/exceptions",
+        "status": 403,
+        "ms": 539,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": true,
+                "detail": "got 403"
+            }
+        ],
+        "correlation_id": "6b393718-616e-4516-b331-6e712b195b23",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"http_403\",\"message\":\"You are not allowed to do this.\",\"correlation_id\":\"6b393718-616e-4516-b331-6e712b195b23\"}}"
+    },
+    {
+        "id": "T33",
+        "folder": "Authorization",
+        "name": "T33 Requester calls the inspector check",
+        "method": "GET",
+        "path": "/permits/PRM-20261115-YYZF8/verify",
+        "status": 403,
+        "ms": 459,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 403",
+                "pass": true,
+                "detail": "got 403"
+            }
+        ],
+        "correlation_id": "58f24b7a-6af3-4403-a97b-d4d174ae3def",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"http_403\",\"message\":\"You are not allowed to do this.\",\"correlation_id\":\"58f24b7a-6af3-4403-a97b-d4d174ae3def\"}}"
+    },
+    {
+        "id": "T34",
+        "folder": "Not found",
+        "name": "T34 Unknown permit reference",
+        "method": "GET",
+        "path": "/permits/PRM-NOPE",
+        "status": 404,
+        "ms": 389,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 404",
+                "pass": true,
+                "detail": "got 404"
+            },
+            {
+                "check": "error.code is \"http_404\"",
+                "pass": true,
+                "detail": "got \"http_404\""
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": "a545d1fa-3a71-47bc-9419-a770dd05d28b",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"http_404\",\"message\":\"That item was not found.\",\"correlation_id\":\"a545d1fa-3a71-47bc-9419-a770dd05d28b\"}}"
+    },
+    {
+        "id": "T35",
+        "folder": "Not found",
+        "name": "T35 Unknown API path",
+        "method": "GET",
+        "path": "/no-such-endpoint",
+        "status": 404,
+        "ms": 330,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 404",
+                "pass": true,
+                "detail": "got 404"
+            },
+            {
+                "check": "has error.correlation_id",
+                "pass": true,
+                "detail": "present"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": "7a8e06cc-e886-4a54-bfb6-c3df2bf6be63",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"http_404\",\"message\":\"That item was not found.\",\"correlation_id\":\"7a8e06cc-e886-4a54-bfb6-c3df2bf6be63\"}}"
+    },
+    {
+        "id": "T36",
+        "folder": "Not found",
+        "name": "T36 Method not allowed",
+        "method": "DELETE",
+        "path": "/permits/PRM-20261115-YYZF8",
+        "status": 405,
+        "ms": 334,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 405",
+                "pass": true,
+                "detail": "got 405"
+            },
+            {
+                "check": "has error.correlation_id",
+                "pass": true,
+                "detail": "present"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": "fe40ad33-9fed-49ec-bc0d-353d24a980e1",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"http_405\",\"message\":\"This action is not supported here.\",\"correlation_id\":\"fe40ad33-9fed-49ec-bc0d-353d24a980e1\"}}"
+    },
+    {
+        "id": "T37",
+        "folder": "Duplicates",
+        "name": "T37 Assigned reviewer endorses",
+        "method": "POST",
+        "path": "/permits/PRM-20261115-YYZF8/endorse",
+        "status": 200,
+        "ms": 464,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            },
+            {
+                "check": "data.status is \"pending_approval\"",
+                "pass": true,
+                "detail": "got \"pending_approval\""
+            }
+        ],
+        "correlation_id": "1b905edd-ee9e-4903-9782-35d27d8cc9b1",
+        "transport_error": null,
+        "response": "{\"data\":{\"reference\":\"PRM-20261115-YYZF8\",\"type\":{\"id\":1,\"code\":\"FAC-USE\",\"name\":\"Facility Use Permit\"},\"purpose\":\"Basketball clinic for first-year students\",\"location\":\"Gym A\",\"details\":null,\"requested_start\":\"2026-11-16\",\"status\":\"pending_approval\",\"revision_count\":0,\"reviewer\":\"Rita Reviewer\",\"approver\":\"Alma Approver\",\"valid_from\":null,\"valid_until\":null,\"needs_manual_action\":false,\"manual_action_reason\":null}}"
+    },
+    {
+        "id": "T38",
+        "folder": "Duplicates",
+        "name": "T38 Same endorsement again",
+        "method": "POST",
+        "path": "/permits/PRM-20261115-YYZF8/endorse",
+        "status": 409,
+        "ms": 419,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 409",
+                "pass": true,
+                "detail": "got 409"
+            },
+            {
+                "check": "error.code is \"invalid_transition\"",
+                "pass": true,
+                "detail": "got \"invalid_transition\""
+            }
+        ],
+        "correlation_id": "cf665b35-be0b-406a-b905-dba54fce78e6",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"invalid_transition\",\"message\":\"This action is not available while the permit is pending approval.\",\"correlation_id\":\"cf665b35-be0b-406a-b905-dba54fce78e6\"}}"
+    },
+    {
+        "id": "T39",
+        "folder": "Duplicates",
+        "name": "T39 Submit with an Idempotency-Key",
+        "method": "POST",
+        "path": "/permits",
+        "status": 201,
+        "ms": 485,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 201",
+                "pass": true,
+                "detail": "got 201"
+            }
+        ],
+        "correlation_id": "2c036128-f260-4e0f-b8fe-7d9ba4380eba",
+        "transport_error": null,
+        "response": "{\"data\":{\"reference\":\"PRM-20261115-IWSVY\",\"type\":{\"id\":1,\"code\":\"FAC-USE\",\"name\":\"Facility Use Permit\"},\"purpose\":\"Idempotency check 1794746610464\",\"location\":\"Gym A\",\"details\":null,\"requested_start\":\"2026-11-16\",\"status\":\"under_review\",\"revision_count\":0,\"reviewer\":\"Rita Reviewer\",\"approver\":null,\"valid_from\":null,\"valid_until\":null,\"needs_manual_action\":false,\"manual_action_reason\":null}}"
+    },
+    {
+        "id": "T40",
+        "folder": "Duplicates",
+        "name": "T40 Same submission resent (double click or retry)",
+        "method": "POST",
+        "path": "/permits",
+        "status": 200,
+        "ms": 448,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            },
+            {
+                "check": "data.reference equals dupRef",
+                "pass": true,
+                "detail": "got \"PRM-20261115-IWSVY\""
+            }
+        ],
+        "correlation_id": "2efbb228-a29c-429b-bbdf-9aa8c9144fe9",
+        "transport_error": null,
+        "response": "{\"data\":{\"reference\":\"PRM-20261115-IWSVY\",\"type\":{\"id\":1,\"code\":\"FAC-USE\",\"name\":\"Facility Use Permit\"},\"purpose\":\"Idempotency check 1794746610464\",\"location\":\"Gym A\",\"details\":null,\"requested_start\":\"2026-11-16\",\"status\":\"under_review\",\"revision_count\":0,\"reviewer\":\"Rita Reviewer\",\"approver\":null,\"valid_from\":null,\"valid_until\":null,\"needs_manual_action\":false,\"manual_action_reason\":null}}"
+    },
+    {
+        "id": "T41",
+        "folder": "Duplicates",
+        "name": "T41 Same key reused for a different submission",
+        "method": "POST",
+        "path": "/permits",
+        "status": 422,
+        "ms": 428,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 422",
+                "pass": true,
+                "detail": "got 422"
+            },
+            {
+                "check": "error.code is \"idempotency_key_reused\"",
+                "pass": true,
+                "detail": "got \"idempotency_key_reused\""
+            }
+        ],
+        "correlation_id": "46097a47-78df-41dd-9f57-884439a84ee3",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"idempotency_key_reused\",\"message\":\"This request key was already used for a different submission.\",\"correlation_id\":\"46097a47-78df-41dd-9f57-884439a84ee3\"}}"
+    },
+    {
+        "id": "T42",
+        "folder": "Hardening",
+        "name": "T42 Security headers on API responses",
+        "method": "GET",
+        "path": "/me",
+        "status": 200,
+        "ms": 418,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            },
+            {
+                "check": "header X-Content-Type-Options is nosniff",
+                "pass": true,
+                "detail": "got \"nosniff\""
+            },
+            {
+                "check": "header X-Frame-Options is DENY",
+                "pass": true,
+                "detail": "got \"DENY\""
+            },
+            {
+                "check": "header Referrer-Policy is no-referrer",
+                "pass": true,
+                "detail": "got \"no-referrer\""
+            },
+            {
+                "check": "header Content-Security-Policy present",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "3005105e-58f8-4af3-a46e-2ee47a8fbc67",
+        "transport_error": null,
+        "response": "{\"data\":{\"id\":2,\"name\":\"Rico Requester\",\"role\":\"requester\"}}"
+    },
+    {
+        "id": "T43",
+        "folder": "Hardening",
+        "name": "T43 No server version disclosed",
+        "method": "GET",
+        "path": "/me",
+        "status": 200,
+        "ms": 376,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            },
+            {
+                "check": "no X-Powered-By header",
+                "pass": true,
+                "detail": "absent"
+            }
+        ],
+        "correlation_id": "fc7c396d-e693-4181-ad9b-727b9061ec7e",
+        "transport_error": null,
+        "response": "{\"data\":{\"id\":2,\"name\":\"Rico Requester\",\"role\":\"requester\"}}"
+    },
+    {
+        "id": "T44",
+        "folder": "Hardening",
+        "name": "T44 Error responses carry a correlation ID and no internals",
+        "method": "POST",
+        "path": "/permits/PRM-NOPE/approve",
+        "status": 404,
+        "ms": 419,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 404",
+                "pass": true,
+                "detail": "got 404"
+            },
+            {
+                "check": "has error.correlation_id",
+                "pass": true,
+                "detail": "present"
+            },
+            {
+                "check": "no internals leaked",
+                "pass": true,
+                "detail": "clean"
+            }
+        ],
+        "correlation_id": "a5f523db-63e9-47b5-bc8a-68bdabf54335",
+        "transport_error": null,
+        "response": "{\"error\":{\"code\":\"http_404\",\"message\":\"That item was not found.\",\"correlation_id\":\"a5f523db-63e9-47b5-bc8a-68bdabf54335\"}}"
+    },
+    {
+        "id": "T45",
+        "folder": "Hardening",
+        "name": "T45 Rate-limit headers on authenticated calls",
+        "method": "GET",
+        "path": "/me",
+        "status": 200,
+        "ms": 399,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            },
+            {
+                "check": "header X-RateLimit-Limit present",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "42b33003-3d0f-4b89-942d-825c42cf2c3b",
+        "transport_error": null,
+        "response": "{\"data\":{\"id\":2,\"name\":\"Rico Requester\",\"role\":\"requester\"}}"
+    },
+    {
+        "id": "T46",
+        "folder": "Recovery",
+        "name": "T46 Approver issues the endorsed permit",
+        "method": "POST",
+        "path": "/permits/PRM-20261115-YYZF8/approve",
+        "status": 200,
+        "ms": 449,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            },
+            {
+                "check": "data.status is \"issued\"",
+                "pass": true,
+                "detail": "got \"issued\""
+            }
+        ],
+        "correlation_id": "e2b8c4d8-7990-41c0-a081-6f625df969c5",
+        "transport_error": null,
+        "response": "{\"data\":{\"reference\":\"PRM-20261115-YYZF8\",\"type\":{\"id\":1,\"code\":\"FAC-USE\",\"name\":\"Facility Use Permit\"},\"purpose\":\"Basketball clinic for first-year students\",\"location\":\"Gym A\",\"details\":null,\"requested_start\":\"2026-11-16\",\"status\":\"issued\",\"revision_count\":0,\"reviewer\":\"Rita Reviewer\",\"approver\":\"Alma Approver\",\"valid_from\":\"2026-11-15T12:43:53+00:00\",\"valid_until\":\"2026-12-15T12:43:53+00:00\",\"needs_manual_action\":false,\"manual_action_reason\":null}}"
+    },
+    {
+        "id": "T47",
+        "folder": "Recovery",
+        "name": "T47 Inspector verifies it",
+        "method": "GET",
+        "path": "/permits/PRM-20261115-YYZF8/verify",
+        "status": 200,
+        "ms": 422,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            },
+            {
+                "check": "data.valid is true",
+                "pass": true,
+                "detail": "got true"
+            }
+        ],
+        "correlation_id": "a0f90684-2ce4-4b6e-8f43-f05c0fa5593b",
+        "transport_error": null,
+        "response": "{\"data\":{\"reference\":\"PRM-20261115-YYZF8\",\"status\":\"issued\",\"valid\":true,\"valid_until\":\"2026-12-15T12:43:53+00:00\"}}"
+    },
+    {
+        "id": "T48",
+        "folder": "Recovery",
+        "name": "T48 Admin exception list loads",
+        "method": "GET",
+        "path": "/admin/exceptions",
+        "status": 200,
+        "ms": 402,
+        "pass": true,
+        "checks": [
+            {
+                "check": "status 200",
+                "pass": true,
+                "detail": "got 200"
+            },
+            {
+                "check": "has data.notifications",
+                "pass": true,
+                "detail": "present"
+            },
+            {
+                "check": "has data.permits",
+                "pass": true,
+                "detail": "present"
+            }
+        ],
+        "correlation_id": "f19c7004-7588-4342-a5e8-369685cf11ee",
+        "transport_error": null,
+        "response": "{\"data\":{\"notifications\":[],\"permits\":[]}}"
+    }
+]

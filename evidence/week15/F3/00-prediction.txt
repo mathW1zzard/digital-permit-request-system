@@ -1,0 +1,1 @@
+Prediction: with the database file missing, a signed-in call fails with a 500 in the safe error shape (code server_error, a correlation ID, no SQL, path or stack trace). The log records only the exception class and location. After the file is restored, the same call works again without restarting anything.

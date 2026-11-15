@@ -7,7 +7,7 @@ use App\Models\PermitType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-/** Week 15: one test per hardening fix (D1-D6), so each fix stays fixed. */
+/** Week 15: one test per hardening fix (D1-D7), so each fix stays fixed. */
 class HardeningTest extends TestCase
 {
     use RefreshDatabase;
@@ -81,5 +81,19 @@ class HardeningTest extends TestCase
             $client->getJson('/api/me')->assertOk()->assertHeader('X-RateLimit-Limit', '3');
         }
         $client->getJson('/api/me')->assertStatus(429)->assertJsonPath('error.code', 'http_429')->assertHeader('Retry-After');
+    }
+    public function test_d7_oversized_bodies_are_refused_with_413_and_nothing_is_saved(): void
+    {
+        config(["permit.max_body_kb" => 4]);
+        $before = Permit::count();
+
+        $this->asRequester()->postJson("/api/permits", $this->body(["purpose" => str_repeat("x", 5000)]))
+            ->assertStatus(413)
+            ->assertJsonPath("error.code", "http_413")
+            ->assertJsonStructure(["error" => ["correlation_id"]]);
+
+        $this->assertSame($before, Permit::count());
+        // A normal request under the limit still works.
+        $this->asRequester()->postJson("/api/permits", $this->body())->assertCreated();
     }
 }

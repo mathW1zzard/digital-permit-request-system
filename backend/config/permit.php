@@ -13,6 +13,9 @@ return [
     // Week 15: the furthest ahead a permit may start; the Flutter form uses the same limit.
     'max_days_ahead' => 365,
 
+    // Week 15: largest request body accepted, in KB (defect D7). A permit request is under 2 KB.
+    'max_body_kb' => (int) env('MAX_BODY_KB', 1024),
+
     'gateway' => [
         'url' => env('GATEWAY_URL', 'https://127.0.0.1:9443/send'),
         'api_key' => env('GATEWAY_API_KEY', ''),

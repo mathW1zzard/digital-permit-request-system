@@ -1,0 +1,19 @@
+HTTP/1.1 201 Created
+host: localhost:8443
+connection: close
+cache-control: no-store, private
+date: Sun, 15 Nov 2026 14:46:06 GMT
+content-type: application/json
+idempotent-replayed: false
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 59
+strict-transport-security: max-age=31536000
+access-control-allow-origin: http://localhost:5000
+access-control-expose-headers: X-Correlation-Id
+x-content-type-options: nosniff
+x-frame-options: DENY
+referrer-policy: no-referrer
+content-security-policy: default-src 'none'; frame-ancestors 'none'
+x-correlation-id: 5149e849-4342-4b80-a41e-5d5f9db33a60
+Transfer-Encoding: chunked
+

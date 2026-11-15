@@ -1,0 +1,1 @@
+Prediction: with the gateway stopped, the notification is retried with growing waits and handed to a person after 4 attempts (transient_exhausted, gateway_unreachable). After the gateway is back and an admin requeues it, it is sent once.

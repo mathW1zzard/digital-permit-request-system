@@ -1,0 +1,1 @@
+{"data":{"notifications":[{"id":2,"permit":"PRM-20261115-HGDTT","kind":"review_assigned","attempts":4,"failure":"transient_exhausted","detail":"gateway_http_502","since":"2026-11-15T12:46:31+00:00"}],"permits":[]}}

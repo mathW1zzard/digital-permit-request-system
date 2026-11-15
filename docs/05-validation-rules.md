@@ -8,5 +8,5 @@ The server is the authority. The Flutter form applies the same rules so users se
 | `purpose` | Required; 10-255 characters |
 | `location` | Required; at most 120 characters |
 | `details` | Optional; at most 2000 characters |
-| `requested_start` | Required; format YYYY-MM-DD; today or later |
+| `requested_start` | Required; format YYYY-MM-DD; today up to 365 days ahead (server limit added in Week 15, defect D1) |
 | `comment` (revision), `reason` (rejection) | Required; 5-500 characters |
