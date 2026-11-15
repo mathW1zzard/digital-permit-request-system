@@ -8,7 +8,7 @@
 
 The outputs are unedited. The load tool never records passwords or tokens, and staging paths in the ops log are shortened to `<staging>` and `<repo>`. See `lab-log.md`.
 
-**Build:** branch `week16-deployment`, from Week 15's final commit `5962978`. Times are UTC.
+**Build:** branch `week16-deployment`, from Week 15's final commit `5962978`. Tagged commit: `ab52099` (tag `week16-eval`). Times are UTC.
 - **Staging:** release folders exported from commits `3fc625a`, `26f1ce7` and `f2ed55f`.
 - **Environment:** PHP 8.4.12, Laravel 13.39, MySQL 8.4.3, nginx 1.28.2, Node 22, Flutter 3.47.8.
 - **Machine:** Windows 11, 8 logical cores, 7.2 GB RAM.
