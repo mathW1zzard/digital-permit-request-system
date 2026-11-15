@@ -1,0 +1,64 @@
+Source and configuration review - 2026-11-15 19:29:13 - commit d901b3f on week14-security
+
+== 1. Where secrets are read (expect only config files reading env())
+
+== 2. Hard-coded keys or passwords in source (expect none; test-only values allowed in tests and phpunit.xml)
+
+== 3. Cryptography used (expect libsodium AEAD, bcrypt via Hash, Laravel encrypter; no md5/sha1/openssl_encrypt/mcrypt/base64-as-encryption)
+backend/app/Http/Controllers/AuthController.php:34:        if (! $user || ! Hash::check($data['password'], $user->password)) {
+backend/app/Models/Permit.php:22:            'details' => 'encrypted', // free text may hold personal details
+backend/app/Models/PermitEvent.php:15:        return ['meta' => 'encrypted:array']; // reviewer comments and rejection reasons
+backend/app/Support/SecureEnvelope.php:27:        $ciphertext = sodium_crypto_aead_xchacha20poly1305_ietf_encrypt(
+backend/app/Support/SecureEnvelope.php:42:        $plain = sodium_crypto_aead_xchacha20poly1305_ietf_decrypt(
+mock-gateway/router.php:59:        $plain = sodium_crypto_aead_xchacha20poly1305_ietf_decrypt(
+weak or homemade crypto: 0
+
+== 4. TLS verification never disabled (expect no verify=false)
+verify false / VERIFYPEER 0: 0
+backend/app/Console/Commands/GatewayTamperTest.php:55:                ->withOptions(['verify' => $cfg['ca_file'] !== '' ? base_path($cfg['ca_file']) :
+backend/app/Services/NotificationDispatcher.php:82:                ->withOptions(['verify' => $cfg['ca_file'] !== '' ? base_path($cfg['ca_file']) : tr
+
+== 5. Constant-time comparison of secrets
+mock-gateway/router.php:111:    if ($key !== '' && ! hash_equals("Bearer {$key}", $auth)) {
+
+== 6. Nothing secret written to logs (StructuredLog calls listed; none pass password, token, key, email, comment or reason)
+backend/app/Console/Commands/DispatchNotifications.php:25 dispatch.run_completed
+backend/app/Console/Commands/RunPermitAutomation.php:25 automation.run_completed
+backend/app/Http/Controllers/AdminExceptionController.php:53 notification.requeued_by_admin
+backend/app/Http/Controllers/AuthController.php:28 auth.login_throttled
+backend/app/Http/Controllers/AuthController.php:36 auth.login_failed
+backend/app/Http/Controllers/AuthController.php:48 auth.login_succeeded
+backend/app/Http/Controllers/AuthController.php:60 auth.logout
+backend/app/Services/NotificationDispatcher.php:37 dispatch.paused
+backend/app/Services/NotificationDispatcher.php:113 notification.sent
+backend/app/Services/NotificationDispatcher.php:135 notification.retry_scheduled
+backend/app/Services/NotificationDispatcher.php:143 notification.manual_action_required
+backend/app/Services/NotificationOutbox.php:37 notification.queued
+backend/app/Services/PermitAutomation.php:38 automation.step_failed
+log calls passing a secret-looking value: 1
+
+== 7. Configuration review
+2:APP_ENV=local
+4:APP_DEBUG=true
+5:APP_URL=https://localhost:8443
+68:GATEWAY_URL=https://127.0.0.1:9443/send
+76:FRONTEND_ORIGIN=http://localhost:5000
+79:AUTH_TOKEN_MINUTES=60
+80:REQUIRE_HTTPS=true
+82:GATEWAY_CA_FILE=../certs/dev-ca.pem
+53:    'expiration' => (int) env('AUTH_TOKEN_MINUTES', 60),
+5:    'allowed_methods' => ['GET', 'POST'],
+6:    'allowed_origins' => explode(',', env('FRONTEND_ORIGIN', 'http://localhost:5000')),
+8:    'allowed_headers' => ['Accept', 'Content-Type', 'Authorization', 'X-Correlation-Id'],
+11:    'supports_credentials' => false,
+25:        $middleware->trustProxies(at: ['127.0.0.1', '::1']);
+
+== 8. Client: no secrets in the Flutter source, token not persisted
+localStorage/shared_preferences use: 0
+keys or passwords in client/lib: 0
+
+== 9. Git-ignored secret locations
+backend/.gitignore:3:.env	backend/.env
+.gitignore:3:certs/	certs/localhost-key.pem
+backend/database/.gitignore:1:*.sqlite*	backend/database/database.sqlite
+backend/storage/logs/.gitignore:1:*	backend/storage/logs/permit.jsonl

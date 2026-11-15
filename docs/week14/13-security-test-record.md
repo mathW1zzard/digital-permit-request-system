@@ -27,5 +27,6 @@ Automated: `php artisan test` 24 of 24 passed (`01-tests-run1.txt`, rerun `01-te
 
 ## Not covered
 
-- Browser screenshots of the sign-in, wrong-password, session-ended and HTTPS states: Claude's browser refuses the local certificate, so the student captures these (see `evidence/week14/README.md`).
+- Browser screenshots of the wrong-password, signed-in and session-ended states (U3–U5): Claude's browser refuses the local certificate, so the student captures these (see `evidence/week14/README.md`). The sign-in, validation, narrow-width and API-down states (U1, U2, U6, U7) were captured.
+- The source and configuration review is in `15-secure-exchange-review.md` (W13).
 - The gateway runs on the same laptop, so "two systems" is simulated.
