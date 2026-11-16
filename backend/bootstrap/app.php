@@ -66,7 +66,7 @@ return Application::configure(basePath: dirname(__DIR__))
             $response = match (true) {
                 $e instanceof ValidationException => $error(422, 'validation_failed', 'Some fields need attention.', $e->errors()),
                 $e instanceof AuthenticationException => $error(401, 'unauthenticated', 'Sign in to continue.'),
-                $e instanceof InvalidTransition => $error(409, 'invalid_transition', 'This action is not available while the permit is '.str_replace('_', ' ', $e->from->value).'.'),
+                $e instanceof InvalidTransition => $error(409, 'invalid_transition', $e->userMessage()),
                 $e instanceof HttpExceptionInterface => $error($e->getStatusCode(), 'http_'.$e->getStatusCode(), match ($e->getStatusCode()) {
                     403 => 'You are not allowed to do this.',
                     404 => 'That item was not found.',

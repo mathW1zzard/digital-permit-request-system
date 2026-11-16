@@ -4,7 +4,7 @@ Individual finals project for PFEBSIT 002 (Weeks 13-18): a Flutter Web app with 
 
 - **Student:** Joseph R. Dionisio, BSIT 3A (solo)
 - **Selected project:** #32 Digital Permit Request System
-- **Backend:** Laravel 13 (PHP 8.3), SQLite
+- **Backend:** Laravel 13 (PHP 8.4); SQLite in development, MySQL 8.4 in staging
 - **Frontend:** Flutter Web
 
 ## What it does
@@ -31,7 +31,7 @@ Limits used in the demo: 4 attempts per notification, a 3 s timeout per attempt,
 | 14 | `week14-sa8` | Password login with expiring tokens, HTTPS with a local TLS proxy, encrypted and tamper-checked gateway messages, encryption at rest, security tests | Done (branch `week14-security`) |
 | 15 | `week15-ia6` | Postman API test collection (48 requests) with a PHP runner, failure injection, idempotent submissions, security headers, API rate limit, request size limit, 365-day start limit | Done (branch `week15-hardening`) |
 | 16 | `week16-eval` | Staging deployment (nginx, 4 PHP workers, MySQL, release folders, backup, rollback), readiness health check, workload models and load tests, parallel-race retest, failure drills, rollback rehearsal, conditional readiness recommendation | Done (branch `week16-deployment`) |
-| 17 | - | Final integration, UAT and evaluation | Not started |
+| 17 | `week17-eval` | User acceptance test (simulated round), OpenAPI documentation, final architecture and recommendation, maintenance plan, list refresh after a conflict, health watcher | Done (branch `week17-uat`) |
 | 18 | - | Final review, demo and technical defense | Not started |
 
 To see the project as it was in a given week, open the tag on GitHub, or run `git checkout week13-sa7`.
@@ -147,13 +147,21 @@ The first command is a one-time setup, the second starts MySQL, the workers, ngi
 
 **Load tests (Week 16).** Create the fictional load-test accounts once with `php artisan db:seed --class=LoadTestUsersSeeder --force` in the release's `backend` folder. Then run `perf/measure.sh <label> <api-url> perf/models/<model>.json <output-folder> <seconds-to-sample>`, with `LOAD_PASSWORD` set to that environment's demo password. The models are described in `docs\week16\30-workload-models.md`.
 
+## Repository guide
+
+- **Where to start:** this README, then `docs/week17/45-architecture-and-recommendation.md` for the design and `docs/api/openapi.yaml` for the API (open it in https://editor.swagger.io or any OpenAPI viewer).
+- **Branches and tags:** each week was built on its own branch (`week13-automation` to `week17-uat`), each branch starting from the previous week. A tag marks what was submitted each week. The newest branch contains everything.
+- **Making changes:** follow `docs/week17/46-maintenance-plan.md`. In short: branch, change, add a failing test first, then run `php artisan test`, `flutter analyze`, `flutter test` and the API collection, then deploy to staging with `deploy/staging/deploy.sh <tag>`.
+- **Decisions:** `docs/adr/` has one record per major decision (ADR-001 to ADR-005), each with the alternatives considered and when to revisit it.
+- **Known limitations:** `docs/09-known-limitations.md`.
+
 ## Configuration and secrets
 
 The real `.env` file is never committed. Use `backend\.env.example` as the template. No API keys, passwords, tokens or real personal data belong in this repository, including screenshots and logs. Since Week 14, users sign in with a password and receive a token that expires after 60 minutes; the token is kept in browser memory only. Keys and the demo password live in `backend\.env`, and certificates in `certs\`; both are git-ignored. See `docs\week14\12-key-lifecycle.md`.
 
 ## Evidence
 
-Evidence is listed in `evidence\week13\README.md`, `evidence\week14\README.md`, `evidence\week15\README.md` and `evidence\week16\README.md`, each with a lab log. Outputs and screenshots for scenarios S1-S10 are kept in that folder. Design documents are in `docs\`, and known limitations are in `docs\09-known-limitations.md`. This is a classroom prototype and is not production-ready.
+Evidence is listed in `evidence\week13\README.md`, `evidence\week14\README.md`, `evidence\week15\README.md`, `evidence\week16\README.md` and `evidence\week17\README.md`, each with a lab log. Outputs and screenshots for scenarios S1-S10 are kept in that folder. Design documents are in `docs\`, and known limitations are in `docs\09-known-limitations.md`. This is a classroom prototype and is not production-ready.
 
 ## AI assistance and third-party code
 

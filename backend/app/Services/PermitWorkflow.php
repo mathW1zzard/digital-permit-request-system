@@ -160,7 +160,10 @@ final class PermitWorkflow
             ]);
 
         if ($changed !== 1) {
-            throw new InvalidTransition($from, $to); // someone else moved it first
+            // Someone else moved it first: report the status it has now (UAT finding F-04).
+            $raw = Permit::whereKey($permit->id)->value('status'); // cast to the enum by the model
+            $current = $raw instanceof PermitStatus ? $raw : PermitStatus::from($raw);
+            throw new InvalidTransition($from, $to, $current, race: true);
         }
 
         $permit->refresh();

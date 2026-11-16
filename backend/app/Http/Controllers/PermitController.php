@@ -113,7 +113,7 @@ class PermitController extends Controller
     {
         Gate::authorize('view', $permit);
 
-        return PermitResource::make($this->withRelations($permit)->load(['events', 'notifications']));
+        return PermitResource::make($this->withRelations($permit)->load(['events.actor', 'notifications']));
     }
 
     public function requestRevision(Request $request, Permit $permit): PermitResource

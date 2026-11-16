@@ -204,9 +204,13 @@ class _PermitDetailState extends State<PermitDetail> {
                 dense: true,
                 title: Text(e.type.replaceAll('_', ' ')),
                 subtitle: Text([
-                  if (e.from != null || e.to != null) '${e.from ?? '–'} → ${e.to ?? '–'}',
-                  formatLocal(e.at),
-                ].join(' · ')),
+                  [
+                    if (e.from != null || e.to != null) '${e.from ?? '–'} → ${e.to ?? '–'}',
+                    if (e.by != null) 'by ${e.by}',
+                    formatLocal(e.at),
+                  ].join(' · '),
+                  if (e.note != null) 'Note: “${e.note}”',
+                ].join('\n')),
               ),
           ],
         );

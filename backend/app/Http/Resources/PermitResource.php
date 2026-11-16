@@ -5,7 +5,11 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** What the browser may see. No emails, no comments, no raw gateway errors. */
+/**
+ * What the browser may see. No emails and no raw gateway errors. Only someone allowed to open the
+ * permit receives its timeline; it carries who acted and, since Week 17, the reviewer's revision
+ * comment or the rejection reason, which the requester needs in order to act (UAT F-01 to F-03).
+ */
 class PermitResource extends JsonResource
 {
     public function toArray(Request $request): array
@@ -30,6 +34,8 @@ class PermitResource extends JsonResource
                 'from' => $e->from_status,
                 'to' => $e->to_status,
                 'at' => $e->created_at?->toIso8601String(),
+                'by' => $e->relationLoaded('actor') ? $e->actor?->name : null,
+                'note' => $e->note(),
             ])),
             'notifications' => $this->whenLoaded('notifications', fn () => $this->notifications->map(fn ($n) => [
                 'kind' => $n->kind,

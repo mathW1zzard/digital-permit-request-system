@@ -24,18 +24,23 @@ class PermitType {
 }
 
 class TimelineEvent {
-  TimelineEvent({required this.type, this.from, this.to, this.at});
+  TimelineEvent({required this.type, this.from, this.to, this.at, this.by, this.note});
 
   final String type;
   final String? from;
   final String? to;
   final String? at;
+  // Week 17 (UAT F-01 to F-03): who acted, and the reviewer's comment or the rejection reason.
+  final String? by;
+  final String? note;
 
   factory TimelineEvent.fromJson(Map<String, dynamic> json) => TimelineEvent(
         type: json['type'] as String,
         from: json['from'] as String?,
         to: json['to'] as String?,
         at: json['at'] as String?,
+        by: json['by'] as String?,
+        note: json['note'] as String?,
       );
 }
 

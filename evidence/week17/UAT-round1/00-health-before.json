@@ -1,0 +1,1 @@
+{"status":"ready","checks":{"database":{"status":"ok"},"scheduler_automation":{"status":"ok","age_seconds":1},"scheduler_dispatch":{"status":"ok","age_seconds":61},"outbox":{"status":"ok","overdue":0,"manual_action":0}},"checked_at":"2026-11-16T21:30:03+00:00"}

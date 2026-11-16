@@ -1,0 +1,23 @@
+UAT round 1 findings (simulated round), 2026-11-16 21:30-21:34 UTC, staging release 5773932.
+Recorded before any fix. Severity: 1 blocks a task, loses or exposes data; 2 possible but wrong or
+confusing; 3 cosmetic or a wish.
+
+F-01  UAT-03  sev 3  The timeline shows each step but not who did it. A requester cannot tell which
+                     reviewer endorsed. Disposition: fix now.
+F-02  UAT-04  sev 2  A requester asked to revise cannot read the reviewer's comment: the API keeps
+                     notes out of the permit it returns, so the requester resubmits without knowing
+                     what to change. Disposition: fix now.
+F-03  UAT-06  sev 2  A rejected requester cannot read the rejection reason, for the same cause.
+                     Disposition: fix now.
+F-04  UAT-08  sev 2  The losing reviewer of a simultaneous endorsement gets "This action is not
+                     available while the permit is under review." The permit was already pending
+                     approval: the message names the stale status it read, not what happened.
+                     Disposition: fix now.
+
+Not a system finding:
+TD8   UAT-12  The UAT-10 operator step expired every session on staging, including the reviewer,
+              approver and admin tokens UAT-12 then used, so all UAT-12 calls got 401 and no
+              exception was created. Test-tool defect; the step now expires only the tester's
+              own sessions. UAT-12 is rerun in round 2.
+
+No severity-1 finding. The watcher raised no alert during the round (shared/logs/alerts.log).

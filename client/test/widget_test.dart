@@ -134,4 +134,16 @@ void main() {
 
     expect(state.permits.single.status, 'pending_approval');
   });
+
+  test('Week 17: the timeline carries who acted and the note', () {
+    final p = Permit.fromJson({
+      'reference': 'PRM-1', 'purpose': 'Zumba session', 'location': 'Court', 'status': 'revision_requested',
+      'events': [
+        {'type': 'revision_requested', 'from': 'under_review', 'to': 'revision_requested', 'at': null,
+         'by': 'Rita Reviewer', 'note': 'Please give the exact time.'},
+      ],
+    });
+    expect(p.events.single.by, 'Rita Reviewer');
+    expect(p.events.single.note, 'Please give the exact time.');
+  });
 }
