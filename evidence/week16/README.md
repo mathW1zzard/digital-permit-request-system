@@ -13,7 +13,7 @@ The outputs are unedited. The load tool never records passwords or tokens, and s
 - **Environment:** PHP 8.4.12, Laravel 13.39, MySQL 8.4.3, nginx 1.28.2, Node 22, Flutter 3.47.8.
 - **Machine:** Windows 11, 8 logical cores, 7.2 GB RAM.
 
-Reports: `docs/week16/30–34` and `36` and `docs/adr/ADR-005-staging-deployment.md`.
+Reports: `docs/week16/30–34`, `36` and `docs/adr/ADR-005-staging-deployment.md`.
 
 ## Measurements (`docs/week16/31-performance-results.md`)
 
