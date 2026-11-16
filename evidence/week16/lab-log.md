@@ -17,7 +17,7 @@ Kept by Claude Code (AI assistant), working at the student's request on the stud
 | 23:18–23:20 | F8 (database down) as predicted. F9 (worker killed under load): 0 errors instead of the predicted few 502s; explained. |
 | 23:21–23:28 | Rollback rehearsal: backup, faulty change, `rollback.sh --restore` (20.6 s, counts identical), S2 back on the old release as predicted, roll forward (218 s), dispatch working on the new release. Commit `8054ac6` with all the evidence so far. |
 | 23:28–23:33 | Collected the environment settings (E1). Opened the staging web app in the student's Chrome and captured the sign-in screen. Reading the staging password to sign in was refused by the assistant's safety rules, and Chrome then stopped answering screenshot requests, so no signed-in staging screenshots. |
-| 23:33– | Wrote the workload models, result sheet, monitoring map, environment comparison and checklist, ADR-005, rollback plan, tabletop review and readiness report. PHPUnit 40/40 twice; Flutter analyze clean, tests 4/4. Copied the ops log (0 secret matches). Then: README and known limitations, commit, push, tag `week16-eval`, Drive upload. |
+| 23:33– | Wrote the workload models, result sheet, monitoring map, environment comparison and checklist, ADR-005, rollback plan and readiness report. PHPUnit 40/40 twice; Flutter analyze clean, tests 4/4. Copied the ops log (0 secret matches). Then: README and known limitations, commit, push, tag `week16-eval`, Drive upload. |
 
 ## Notes
 

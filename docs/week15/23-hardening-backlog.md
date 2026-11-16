@@ -1,4 +1,4 @@
-# Week 15 – Hardening backlog (Activity 2)
+# Week 15 – Hardening backlog
 
 ## The weak configuration reviewed
 

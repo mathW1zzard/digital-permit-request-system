@@ -60,7 +60,7 @@ The D8 test failed when the fix was removed and passed with it. Run `C4-after-d8
 
 ## Related documents (`docs/week15/`)
 
-`20-test-strategy.md`, `21-traceability-matrix.md` (Activity 1), `22-failure-injection-log.md`, `23-hardening-backlog.md` (Activity 2), `24-defect-record.md`, `25-hardening-report.md` (summary, interpretation and limitations).
+`20-test-strategy.md`, `21-traceability-matrix.md`, `22-failure-injection-log.md`, `23-hardening-backlog.md`, `24-defect-record.md`, `25-hardening-report.md` (summary, interpretation and limitations).
 
 ## UI evidence
 

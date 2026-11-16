@@ -1,4 +1,4 @@
-# Week 16 – Workload models (Activity 1)
+# Week 16 – Workload models
 
 Prepared by Claude Code (AI assistant) at the student's request. Times in Week 16 documents are UTC unless marked otherwise.
 

@@ -34,7 +34,6 @@ Before any real use, the following must be added:
 | Environment comparison | 16 settings compared; two defects found only through the difference | `33-…`, E1 |
 | Deployment | Scripted release folders, backup before every deploy, health gate; full deploy 5.4–5.6 min | `33-…`, ops.log |
 | Rollback | Code and data rollback rehearsed: 20.6 s, data identical to the backup; roll forward 218 s | `34-…`, RB |
-| Tabletop review (Activity 2) | 6 blockers and 7 conditional risks in the Week 15 package; blockers closed for staging | `35-deployment-review.md` |
 | Regression | PHPUnit 40/40 (was 31 in Week 15); Flutter analyze clean, widget tests 4/4 | `evidence/week16/T*` |
 
 ## Defects found in Week 16

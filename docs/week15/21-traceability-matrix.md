@@ -1,4 +1,4 @@
-# Week 15 – Requirements-to-test traceability matrix (Activity 1)
+# Week 15 – Requirements-to-test traceability matrix
 
 Test IDs: **T** = Postman collection request, **F** = failure-injection scenario, **P** = PHPUnit test class, **C** = Flutter test. Types: positive (+), negative (–), boundary (B), authorization (A), recovery (R).
 

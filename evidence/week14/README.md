@@ -20,7 +20,7 @@
 | W10 | Encryption at rest | Ciphertext in the database; plain text to the owner | As expected | W10\01-03 | Pass |
 | W11 | Secret scan | No secrets in Git, the log or the evidence | 0 everywhere; test-log finding fixed and rechecked | W11\01-03 | Pass after fix |
 | W12 | Week 13 regression | Approval path sent; 422 still goes to a person | As expected | W12\01-08 | Pass |
-| W13 | Source and configuration review (Activity 2) | No hard-coded secrets, weak crypto, disabled TLS checks or secrets in logs | All checks passed; finding F1: `APP_DEBUG=true` in development (see `docs/week14/15-secure-exchange-review.md`) | W13\01 | Pass, 1 finding recorded |
+| W13 | Source and configuration review | No hard-coded secrets, weak crypto, disabled TLS checks or secrets in logs | All checks passed; finding F1: `APP_DEBUG=true` in development (see `docs/week14/15-secure-exchange-review.md`) | W13\01 | Pass, 1 finding recorded |
 
 Also: `01-tests-run1.txt` and `01-tests-run2.txt` (24 of 24 passed both times), `02-flutter-analyze-and-test.txt` (no issues; 2 of 2 passed).
 
