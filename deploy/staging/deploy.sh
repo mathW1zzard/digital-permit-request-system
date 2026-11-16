@@ -34,9 +34,16 @@ git -C "$REPO" log -1 --format='%H %cI %s' "$SHA" >> "$REL/REVISION"
   cp "$SHARED/.env" .env )
 log "deploy: backend installed (no dev packages)"
 
+# --skip-web reuses the live release's web build, but only if the client code is the same in both
+# commits. After a rollback the live web build can be older than the commit being deployed (Week 17).
+LIVE_SHA="$(head -1 "$(cat "$SHARED/run/current-release" 2>/dev/null)/REVISION" 2>/dev/null || true)"
+if [ "$SKIP_WEB" = "--skip-web" ] && [ -n "$LIVE_SHA" ] && ! git -C "$REPO" diff --quiet "$LIVE_SHA" "$SHA" -- client; then
+    log "deploy: --skip-web refused: client differs between live $LIVE_SHA and $SHA; building the web app"
+    SKIP_WEB=""
+fi
 if [ "$SKIP_WEB" = "--skip-web" ] && [ -d "$STAGING/current/web" ]; then
     cp -r "$STAGING/current/web" "$REL/web"
-    log "deploy: web build copied from the current release (--skip-web)"
+    log "deploy: web build copied from the current release (--skip-web, client unchanged since $LIVE_SHA)"
 else
     ( cd "$REL/client" && flutter pub get >/dev/null && \
       flutter build web --release --dart-define=API_BASE_URL="$STAGING_URL/api" >/dev/null )

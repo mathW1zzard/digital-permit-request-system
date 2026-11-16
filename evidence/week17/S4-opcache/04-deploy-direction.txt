@@ -1,0 +1,12 @@
+== Deploy forward 57fcd31 --skip-web
+2026-11-16T22:28:09Z deploy: start HEAD (57fcd31) -> 20261117-062809-57fcd31
+2026-11-16T22:32:05Z deploy: backend installed (no dev packages)
+2026-11-16T22:32:09Z deploy: web build copied from the current release (--skip-web)
+2026-11-16T22:32:13Z deploy: migrations applied, config and routes cached
+2026-11-16T22:32:20Z workers: restarted with an empty code cache (all old workers gone first)
+2026-11-16T22:32:21Z deploy: current -> 20261117-062809-57fcd31, workers and scheduler restarted
+2026-11-16T22:32:23Z deploy: health check 200
+2026-11-16T22:32:23Z deploy: done 57fcd31
+UAT-03 on the new release (expected PASS):
+UAT-03 PASS 
+1/1 cards passed

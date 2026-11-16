@@ -1,0 +1,8 @@
+== Rollback (current 20261117-053718-07d9154)
+2026-11-16T22:27:26Z rollback: start 20261117-053718-07d9154 -> 20261116-222016-5773932
+2026-11-16T22:27:32Z workers: restarted with an empty code cache (all old workers gone first)
+2026-11-16T22:27:50Z rollback: current -> 20261116-222016-5773932, health 200
+serving: 5773932
+UAT-03 on the rolled-back release (expected FAIL: 5773932 has no timeline names):
+UAT-03 FAIL timeline shows who endorsed
+0/1 cards passed

@@ -1,0 +1,6580 @@
+{
+ "base": "https://localhost:8444/api",
+ "at": "2026-11-16T22:35:21.452Z",
+ "results": [
+  {
+   "id": "UAT-01",
+   "role": "Requester",
+   "task": "Apply for a Facility Use Permit",
+   "result": "Pass",
+   "checks": [
+    {
+     "what": "created (201) with a PRM reference",
+     "ok": true,
+     "actual": "201 PRM-20261116-YKIW1"
+    },
+    {
+     "what": "in the requester list as under_review",
+     "ok": true,
+     "actual": "under_review"
+    },
+    {
+     "what": "a reviewer is shown",
+     "ok": true,
+     "actual": "Rita Reviewer"
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "UAT-02",
+   "role": "Requester",
+   "task": "Submit a form with mistakes",
+   "result": "Pass",
+   "checks": [
+    {
+     "what": "refused with 422",
+     "ok": true,
+     "actual": 422
+    },
+    {
+     "what": "a message for the purpose",
+     "ok": true,
+     "actual": "The purpose field must be at least 10 characters."
+    },
+    {
+     "what": "a message for the start date",
+     "ok": true,
+     "actual": "The requested start field must be a date before or equal to 2027-11-16."
+    },
+    {
+     "what": "nothing saved",
+     "ok": true,
+     "actual": "9 -> 9"
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "UAT-03",
+   "role": "Reviewer",
+   "task": "Endorse the application",
+   "result": "Pass",
+   "checks": [
+    {
+     "what": "endorse accepted (200)",
+     "ok": true,
+     "actual": 200
+    },
+    {
+     "what": "status pending_approval",
+     "ok": true,
+     "actual": "pending_approval"
+    },
+    {
+     "what": "timeline shows the endorsement",
+     "ok": true,
+     "actual": "endorsed"
+    },
+    {
+     "what": "timeline shows who endorsed",
+     "ok": true,
+     "actual": "{\"type\":\"endorsed\",\"from\":\"under_review\",\"to\":\"pending_approval\",\"at\":\"2026-11-16T22:34:10+00:00\",\"by\":\"Rita Reviewer\",\"note\":null}"
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "UAT-04",
+   "role": "Reviewer + Requester",
+   "task": "Ask for a change, then resubmit",
+   "result": "Pass",
+   "checks": [
+    {
+     "what": "request accepted (200)",
+     "ok": true,
+     "actual": 200
+    },
+    {
+     "what": "requester sees revision_requested",
+     "ok": true,
+     "actual": "revision_requested"
+    },
+    {
+     "what": "requester can read the reviewer's note",
+     "ok": true,
+     "actual": "shown"
+    },
+    {
+     "what": "resubmit accepted and back to under_review",
+     "ok": true,
+     "actual": "200 under_review"
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "UAT-05",
+   "role": "Approver",
+   "task": "Approve and issue the permit",
+   "result": "Pass",
+   "checks": [
+    {
+     "what": "approve accepted (200)",
+     "ok": true,
+     "actual": 200
+    },
+    {
+     "what": "requester sees issued",
+     "ok": true,
+     "actual": "issued"
+    },
+    {
+     "what": "valid until is set",
+     "ok": true,
+     "actual": "2026-12-16T22:34:11+00:00"
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "UAT-06",
+   "role": "Approver",
+   "task": "Reject with a reason",
+   "result": "Pass",
+   "checks": [
+    {
+     "what": "rejecting without a reason is refused (422)",
+     "ok": true,
+     "actual": 422
+    },
+    {
+     "what": "reject accepted (200)",
+     "ok": true,
+     "actual": 200
+    },
+    {
+     "what": "requester sees rejected",
+     "ok": true,
+     "actual": "rejected"
+    },
+    {
+     "what": "requester can read the reason",
+     "ok": true,
+     "actual": "shown"
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "UAT-07",
+   "role": "Inspector",
+   "task": "Check validity at the venue",
+   "result": "Pass",
+   "checks": [
+    {
+     "what": "issued permit is valid with a date",
+     "ok": true,
+     "actual": "{\"reference\":\"PRM-20261116-YKIW1\",\"status\":\"issued\",\"valid\":true,\"valid_until\":\"2026-12-16T22:34:11+00:00\"}"
+    },
+    {
+     "what": "unissued permit is not valid, with its status",
+     "ok": true,
+     "actual": "{\"reference\":\"PRM-20261116-LFAWZ\",\"status\":\"under_review\",\"valid\":false,\"valid_until\":null}"
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "UAT-08",
+   "role": "Two reviewers",
+   "task": "Endorse the same application at once",
+   "result": "Pass",
+   "checks": [
+    {
+     "what": "one 200 and one 409",
+     "ok": true,
+     "actual": "200+409"
+    },
+    {
+     "what": "the 409 says someone else acted",
+     "ok": true,
+     "actual": "Someone else acted on this permit first. It is now pending approval."
+    },
+    {
+     "what": "the list shows the current status (pending_approval)",
+     "ok": true,
+     "actual": "pending_approval"
+    },
+    {
+     "what": "exactly one endorsement in the timeline",
+     "ok": true,
+     "actual": 1
+    }
+   ],
+   "note": "The web list reloading without Refresh after a 409 is covered by the Flutter test added in Week 17."
+  },
+  {
+   "id": "UAT-09",
+   "role": "Requester",
+   "task": "Open someone else's permit; approve own permit",
+   "result": "Pass",
+   "checks": [
+    {
+     "what": "another requester's permit is refused (403)",
+     "ok": true,
+     "actual": 403
+    },
+    {
+     "what": "the refusal has a clear message",
+     "ok": true,
+     "actual": "You are not allowed to do this."
+    },
+    {
+     "what": "approving is refused (403)",
+     "ok": true,
+     "actual": 403
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "UAT-10",
+   "role": "Requester",
+   "task": "Session ends, then sign in again",
+   "result": "Pass",
+   "checks": [
+    {
+     "what": "the old session is refused (401)",
+     "ok": true,
+     "actual": 401
+    },
+    {
+     "what": "the 401 says to sign in",
+     "ok": true,
+     "actual": "Sign in to continue."
+    },
+    {
+     "what": "after signing in again the permit is still there",
+     "ok": true,
+     "actual": "under_review"
+    }
+   ],
+   "note": "The \"your session ended\" screen in the web app is the Week 14 U5 behaviour (screenshot U5)."
+  },
+  {
+   "id": "UAT-11",
+   "role": "Requester",
+   "task": "Connection problem while submitting",
+   "result": "Pass",
+   "checks": [
+    {
+     "what": "the cut connection fails without reaching the server",
+     "ok": true,
+     "actual": "network_error"
+    },
+    {
+     "what": "the next attempt creates the permit (201)",
+     "ok": true,
+     "actual": 201
+    },
+    {
+     "what": "pressing Submit again returns the same permit (200, replayed)",
+     "ok": true,
+     "actual": "200 true"
+    },
+    {
+     "what": "exactly one permit exists",
+     "ok": true,
+     "actual": 1
+    }
+   ],
+   "note": "The message that stays on the form is covered by the Week 16 Flutter test (U1)."
+  },
+  {
+   "id": "UAT-12",
+   "role": "Admin",
+   "task": "Handle a notification that needs a person",
+   "result": "Pass",
+   "checks": [
+    {
+     "what": "listed on the exceptions screen with a reason",
+     "ok": true,
+     "actual": "permit_issued permanent gateway_http_422"
+    },
+    {
+     "what": "requeue accepted (200)",
+     "ok": true,
+     "actual": 200
+    },
+    {
+     "what": "after the fix it leaves the list",
+     "ok": true,
+     "actual": true
+    }
+   ],
+   "note": "Fixing the address is an operator step (php artisan tinker); there is no admin edit screen (known limitation)."
+  }
+ ],
+ "requests": [
+  {
+   "method": "POST",
+   "path": "/login",
+   "status": 200,
+   "body": {
+    "data": {
+     "token": "[redacted]",
+     "expires_at": "2026-11-16T23:34:04+00:00",
+     "user": {
+      "id": 2,
+      "name": "Rico Requester",
+      "role": "requester"
+     }
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/login",
+   "status": 200,
+   "body": {
+    "data": {
+     "token": "[redacted]",
+     "expires_at": "2026-11-16T23:34:05+00:00",
+     "user": {
+      "id": 9,
+      "name": "Load Requester 01",
+      "role": "requester"
+     }
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/login",
+   "status": 200,
+   "body": {
+    "data": {
+     "token": "[redacted]",
+     "expires_at": "2026-11-16T23:34:05+00:00",
+     "user": {
+      "id": 1,
+      "name": "Ana Admin",
+      "role": "admin"
+     }
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/login",
+   "status": 200,
+   "body": {
+    "data": {
+     "token": "[redacted]",
+     "expires_at": "2026-11-16T23:34:06+00:00",
+     "user": {
+      "id": 8,
+      "name": "Ines Inspector",
+      "role": "inspector"
+     }
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/login",
+   "status": 200,
+   "body": {
+    "data": {
+     "token": "[redacted]",
+     "expires_at": "2026-11-16T23:34:06+00:00",
+     "user": {
+      "id": 6,
+      "name": "Alma Approver",
+      "role": "approver"
+     }
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/login",
+   "status": 200,
+   "body": {
+    "data": {
+     "token": "[redacted]",
+     "expires_at": "2026-11-16T23:34:07+00:00",
+     "user": {
+      "id": 7,
+      "name": "Sol Senior",
+      "role": "approver"
+     }
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/login",
+   "status": 200,
+   "body": {
+    "data": {
+     "token": "[redacted]",
+     "expires_at": "2026-11-16T23:34:07+00:00",
+     "user": {
+      "id": 4,
+      "name": "Rita Reviewer",
+      "role": "reviewer"
+     }
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/login",
+   "status": 200,
+   "body": {
+    "data": {
+     "token": "[redacted]",
+     "expires_at": "2026-11-16T23:34:07+00:00",
+     "user": {
+      "id": 5,
+      "name": "Rey Reviewer",
+      "role": "reviewer"
+     }
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/login",
+   "status": 200,
+   "body": {
+    "data": {
+     "token": "[redacted]",
+     "expires_at": "2026-11-16T23:34:08+00:00",
+     "user": {
+      "id": 49,
+      "name": "Load Reviewer 1",
+      "role": "reviewer"
+     }
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/login",
+   "status": 200,
+   "body": {
+    "data": {
+     "token": "[redacted]",
+     "expires_at": "2026-11-16T23:34:08+00:00",
+     "user": {
+      "id": 50,
+      "name": "Load Reviewer 2",
+      "role": "reviewer"
+     }
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/login",
+   "status": 200,
+   "body": {
+    "data": {
+     "token": "[redacted]",
+     "expires_at": "2026-11-16T23:34:09+00:00",
+     "user": {
+      "id": 51,
+      "name": "Load Reviewer 3",
+      "role": "reviewer"
+     }
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/login",
+   "status": 200,
+   "body": {
+    "data": {
+     "token": "[redacted]",
+     "expires_at": "2026-11-16T23:34:09+00:00",
+     "user": {
+      "id": 52,
+      "name": "Load Reviewer 4",
+      "role": "reviewer"
+     }
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits",
+   "status": 201,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-YKIW1",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Basketball clinic for the youth league (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "under_review",
+     "revision_count": 0,
+     "reviewer": "Rita Reviewer",
+     "approver": null,
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-YKIW1",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-7CEGU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 6148f1)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:32:30+00:00",
+      "valid_until": "2026-12-16T22:32:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-L9URH",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 66c2ad)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:27:59+00:00",
+      "valid_until": "2026-12-16T22:27:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6AENY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT ca206c)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:30+00:00",
+      "valid_until": "2026-12-16T22:26:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AA460",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 52c23e)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:06+00:00",
+      "valid_until": "2026-12-16T22:26:06+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-PTYPQ",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": "From 8:00 to 11:00 in the morning.",
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 1,
+      "reviewer": "Load Reviewer 1",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-VAHAX",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:52+00:00",
+      "valid_until": "2026-12-16T22:24:52+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-IKJRE",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": "From 8:00 to 11:00 in the morning.",
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 1,
+      "reviewer": "Load Reviewer 2",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DA0XF",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:46+00:00",
+      "valid_until": "2026-12-16T21:30:46+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-YKIW1",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-7CEGU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 6148f1)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:32:30+00:00",
+      "valid_until": "2026-12-16T22:32:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-L9URH",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 66c2ad)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:27:59+00:00",
+      "valid_until": "2026-12-16T22:27:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6AENY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT ca206c)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:30+00:00",
+      "valid_until": "2026-12-16T22:26:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AA460",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 52c23e)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:06+00:00",
+      "valid_until": "2026-12-16T22:26:06+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-PTYPQ",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": "From 8:00 to 11:00 in the morning.",
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 1,
+      "reviewer": "Load Reviewer 1",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-VAHAX",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:52+00:00",
+      "valid_until": "2026-12-16T22:24:52+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-IKJRE",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": "From 8:00 to 11:00 in the morning.",
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 1,
+      "reviewer": "Load Reviewer 2",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DA0XF",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:46+00:00",
+      "valid_until": "2026-12-16T21:30:46+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits",
+   "status": 422,
+   "body": {
+    "error": {
+     "code": "validation_failed",
+     "message": "Some fields need attention.",
+     "details": {
+      "purpose": [
+       "The purpose field must be at least 10 characters."
+      ],
+      "requested_start": [
+       "The requested start field must be a date before or equal to 2027-11-16."
+      ]
+     },
+     "correlation_id": "5e767061-6a5f-4a20-ad36-ca500e3e787f"
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-YKIW1",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-7CEGU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 6148f1)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:32:30+00:00",
+      "valid_until": "2026-12-16T22:32:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-L9URH",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 66c2ad)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:27:59+00:00",
+      "valid_until": "2026-12-16T22:27:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6AENY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT ca206c)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:30+00:00",
+      "valid_until": "2026-12-16T22:26:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AA460",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 52c23e)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:06+00:00",
+      "valid_until": "2026-12-16T22:26:06+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-PTYPQ",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": "From 8:00 to 11:00 in the morning.",
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 1,
+      "reviewer": "Load Reviewer 1",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-VAHAX",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:52+00:00",
+      "valid_until": "2026-12-16T22:24:52+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-IKJRE",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": "From 8:00 to 11:00 in the morning.",
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 1,
+      "reviewer": "Load Reviewer 2",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DA0XF",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:46+00:00",
+      "valid_until": "2026-12-16T21:30:46+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-YKIW1",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-7CEGU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 6148f1)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:32:30+00:00",
+      "valid_until": "2026-12-16T22:32:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-L9URH",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 66c2ad)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:27:59+00:00",
+      "valid_until": "2026-12-16T22:27:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6AENY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT ca206c)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:30+00:00",
+      "valid_until": "2026-12-16T22:26:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AA460",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 52c23e)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:06+00:00",
+      "valid_until": "2026-12-16T22:26:06+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-LTIAW",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Medical mission at the barangay hall (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:59+00:00",
+      "valid_until": "2026-12-16T22:24:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DXGBO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Feeding program for day-care children (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-XS8ZQ",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 5",
+      "details": null,
+      "requested_start": "2026-12-18",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-LW50V",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Repair of drainage cover near the plaza (load test)",
+      "location": "Fictional Hall 9",
+      "details": null,
+      "requested_start": "2026-12-27",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AWBVO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-01",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:16+00:00",
+      "valid_until": "2026-12-16T21:30:16+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-NVXGN",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 3",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-PUXMU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-05",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6FWZK",
+      "type": {
+       "id": 2,
+       "code": "HOT-WORK",
+       "name": "Hot Work Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 1",
+      "details": null,
+      "requested_start": "2026-12-29",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-YFWXB",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 2",
+      "details": null,
+      "requested_start": "2026-11-29",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-RDOAH",
+      "type": {
+       "id": 2,
+       "code": "HOT-WORK",
+       "name": "Hot Work Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 3",
+      "details": null,
+      "requested_start": "2026-12-31",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-9RUMB",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 8",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:05+00:00",
+      "valid_until": "2026-12-16T21:30:05+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits/PRM-20261116-YKIW1/endorse",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-YKIW1",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Basketball clinic for the youth league (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "pending_approval",
+     "revision_count": 0,
+     "reviewer": "Rita Reviewer",
+     "approver": "Alma Approver",
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits/PRM-20261116-YKIW1",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-YKIW1",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Basketball clinic for the youth league (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "pending_approval",
+     "revision_count": 0,
+     "reviewer": "Rita Reviewer",
+     "approver": "Alma Approver",
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null,
+     "events": [
+      {
+       "type": "submitted",
+       "from": null,
+       "to": "under_review",
+       "at": "2026-11-16T22:34:09+00:00",
+       "by": "Rico Requester",
+       "note": null
+      },
+      {
+       "type": "routed_to_reviewer",
+       "from": null,
+       "to": null,
+       "at": "2026-11-16T22:34:09+00:00",
+       "by": null,
+       "note": null
+      },
+      {
+       "type": "endorsed",
+       "from": "under_review",
+       "to": "pending_approval",
+       "at": "2026-11-16T22:34:10+00:00",
+       "by": "Rita Reviewer",
+       "note": null
+      },
+      {
+       "type": "routed_to_approver",
+       "from": null,
+       "to": null,
+       "at": "2026-11-16T22:34:10+00:00",
+       "by": null,
+       "note": null
+      }
+     ],
+     "notifications": [
+      {
+       "kind": "review_assigned",
+       "status": "pending",
+       "attempts": 0,
+       "next_attempt_at": "2026-11-16T22:34:09+00:00"
+      },
+      {
+       "kind": "approval_requested",
+       "status": "pending",
+       "attempts": 0,
+       "next_attempt_at": "2026-11-16T22:34:10+00:00"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits",
+   "status": 201,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-77RCY",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Zumba session for senior citizens (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "under_review",
+     "revision_count": 0,
+     "reviewer": "Rita Reviewer",
+     "approver": null,
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-77RCY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-YKIW1",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-7CEGU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 6148f1)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:32:30+00:00",
+      "valid_until": "2026-12-16T22:32:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-L9URH",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 66c2ad)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:27:59+00:00",
+      "valid_until": "2026-12-16T22:27:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6AENY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT ca206c)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:30+00:00",
+      "valid_until": "2026-12-16T22:26:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AA460",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 52c23e)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:06+00:00",
+      "valid_until": "2026-12-16T22:26:06+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-LTIAW",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Medical mission at the barangay hall (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:59+00:00",
+      "valid_until": "2026-12-16T22:24:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DXGBO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Feeding program for day-care children (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-XS8ZQ",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 5",
+      "details": null,
+      "requested_start": "2026-12-18",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-LW50V",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Repair of drainage cover near the plaza (load test)",
+      "location": "Fictional Hall 9",
+      "details": null,
+      "requested_start": "2026-12-27",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AWBVO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-01",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:16+00:00",
+      "valid_until": "2026-12-16T21:30:16+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-NVXGN",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 3",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-PUXMU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-05",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6FWZK",
+      "type": {
+       "id": 2,
+       "code": "HOT-WORK",
+       "name": "Hot Work Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 1",
+      "details": null,
+      "requested_start": "2026-12-29",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-YFWXB",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 2",
+      "details": null,
+      "requested_start": "2026-11-29",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-RDOAH",
+      "type": {
+       "id": 2,
+       "code": "HOT-WORK",
+       "name": "Hot Work Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 3",
+      "details": null,
+      "requested_start": "2026-12-31",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-9RUMB",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 8",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:05+00:00",
+      "valid_until": "2026-12-16T21:30:05+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits/PRM-20261116-77RCY/request-revision",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-77RCY",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Zumba session for senior citizens (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "revision_requested",
+     "revision_count": 0,
+     "reviewer": "Rita Reviewer",
+     "approver": null,
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits/PRM-20261116-77RCY",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-77RCY",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Zumba session for senior citizens (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "revision_requested",
+     "revision_count": 0,
+     "reviewer": "Rita Reviewer",
+     "approver": null,
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null,
+     "events": [
+      {
+       "type": "submitted",
+       "from": null,
+       "to": "under_review",
+       "at": "2026-11-16T22:34:10+00:00",
+       "by": "Rico Requester",
+       "note": null
+      },
+      {
+       "type": "routed_to_reviewer",
+       "from": null,
+       "to": null,
+       "at": "2026-11-16T22:34:10+00:00",
+       "by": null,
+       "note": null
+      },
+      {
+       "type": "revision_requested",
+       "from": "under_review",
+       "to": "revision_requested",
+       "at": "2026-11-16T22:34:10+00:00",
+       "by": "Rita Reviewer",
+       "note": "Please give the exact start and end time."
+      }
+     ],
+     "notifications": [
+      {
+       "kind": "review_assigned",
+       "status": "pending",
+       "attempts": 0,
+       "next_attempt_at": "2026-11-16T22:34:10+00:00"
+      },
+      {
+       "kind": "revision_requested",
+       "status": "pending",
+       "attempts": 0,
+       "next_attempt_at": "2026-11-16T22:34:10+00:00"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits/PRM-20261116-77RCY/resubmit",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-77RCY",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Zumba session for senior citizens (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": "From 8:00 to 11:00 in the morning.",
+     "requested_start": "2026-11-21",
+     "status": "under_review",
+     "revision_count": 1,
+     "reviewer": "Rita Reviewer",
+     "approver": null,
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits/PRM-20261116-77RCY",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-77RCY",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Zumba session for senior citizens (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": "From 8:00 to 11:00 in the morning.",
+     "requested_start": "2026-11-21",
+     "status": "under_review",
+     "revision_count": 1,
+     "reviewer": "Rita Reviewer",
+     "approver": null,
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null,
+     "events": [
+      {
+       "type": "submitted",
+       "from": null,
+       "to": "under_review",
+       "at": "2026-11-16T22:34:10+00:00",
+       "by": "Rico Requester",
+       "note": null
+      },
+      {
+       "type": "routed_to_reviewer",
+       "from": null,
+       "to": null,
+       "at": "2026-11-16T22:34:10+00:00",
+       "by": null,
+       "note": null
+      },
+      {
+       "type": "revision_requested",
+       "from": "under_review",
+       "to": "revision_requested",
+       "at": "2026-11-16T22:34:10+00:00",
+       "by": "Rita Reviewer",
+       "note": "Please give the exact start and end time."
+      },
+      {
+       "type": "resubmitted",
+       "from": "revision_requested",
+       "to": "under_review",
+       "at": "2026-11-16T22:34:10+00:00",
+       "by": "Rico Requester",
+       "note": null
+      }
+     ],
+     "notifications": [
+      {
+       "kind": "review_assigned",
+       "status": "pending",
+       "attempts": 0,
+       "next_attempt_at": "2026-11-16T22:34:10+00:00"
+      },
+      {
+       "kind": "revision_requested",
+       "status": "pending",
+       "attempts": 0,
+       "next_attempt_at": "2026-11-16T22:34:10+00:00"
+      },
+      {
+       "kind": "review_assigned",
+       "status": "pending",
+       "attempts": 0,
+       "next_attempt_at": "2026-11-16T22:34:10+00:00"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-YKIW1",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-7CEGU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 6148f1)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:32:30+00:00",
+      "valid_until": "2026-12-16T22:32:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-L9URH",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 66c2ad)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:27:59+00:00",
+      "valid_until": "2026-12-16T22:27:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6AENY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT ca206c)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:30+00:00",
+      "valid_until": "2026-12-16T22:26:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AA460",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 52c23e)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:06+00:00",
+      "valid_until": "2026-12-16T22:26:06+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-LTIAW",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Medical mission at the barangay hall (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:59+00:00",
+      "valid_until": "2026-12-16T22:24:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DOVKT",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Fun run for the barangay health week (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 3",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-N2N4Q",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Videoke night at the covered court (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "rejected",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-VAHAX",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:52+00:00",
+      "valid_until": "2026-12-16T22:24:52+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-HW2UE",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Fun run for the barangay health week (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 4",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-Z33OP",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Videoke night at the covered court (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "rejected",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 3",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DA0XF",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:46+00:00",
+      "valid_until": "2026-12-16T21:30:46+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AWBVO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-01",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:16+00:00",
+      "valid_until": "2026-12-16T21:30:16+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-NVXGN",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 3",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-PUXMU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-05",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-9RUMB",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 8",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:05+00:00",
+      "valid_until": "2026-12-16T21:30:05+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits/PRM-20261116-YKIW1/approve",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-YKIW1",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Basketball clinic for the youth league (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "issued",
+     "revision_count": 0,
+     "reviewer": "Rita Reviewer",
+     "approver": "Alma Approver",
+     "valid_from": "2026-11-16T22:34:11+00:00",
+     "valid_until": "2026-12-16T22:34:11+00:00",
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-77RCY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": "From 8:00 to 11:00 in the morning.",
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 1,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-YKIW1",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:34:11+00:00",
+      "valid_until": "2026-12-16T22:34:11+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-7CEGU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 6148f1)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:32:30+00:00",
+      "valid_until": "2026-12-16T22:32:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-L9URH",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 66c2ad)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:27:59+00:00",
+      "valid_until": "2026-12-16T22:27:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6AENY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT ca206c)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:30+00:00",
+      "valid_until": "2026-12-16T22:26:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AA460",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 52c23e)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:06+00:00",
+      "valid_until": "2026-12-16T22:26:06+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-PTYPQ",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": "From 8:00 to 11:00 in the morning.",
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 1,
+      "reviewer": "Load Reviewer 1",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-VAHAX",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:52+00:00",
+      "valid_until": "2026-12-16T22:24:52+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-IKJRE",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": "From 8:00 to 11:00 in the morning.",
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 1,
+      "reviewer": "Load Reviewer 2",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DA0XF",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:46+00:00",
+      "valid_until": "2026-12-16T21:30:46+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits",
+   "status": 201,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-JFE5C",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Videoke night at the covered court (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "under_review",
+     "revision_count": 0,
+     "reviewer": "Rey Reviewer",
+     "approver": null,
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-77RCY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": "From 8:00 to 11:00 in the morning.",
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 1,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-YKIW1",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:34:11+00:00",
+      "valid_until": "2026-12-16T22:34:11+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-7CEGU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 6148f1)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:32:30+00:00",
+      "valid_until": "2026-12-16T22:32:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-L9URH",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 66c2ad)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:27:59+00:00",
+      "valid_until": "2026-12-16T22:27:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6AENY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT ca206c)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:30+00:00",
+      "valid_until": "2026-12-16T22:26:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AA460",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 52c23e)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:06+00:00",
+      "valid_until": "2026-12-16T22:26:06+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-LTIAW",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Medical mission at the barangay hall (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:59+00:00",
+      "valid_until": "2026-12-16T22:24:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DXGBO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Feeding program for day-care children (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-XS8ZQ",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 5",
+      "details": null,
+      "requested_start": "2026-12-18",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-LW50V",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Repair of drainage cover near the plaza (load test)",
+      "location": "Fictional Hall 9",
+      "details": null,
+      "requested_start": "2026-12-27",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AWBVO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-01",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:16+00:00",
+      "valid_until": "2026-12-16T21:30:16+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-NVXGN",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 3",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-PUXMU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-05",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6FWZK",
+      "type": {
+       "id": 2,
+       "code": "HOT-WORK",
+       "name": "Hot Work Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 1",
+      "details": null,
+      "requested_start": "2026-12-29",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-YFWXB",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 2",
+      "details": null,
+      "requested_start": "2026-11-29",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-RDOAH",
+      "type": {
+       "id": 2,
+       "code": "HOT-WORK",
+       "name": "Hot Work Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 3",
+      "details": null,
+      "requested_start": "2026-12-31",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-9RUMB",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 8",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:05+00:00",
+      "valid_until": "2026-12-16T21:30:05+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-JFE5C",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Videoke night at the covered court (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rey Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-MTUVK",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Medical mission at the barangay hall (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rey Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-TI8LX",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 7",
+      "details": null,
+      "requested_start": "2026-12-19",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rey Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits/PRM-20261116-JFE5C/endorse",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-JFE5C",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Videoke night at the covered court (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "pending_approval",
+     "revision_count": 0,
+     "reviewer": "Rey Reviewer",
+     "approver": "Alma Approver",
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-JFE5C",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Videoke night at the covered court (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rey Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-YKIW1",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:34:11+00:00",
+      "valid_until": "2026-12-16T22:34:11+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-7CEGU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 6148f1)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:32:30+00:00",
+      "valid_until": "2026-12-16T22:32:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-L9URH",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 66c2ad)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:27:59+00:00",
+      "valid_until": "2026-12-16T22:27:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6AENY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT ca206c)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:30+00:00",
+      "valid_until": "2026-12-16T22:26:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AA460",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 52c23e)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:06+00:00",
+      "valid_until": "2026-12-16T22:26:06+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-LTIAW",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Medical mission at the barangay hall (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:59+00:00",
+      "valid_until": "2026-12-16T22:24:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DOVKT",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Fun run for the barangay health week (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 3",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-N2N4Q",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Videoke night at the covered court (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "rejected",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-VAHAX",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:52+00:00",
+      "valid_until": "2026-12-16T22:24:52+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-HW2UE",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Fun run for the barangay health week (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 4",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-Z33OP",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Videoke night at the covered court (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "rejected",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 3",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DA0XF",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:46+00:00",
+      "valid_until": "2026-12-16T21:30:46+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AWBVO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-01",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:16+00:00",
+      "valid_until": "2026-12-16T21:30:16+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-NVXGN",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 3",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-PUXMU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-05",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-9RUMB",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 8",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:05+00:00",
+      "valid_until": "2026-12-16T21:30:05+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits/PRM-20261116-JFE5C/reject",
+   "status": 422,
+   "body": {
+    "error": {
+     "code": "validation_failed",
+     "message": "Some fields need attention.",
+     "details": {
+      "reason": [
+       "The reason field is required."
+      ]
+     },
+     "correlation_id": "478858bd-cc70-44c9-a9c7-bc43199d22c3"
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits/PRM-20261116-JFE5C/reject",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-JFE5C",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Videoke night at the covered court (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "rejected",
+     "revision_count": 0,
+     "reviewer": "Rey Reviewer",
+     "approver": "Alma Approver",
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits/PRM-20261116-JFE5C",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-JFE5C",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Videoke night at the covered court (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "rejected",
+     "revision_count": 0,
+     "reviewer": "Rey Reviewer",
+     "approver": "Alma Approver",
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null,
+     "events": [
+      {
+       "type": "submitted",
+       "from": null,
+       "to": "under_review",
+       "at": "2026-11-16T22:34:11+00:00",
+       "by": "Load Requester 01",
+       "note": null
+      },
+      {
+       "type": "routed_to_reviewer",
+       "from": null,
+       "to": null,
+       "at": "2026-11-16T22:34:11+00:00",
+       "by": null,
+       "note": null
+      },
+      {
+       "type": "endorsed",
+       "from": "under_review",
+       "to": "pending_approval",
+       "at": "2026-11-16T22:34:11+00:00",
+       "by": "Rey Reviewer",
+       "note": null
+      },
+      {
+       "type": "routed_to_approver",
+       "from": null,
+       "to": null,
+       "at": "2026-11-16T22:34:11+00:00",
+       "by": null,
+       "note": null
+      },
+      {
+       "type": "rejected",
+       "from": "pending_approval",
+       "to": "rejected",
+       "at": "2026-11-16T22:34:11+00:00",
+       "by": "Alma Approver",
+       "note": "Venue already booked that evening."
+      }
+     ],
+     "notifications": [
+      {
+       "kind": "review_assigned",
+       "status": "pending",
+       "attempts": 0,
+       "next_attempt_at": "2026-11-16T22:34:11+00:00"
+      },
+      {
+       "kind": "approval_requested",
+       "status": "pending",
+       "attempts": 0,
+       "next_attempt_at": "2026-11-16T22:34:11+00:00"
+      },
+      {
+       "kind": "permit_rejected",
+       "status": "pending",
+       "attempts": 0,
+       "next_attempt_at": "2026-11-16T22:34:11+00:00"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits/PRM-20261116-YKIW1/verify",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-YKIW1",
+     "status": "issued",
+     "valid": true,
+     "valid_until": "2026-12-16T22:34:11+00:00"
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits",
+   "status": 201,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-LFAWZ",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Clean-up drive along the creek (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "under_review",
+     "revision_count": 0,
+     "reviewer": "Rey Reviewer",
+     "approver": null,
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits/PRM-20261116-LFAWZ/verify",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-LFAWZ",
+     "status": "under_review",
+     "valid": false,
+     "valid_until": null
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits",
+   "status": 201,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-OMFSM",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Fun run for the barangay health week (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "under_review",
+     "revision_count": 0,
+     "reviewer": "Load Reviewer 1",
+     "approver": null,
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-77RCY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": "From 8:00 to 11:00 in the morning.",
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 1,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-YKIW1",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:34:11+00:00",
+      "valid_until": "2026-12-16T22:34:11+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-7CEGU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 6148f1)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:32:30+00:00",
+      "valid_until": "2026-12-16T22:32:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-L9URH",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 66c2ad)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:27:59+00:00",
+      "valid_until": "2026-12-16T22:27:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6AENY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT ca206c)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:30+00:00",
+      "valid_until": "2026-12-16T22:26:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AA460",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 52c23e)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:06+00:00",
+      "valid_until": "2026-12-16T22:26:06+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-LTIAW",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Medical mission at the barangay hall (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:59+00:00",
+      "valid_until": "2026-12-16T22:24:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DXGBO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Feeding program for day-care children (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-XS8ZQ",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 5",
+      "details": null,
+      "requested_start": "2026-12-18",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-LW50V",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Repair of drainage cover near the plaza (load test)",
+      "location": "Fictional Hall 9",
+      "details": null,
+      "requested_start": "2026-12-27",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AWBVO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-01",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:16+00:00",
+      "valid_until": "2026-12-16T21:30:16+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-NVXGN",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 3",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-PUXMU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-05",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6FWZK",
+      "type": {
+       "id": 2,
+       "code": "HOT-WORK",
+       "name": "Hot Work Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 1",
+      "details": null,
+      "requested_start": "2026-12-29",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-YFWXB",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 2",
+      "details": null,
+      "requested_start": "2026-11-29",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-RDOAH",
+      "type": {
+       "id": 2,
+       "code": "HOT-WORK",
+       "name": "Hot Work Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 3",
+      "details": null,
+      "requested_start": "2026-12-31",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-9RUMB",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 8",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:05+00:00",
+      "valid_until": "2026-12-16T21:30:05+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-LFAWZ",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Clean-up drive along the creek (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rey Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-JFE5C",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Videoke night at the covered court (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "rejected",
+      "revision_count": 0,
+      "reviewer": "Rey Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-MTUVK",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Medical mission at the barangay hall (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rey Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-TI8LX",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 7",
+      "details": null,
+      "requested_start": "2026-12-19",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rey Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-OMFSM",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Fun run for the barangay health week (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-PTYPQ",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": "From 8:00 to 11:00 in the morning.",
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 1,
+      "reviewer": "Load Reviewer 1",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-VAHAX",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:52+00:00",
+      "valid_until": "2026-12-16T22:24:52+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-VAYS8",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 8",
+      "details": null,
+      "requested_start": "2027-01-15",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits/PRM-20261116-OMFSM/endorse",
+   "status": 409,
+   "body": {
+    "error": {
+     "code": "invalid_transition",
+     "message": "Someone else acted on this permit first. It is now pending approval.",
+     "correlation_id": "c2d8ab91-9a97-4155-bd1a-3e0894f3b010"
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits/PRM-20261116-OMFSM/endorse",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-OMFSM",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Fun run for the barangay health week (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "pending_approval",
+     "revision_count": 0,
+     "reviewer": "Load Reviewer 1",
+     "approver": "Alma Approver",
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-OMFSM",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Fun run for the barangay health week (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-PTYPQ",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": "From 8:00 to 11:00 in the morning.",
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 1,
+      "reviewer": "Load Reviewer 1",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-VAHAX",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:52+00:00",
+      "valid_until": "2026-12-16T22:24:52+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-VAYS8",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 8",
+      "details": null,
+      "requested_start": "2027-01-15",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits/PRM-20261116-OMFSM",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-OMFSM",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Fun run for the barangay health week (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "pending_approval",
+     "revision_count": 0,
+     "reviewer": "Load Reviewer 1",
+     "approver": "Alma Approver",
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null,
+     "events": [
+      {
+       "type": "submitted",
+       "from": null,
+       "to": "under_review",
+       "at": "2026-11-16T22:34:12+00:00",
+       "by": "Load Requester 01",
+       "note": null
+      },
+      {
+       "type": "routed_to_reviewer",
+       "from": null,
+       "to": null,
+       "at": "2026-11-16T22:34:12+00:00",
+       "by": null,
+       "note": null
+      },
+      {
+       "type": "endorsed",
+       "from": "under_review",
+       "to": "pending_approval",
+       "at": "2026-11-16T22:34:12+00:00",
+       "by": "Load Reviewer 1",
+       "note": null
+      },
+      {
+       "type": "routed_to_approver",
+       "from": null,
+       "to": null,
+       "at": "2026-11-16T22:34:12+00:00",
+       "by": null,
+       "note": null
+      }
+     ],
+     "notifications": [
+      {
+       "kind": "review_assigned",
+       "status": "pending",
+       "attempts": 0,
+       "next_attempt_at": "2026-11-16T22:34:12+00:00"
+      },
+      {
+       "kind": "approval_requested",
+       "status": "pending",
+       "attempts": 0,
+       "next_attempt_at": "2026-11-16T22:34:12+00:00"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-OMFSM",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Fun run for the barangay health week (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-LFAWZ",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Clean-up drive along the creek (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rey Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-JFE5C",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Videoke night at the covered court (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "rejected",
+      "revision_count": 0,
+      "reviewer": "Rey Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DOVKT",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Fun run for the barangay health week (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 3",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-HEVFU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Clean-up drive along the creek (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-N2N4Q",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Videoke night at the covered court (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "rejected",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-HW2UE",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Fun run for the barangay health week (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 4",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-IRLON",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Clean-up drive along the creek (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 3",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-Z33OP",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Videoke night at the covered court (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "rejected",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 3",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-XS8ZQ",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 5",
+      "details": null,
+      "requested_start": "2026-12-18",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-VAYS8",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 8",
+      "details": null,
+      "requested_start": "2027-01-15",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-TI8LX",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 7",
+      "details": null,
+      "requested_start": "2026-12-19",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rey Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-PUXMU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-05",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6FWZK",
+      "type": {
+       "id": 2,
+       "code": "HOT-WORK",
+       "name": "Hot Work Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 1",
+      "details": null,
+      "requested_start": "2026-12-29",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-YFWXB",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 2",
+      "details": null,
+      "requested_start": "2026-11-29",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-RDOAH",
+      "type": {
+       "id": 2,
+       "code": "HOT-WORK",
+       "name": "Hot Work Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 3",
+      "details": null,
+      "requested_start": "2026-12-31",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-9RUMB",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 8",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:05+00:00",
+      "valid_until": "2026-12-16T21:30:05+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits/PRM-20261116-OMFSM",
+   "status": 403,
+   "body": {
+    "error": {
+     "code": "http_403",
+     "message": "You are not allowed to do this.",
+     "correlation_id": "20dcf143-d065-4546-bdb4-8fa46742b055"
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits/PRM-20261116-YKIW1/approve",
+   "status": 403,
+   "body": {
+    "error": {
+     "code": "http_403",
+     "message": "You are not allowed to do this.",
+     "correlation_id": "15d24b07-7ee0-4157-a3e4-fa817db83dd4"
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/login",
+   "status": 200,
+   "body": {
+    "data": {
+     "token": "[redacted]",
+     "expires_at": "2026-11-16T23:34:13+00:00",
+     "user": {
+      "id": 10,
+      "name": "Load Requester 02",
+      "role": "requester"
+     }
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits",
+   "status": 201,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-Y0J4Y",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Bible study in the multi-purpose hall (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "under_review",
+     "revision_count": 0,
+     "reviewer": "Load Reviewer 1",
+     "approver": null,
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 401,
+   "body": {
+    "error": {
+     "code": "unauthenticated",
+     "message": "Sign in to continue.",
+     "correlation_id": "fc26b40f-8b35-4ef7-ab82-49b37437bf21"
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/login",
+   "status": 200,
+   "body": {
+    "data": {
+     "token": "[redacted]",
+     "expires_at": "2026-11-16T23:34:15+00:00",
+     "user": {
+      "id": 10,
+      "name": "Load Requester 02",
+      "role": "requester"
+     }
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-Y0J4Y",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Bible study in the multi-purpose hall (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-XKSTL",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Bible study in the multi-purpose hall (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 3",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-FVRQ7",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Bible study in the multi-purpose hall (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 4",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-LW50V",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Repair of drainage cover near the plaza (load test)",
+      "location": "Fictional Hall 9",
+      "details": null,
+      "requested_start": "2026-12-27",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AWBVO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-01",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:16+00:00",
+      "valid_until": "2026-12-16T21:30:16+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-NVXGN",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 3",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/login",
+   "status": 200,
+   "body": {
+    "data": {
+     "token": "[redacted]",
+     "expires_at": "2026-11-16T23:34:16+00:00",
+     "user": {
+      "id": 11,
+      "name": "Load Requester 03",
+      "role": "requester"
+     }
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits",
+   "status": "network_error",
+   "error": "ECONNREFUSED"
+  },
+  {
+   "method": "POST",
+   "path": "/permits",
+   "status": 201,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-C3A1R",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Feeding program for day-care children (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "under_review",
+     "revision_count": 0,
+     "reviewer": "Load Reviewer 2",
+     "approver": null,
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-C3A1R",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Feeding program for day-care children (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "under_review",
+     "revision_count": 0,
+     "reviewer": "Load Reviewer 2",
+     "approver": null,
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-C3A1R",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Feeding program for day-care children (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-ONI0W",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Feeding program for day-care children (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 4",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DXGBO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Feeding program for day-care children (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/login",
+   "status": 200,
+   "body": {
+    "data": {
+     "token": "[redacted]",
+     "expires_at": "2026-11-16T23:34:17+00:00",
+     "user": {
+      "id": 3,
+      "name": "Bea Bounce",
+      "role": "requester"
+     }
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits",
+   "status": 201,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-ITQIO",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Medical mission at the barangay hall (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "under_review",
+     "revision_count": 0,
+     "reviewer": "Load Reviewer 3",
+     "approver": null,
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-77RCY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": "From 8:00 to 11:00 in the morning.",
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 1,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-YKIW1",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:34:11+00:00",
+      "valid_until": "2026-12-16T22:34:11+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-7CEGU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 6148f1)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:32:30+00:00",
+      "valid_until": "2026-12-16T22:32:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-L9URH",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 66c2ad)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:27:59+00:00",
+      "valid_until": "2026-12-16T22:27:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6AENY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT ca206c)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:30+00:00",
+      "valid_until": "2026-12-16T22:26:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AA460",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 52c23e)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:06+00:00",
+      "valid_until": "2026-12-16T22:26:06+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-LTIAW",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Medical mission at the barangay hall (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:59+00:00",
+      "valid_until": "2026-12-16T22:24:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DXGBO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Feeding program for day-care children (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-XS8ZQ",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 5",
+      "details": null,
+      "requested_start": "2026-12-18",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-LW50V",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Repair of drainage cover near the plaza (load test)",
+      "location": "Fictional Hall 9",
+      "details": null,
+      "requested_start": "2026-12-27",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AWBVO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-01",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:16+00:00",
+      "valid_until": "2026-12-16T21:30:16+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-NVXGN",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 3",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-PUXMU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-05",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6FWZK",
+      "type": {
+       "id": 2,
+       "code": "HOT-WORK",
+       "name": "Hot Work Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 1",
+      "details": null,
+      "requested_start": "2026-12-29",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-YFWXB",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 2",
+      "details": null,
+      "requested_start": "2026-11-29",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-RDOAH",
+      "type": {
+       "id": 2,
+       "code": "HOT-WORK",
+       "name": "Hot Work Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 3",
+      "details": null,
+      "requested_start": "2026-12-31",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Sol Senior",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-9RUMB",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 8",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:05+00:00",
+      "valid_until": "2026-12-16T21:30:05+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-LFAWZ",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Clean-up drive along the creek (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rey Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-JFE5C",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Videoke night at the covered court (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "rejected",
+      "revision_count": 0,
+      "reviewer": "Rey Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-MTUVK",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Medical mission at the barangay hall (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rey Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-TI8LX",
+      "type": {
+       "id": 3,
+       "code": "MINOR-CONST",
+       "name": "Minor Construction Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 7",
+      "details": null,
+      "requested_start": "2026-12-19",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Rey Reviewer",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-Y0J4Y",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Bible study in the multi-purpose hall (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-OMFSM",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Fun run for the barangay health week (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-PTYPQ",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": "From 8:00 to 11:00 in the morning.",
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 1,
+      "reviewer": "Load Reviewer 1",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-VAHAX",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:52+00:00",
+      "valid_until": "2026-12-16T22:24:52+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-VAYS8",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 8",
+      "details": null,
+      "requested_start": "2027-01-15",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-C3A1R",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Feeding program for day-care children (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-HEVFU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Clean-up drive along the creek (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-N2N4Q",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Videoke night at the covered court (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "rejected",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-IKJRE",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Zumba session for senior citizens (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": "From 8:00 to 11:00 in the morning.",
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 1,
+      "reviewer": "Load Reviewer 2",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DA0XF",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:46+00:00",
+      "valid_until": "2026-12-16T21:30:46+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-ITQIO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Medical mission at the barangay hall (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 3",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-XKSTL",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Bible study in the multi-purpose hall (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 3",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DOVKT",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Fun run for the barangay health week (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 3",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-IRLON",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Clean-up drive along the creek (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "under_review",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 3",
+      "approver": null,
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-Z33OP",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Videoke night at the covered court (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "rejected",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 3",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits/PRM-20261116-ITQIO/endorse",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-ITQIO",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Medical mission at the barangay hall (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "pending_approval",
+     "revision_count": 0,
+     "reviewer": "Load Reviewer 3",
+     "approver": "Alma Approver",
+     "valid_from": null,
+     "valid_until": null,
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/permits",
+   "status": 200,
+   "body": {
+    "data": [
+     {
+      "reference": "PRM-20261116-ITQIO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Medical mission at the barangay hall (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 3",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-OMFSM",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Fun run for the barangay health week (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-JFE5C",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Videoke night at the covered court (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "rejected",
+      "revision_count": 0,
+      "reviewer": "Rey Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-YKIW1",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT d07ea9)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:34:11+00:00",
+      "valid_until": "2026-12-16T22:34:11+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-7CEGU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 6148f1)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:32:30+00:00",
+      "valid_until": "2026-12-16T22:32:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-L9URH",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 66c2ad)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:27:59+00:00",
+      "valid_until": "2026-12-16T22:27:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-6AENY",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT ca206c)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:30+00:00",
+      "valid_until": "2026-12-16T22:26:30+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AA460",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 52c23e)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:26:06+00:00",
+      "valid_until": "2026-12-16T22:26:06+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-LTIAW",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Medical mission at the barangay hall (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:59+00:00",
+      "valid_until": "2026-12-16T22:24:59+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DOVKT",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Fun run for the barangay health week (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 3",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-N2N4Q",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Videoke night at the covered court (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "rejected",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-VAHAX",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 146111)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 1",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T22:24:52+00:00",
+      "valid_until": "2026-12-16T22:24:52+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-HW2UE",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Fun run for the barangay health week (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "pending_approval",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 4",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-Z33OP",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Videoke night at the covered court (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "rejected",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 3",
+      "approver": "Alma Approver",
+      "valid_from": null,
+      "valid_until": null,
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-DA0XF",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball clinic for the youth league (UAT 78f4e6)",
+      "location": "Barangay Covered Court",
+      "details": null,
+      "requested_start": "2026-11-21",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Load Reviewer 2",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:46+00:00",
+      "valid_until": "2026-12-16T21:30:46+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-AWBVO",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Welding of the market stall frames (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-01",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:16+00:00",
+      "valid_until": "2026-12-16T21:30:16+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-NVXGN",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 3",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-PUXMU",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Barangay assembly in the covered court (load test)",
+      "location": "Fictional Hall 4",
+      "details": null,
+      "requested_start": "2026-12-05",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:13+00:00",
+      "valid_until": "2026-12-16T21:30:13+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     },
+     {
+      "reference": "PRM-20261116-9RUMB",
+      "type": {
+       "id": 1,
+       "code": "FAC-USE",
+       "name": "Facility Use Permit"
+      },
+      "purpose": "Basketball league opening ceremony (load test)",
+      "location": "Fictional Hall 8",
+      "details": null,
+      "requested_start": "2026-12-03",
+      "status": "issued",
+      "revision_count": 0,
+      "reviewer": "Rita Reviewer",
+      "approver": "Alma Approver",
+      "valid_from": "2026-11-16T21:30:05+00:00",
+      "valid_until": "2026-12-16T21:30:05+00:00",
+      "needs_manual_action": false,
+      "manual_action_reason": null
+     }
+    ]
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/permits/PRM-20261116-ITQIO/approve",
+   "status": 200,
+   "body": {
+    "data": {
+     "reference": "PRM-20261116-ITQIO",
+     "type": {
+      "id": 1,
+      "code": "FAC-USE",
+      "name": "Facility Use Permit"
+     },
+     "purpose": "Medical mission at the barangay hall (UAT d07ea9)",
+     "location": "Barangay Covered Court",
+     "details": null,
+     "requested_start": "2026-11-21",
+     "status": "issued",
+     "revision_count": 0,
+     "reviewer": "Load Reviewer 3",
+     "approver": "Alma Approver",
+     "valid_from": "2026-11-16T22:34:17+00:00",
+     "valid_until": "2026-12-16T22:34:17+00:00",
+     "needs_manual_action": false,
+     "manual_action_reason": null
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/admin/exceptions",
+   "status": 200,
+   "body": {
+    "data": {
+     "notifications": [
+      {
+       "id": 55,
+       "permit": "PRM-20261116-LTIAW",
+       "kind": "permit_issued",
+       "attempts": 1,
+       "failure": "permanent",
+       "detail": "gateway_http_422",
+       "since": "2026-11-16T22:26:03+00:00"
+      }
+     ],
+     "permits": []
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/admin/exceptions",
+   "status": 200,
+   "body": {
+    "data": {
+     "notifications": [
+      {
+       "id": 55,
+       "permit": "PRM-20261116-LTIAW",
+       "kind": "permit_issued",
+       "attempts": 1,
+       "failure": "permanent",
+       "detail": "gateway_http_422",
+       "since": "2026-11-16T22:26:03+00:00"
+      }
+     ],
+     "permits": []
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/admin/exceptions",
+   "status": 200,
+   "body": {
+    "data": {
+     "notifications": [
+      {
+       "id": 55,
+       "permit": "PRM-20261116-LTIAW",
+       "kind": "permit_issued",
+       "attempts": 1,
+       "failure": "permanent",
+       "detail": "gateway_http_422",
+       "since": "2026-11-16T22:26:03+00:00"
+      }
+     ],
+     "permits": []
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/admin/exceptions",
+   "status": 200,
+   "body": {
+    "data": {
+     "notifications": [
+      {
+       "id": 55,
+       "permit": "PRM-20261116-LTIAW",
+       "kind": "permit_issued",
+       "attempts": 1,
+       "failure": "permanent",
+       "detail": "gateway_http_422",
+       "since": "2026-11-16T22:26:03+00:00"
+      }
+     ],
+     "permits": []
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/admin/exceptions",
+   "status": 200,
+   "body": {
+    "data": {
+     "notifications": [
+      {
+       "id": 84,
+       "permit": "PRM-20261116-ITQIO",
+       "kind": "permit_issued",
+       "attempts": 1,
+       "failure": "permanent",
+       "detail": "gateway_http_422",
+       "since": "2026-11-16T22:35:04+00:00"
+      },
+      {
+       "id": 55,
+       "permit": "PRM-20261116-LTIAW",
+       "kind": "permit_issued",
+       "attempts": 1,
+       "failure": "permanent",
+       "detail": "gateway_http_422",
+       "since": "2026-11-16T22:26:03+00:00"
+      }
+     ],
+     "permits": []
+    }
+   }
+  },
+  {
+   "method": "POST",
+   "path": "/admin/notifications/84/requeue",
+   "status": 200,
+   "body": {
+    "data": {
+     "id": 84,
+     "status": "pending"
+    }
+   }
+  },
+  {
+   "method": "GET",
+   "path": "/admin/exceptions",
+   "status": 200,
+   "body": {
+    "data": {
+     "notifications": [
+      {
+       "id": 55,
+       "permit": "PRM-20261116-LTIAW",
+       "kind": "permit_issued",
+       "attempts": 1,
+       "failure": "permanent",
+       "detail": "gateway_http_422",
+       "since": "2026-11-16T22:26:03+00:00"
+      }
+     ],
+     "permits": []
+    }
+   }
+  }
+ ]
+}
