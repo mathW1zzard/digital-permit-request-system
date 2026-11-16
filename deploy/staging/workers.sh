@@ -19,6 +19,8 @@ run)
     for port in $WORKER_PORTS; do
         (
             while [ -f "$SHARED/run/workers.run" ]; do
+                # During a restart, wait until every old worker has exited (defect S4, below).
+                while [ -f "$SHARED/run/workers.pause" ]; do sleep 0.2; done
                 # PHP_FCGI_MAX_REQUESTS=0: do not exit after 500 requests (the php-cgi default).
                 PHP_FCGI_MAX_REQUESTS=0 PHP_FCGI_CHILDREN=0 \
                     "$PHP_HOME/php-cgi.exe" -c "$SHARED/php-staging.ini" -b "127.0.0.1:$port" || true
@@ -31,9 +33,20 @@ run)
     wait
     ;;
 restart)
+    # Defect S4 (Week 17): on Windows, OPcache keeps compiled code in shared memory that lives as
+    # long as any php-cgi process holds it. Restarting the workers one by one let a new worker
+    # attach to the old cache, and with validate_timestamps=0 it kept serving the previous release
+    # after a deploy or rollback. So: pause the restart loops, stop every worker, wait until none
+    # is left, then let the loops start fresh workers with an empty cache.
+    : > "$SHARED/run/workers.pause"
     kill_workers
-    for _ in $(seq 1 10); do [ -z "$(pids_on 9101)" ] && break; sleep 0.5; done
+    for _ in $(seq 1 40); do
+        [ "$(powershell -NoProfile -Command "@(Get-Process php-cgi -ErrorAction SilentlyContinue).Count")" = 0 ] && break
+        kill_workers; sleep 0.5
+    done
+    rm -f "$SHARED/run/workers.pause"
     for _ in $(seq 1 20); do [ -n "$(pids_on 9104)" ] && break; sleep 0.5; done
+    log "workers: restarted with an empty code cache (all old workers gone first)"
     ;;
 stop)
     rm -f "$SHARED/run/workers.run"

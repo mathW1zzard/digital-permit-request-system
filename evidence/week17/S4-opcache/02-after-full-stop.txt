@@ -1,0 +1,3 @@
+After stopping all workers (php-cgi count reached 0) and starting them again:
+UAT-03 PASS 
+1/1 cards passed

@@ -1,0 +1,518 @@
+openapi: 3.1.0
+info:
+  title: Digital Permit Request System API
+  version: "17.0.0"
+  summary: Permit requests, review, approval, issuance and verification for a barangay office.
+  description: |
+    Laravel API behind the Flutter Web app. HTTPS only: plain HTTP gets 426.
+
+    **Sign-in.** Call `POST /login` with an email and password to get a bearer token that expires
+    after 60 minutes. Send it as `Authorization: Bearer <token>` on every other call.
+
+    **Roles.** The roles are requester, reviewer, approver (some are senior), inspector and admin.
+    The server checks the role and the assignment on every call; the web app's buttons are only a
+    convenience.
+
+    **Responses.** Successful responses are `{"data": ...}`. Errors are
+    `{"error": {"code", "message", "details"?, "correlation_id"}}`, and they never contain SQL, file
+    paths or stack traces. Every response carries an `X-Correlation-Id` header. You may send your
+    own correlation ID, so a support request can be matched to the log.
+
+    **Limits.**
+    - 60 requests a minute per signed-in user (`X-RateLimit-*` headers, then 429 with `Retry-After`).
+    - 5 failed sign-ins a minute per email and address.
+    - Request bodies up to 1 MB, then 413.
+
+    **Headers.** Every response carries the security headers `X-Content-Type-Options`,
+    `X-Frame-Options`, `Referrer-Policy` and `Content-Security-Policy`.
+
+    All data in this project is fictional.
+  contact:
+    name: Joseph R. Dionisio (BSIT 3A), PFEBSIT 002 finals project
+servers:
+  - url: https://localhost:8444/api
+    description: Staging (nginx, PHP workers, MySQL), same origin as the web app
+  - url: https://localhost:8443/api
+    description: Development (php artisan serve behind the Node TLS proxy)
+tags:
+  - name: Auth
+  - name: Permits
+  - name: Workflow
+    description: Moving a permit through its states. A wrong state or a lost race gives 409.
+  - name: Admin
+  - name: Health
+security:
+  - bearer: []
+
+paths:
+  /login:
+    post:
+      tags: [Auth]
+      summary: Sign in and get a bearer token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email, maxLength: 255 }
+                password: { type: string, maxLength: 255, writeOnly: true }
+      responses:
+        "200":
+          description: Signed in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      token: { type: string, description: Store in memory only; never in a URL or local storage. }
+                      expires_at: { type: string, format: date-time }
+                      user: { $ref: "#/components/schemas/User" }
+        "401":
+          description: Wrong email or password. The answer is the same for both, so it does not reveal which accounts exist.
+          content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+
+  /logout:
+    post:
+      tags: [Auth]
+      summary: Sign out (the token is deleted on the server)
+      responses:
+        "200": { description: Signed out }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+
+  /me:
+    get:
+      tags: [Auth]
+      summary: The signed-in user
+      responses:
+        "200":
+          description: The user
+          content:
+            application/json:
+              schema: { type: object, properties: { data: { $ref: "#/components/schemas/User" } } }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+
+  /permit-types:
+    get:
+      tags: [Permits]
+      summary: Permit types a requester can apply for
+      responses:
+        "200":
+          description: List of permit types
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: "#/components/schemas/PermitType" } }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+
+  /permits:
+    get:
+      tags: [Permits]
+      summary: Permits visible to the signed-in user (newest first, at most 100)
+      description: |
+        - A requester sees their own permits.
+        - A reviewer sees the permits assigned to them for review.
+        - An approver sees the permits assigned to them for approval.
+        - An inspector or admin sees all permits.
+
+        The list has no timeline and no notes; open a permit to see them.
+      responses:
+        "200":
+          description: List (may be empty)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: "#/components/schemas/PermitSummary" } }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+    post:
+      tags: [Permits]
+      summary: Submit a permit request (requester only)
+      description: |
+        The server routes the permit to the reviewer with the fewest open reviews and queues a
+        notification.
+
+        **Idempotency-Key header.** Send one to make retries safe. The same key with the same body
+        returns the permit already created (200, `Idempotent-Replayed: true`). The same key with a
+        different body is refused (422 `idempotency_key_reused`).
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema: { type: string, maxLength: 100, pattern: "^[A-Za-z0-9._:-]+$" }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/PermitRequest" }
+      responses:
+        "201":
+          description: Created and routed to a reviewer
+          headers:
+            Idempotent-Replayed: { schema: { type: string, enum: ["false"] } }
+          content: { application/json: { schema: { $ref: "#/components/schemas/PermitEnvelope" } } }
+        "200":
+          description: A retry of a submission that was already made (same key and body); the original permit
+          headers:
+            Idempotent-Replayed: { schema: { type: string, enum: ["true"] } }
+          content: { application/json: { schema: { $ref: "#/components/schemas/PermitEnvelope" } } }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "413": { description: Body over 1 MB, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+        "429": { $ref: "#/components/responses/TooManyRequests" }
+
+  /permits/{reference}:
+    parameters: [ { $ref: "#/components/parameters/Reference" } ]
+    get:
+      tags: [Permits]
+      summary: One permit with its timeline and notification states
+      description: |
+        Visible to:
+        - the requester who owns it
+        - the assigned reviewer and approver
+        - inspectors and admins
+
+        The timeline shows who acted. For a revision request it includes the reviewer's comment,
+        and for a rejection the reason (Week 17).
+      responses:
+        "200":
+          description: The permit
+          content: { application/json: { schema: { $ref: "#/components/schemas/PermitEnvelope" } } }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /permits/{reference}/request-revision:
+    parameters: [ { $ref: "#/components/parameters/Reference" } ]
+    post:
+      tags: [Workflow]
+      summary: Ask the requester to change the request (assigned reviewer; under_review → revision_requested)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, required: [comment], properties: { comment: { type: string, minLength: 5, maxLength: 500 } } }
+      responses:
+        "200": { description: Updated permit, content: { application/json: { schema: { $ref: "#/components/schemas/PermitEnvelope" } } } }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+
+  /permits/{reference}/resubmit:
+    parameters: [ { $ref: "#/components/parameters/Reference" } ]
+    post:
+      tags: [Workflow]
+      summary: Resubmit after a revision request (owner; revision_requested → under_review)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                purpose: { type: string, minLength: 10, maxLength: 255 }
+                details: { type: [string, "null"], maxLength: 2000 }
+      responses:
+        "200": { description: Updated permit, content: { application/json: { schema: { $ref: "#/components/schemas/PermitEnvelope" } } } }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+
+  /permits/{reference}/endorse:
+    parameters: [ { $ref: "#/components/parameters/Reference" } ]
+    post:
+      tags: [Workflow]
+      summary: Endorse (assigned reviewer; under_review → pending_approval, routed to an approver)
+      responses:
+        "200": { description: Updated permit, content: { application/json: { schema: { $ref: "#/components/schemas/PermitEnvelope" } } } }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "409": { $ref: "#/components/responses/Conflict" }
+
+  /permits/{reference}/approve:
+    parameters: [ { $ref: "#/components/parameters/Reference" } ]
+    post:
+      tags: [Workflow]
+      summary: Approve and issue (assigned approver; senior approver for types that need one; pending_approval → issued)
+      responses:
+        "200": { description: Issued permit with valid_from and valid_until, content: { application/json: { schema: { $ref: "#/components/schemas/PermitEnvelope" } } } }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "409": { $ref: "#/components/responses/Conflict" }
+
+  /permits/{reference}/reject:
+    parameters: [ { $ref: "#/components/parameters/Reference" } ]
+    post:
+      tags: [Workflow]
+      summary: Reject with a reason (assigned reviewer while under review, or assigned approver while pending approval)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, required: [reason], properties: { reason: { type: string, minLength: 5, maxLength: 500 } } }
+      responses:
+        "200": { description: Rejected permit, content: { application/json: { schema: { $ref: "#/components/schemas/PermitEnvelope" } } } }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+
+  /permits/{reference}/verify:
+    parameters: [ { $ref: "#/components/parameters/Reference" } ]
+    get:
+      tags: [Permits]
+      summary: Is this permit valid right now? (inspector, admin)
+      description: Compares valid_until with the current time, so a permit that has lapsed is never reported valid, even before the scheduler marks it expired.
+      responses:
+        "200":
+          description: Validity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      reference: { type: string }
+                      status: { $ref: "#/components/schemas/Status" }
+                      valid: { type: boolean }
+                      valid_until: { type: [string, "null"], format: date-time }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /admin/exceptions:
+    get:
+      tags: [Admin]
+      summary: What needs a person (admin)
+      description: Notifications that failed permanently or ran out of retries, and permits flagged for manual action (no reviewer available, SLA passed).
+      responses:
+        "200":
+          description: Exceptions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      notifications:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id: { type: integer }
+                            permit: { type: string, description: Permit reference }
+                            kind: { type: string, examples: [permit_issued] }
+                            attempts: { type: integer }
+                            failure: { type: string, enum: [permanent, transient_exhausted], description: "permanent: the gateway refused it (for example a bad address or an untrusted certificate); transient_exhausted: every retry failed" }
+                            detail: { type: string, examples: [gateway_http_422, gateway_tls_failed, gateway_http_503] }
+                            since: { type: string, format: date-time }
+                      permits:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            reference: { type: string }
+                            status: { $ref: "#/components/schemas/Status" }
+                            reason: { type: string, examples: [no_reviewer_available, no_approver_available, review_sla_breached, approval_sla_breached] }
+                            since: { type: string, format: date-time }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /admin/notifications/{id}/requeue:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: integer } }
+    post:
+      tags: [Admin]
+      summary: Send a failed notification again after its cause was fixed (admin)
+      responses:
+        "200": { description: Back in the queue with 0 attempts }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { description: The notification is not waiting for a person, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+
+  /health:
+    get:
+      tags: [Health]
+      summary: Readiness for monitoring (public)
+      description: |
+        - **ready (200):** everything is working.
+        - **degraded (200):** requests work, but the scheduler is stale or notifications are overdue;
+          a person must look.
+        - **not_ready (503):** the database is unreachable.
+
+        Liveness is `GET /up` outside `/api`. The response holds statuses, ages and counts only.
+        nginx limits it to 1 request a second per address.
+      security: []
+      responses:
+        "200":
+          description: ready or degraded
+          content: { application/json: { schema: { $ref: "#/components/schemas/Health" } } }
+        "503":
+          description: not_ready
+          content: { application/json: { schema: { $ref: "#/components/schemas/Health" } } }
+
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      description: Sanctum personal access token from POST /login, valid for 60 minutes.
+
+  parameters:
+    Reference:
+      name: reference
+      in: path
+      required: true
+      schema: { type: string, pattern: "^PRM-[0-9]{8}-[A-Z0-9]{5}$", examples: [PRM-20261116-MTUVK] }
+
+  responses:
+    Unauthenticated:
+      description: No token, or it expired or was revoked
+      content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } }
+    Forbidden:
+      description: The role or assignment does not allow this
+      content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } }
+    NotFound:
+      description: No such permit
+      content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } }
+    Conflict:
+      description: |
+        `invalid_transition`. The permit is not in a state that allows this. If someone else acted
+        between your read and your write, the message says so and names the current status, for
+        example: "Someone else acted on this permit first. It is now pending approval."
+      content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } }
+    ValidationFailed:
+      description: "`validation_failed`, with `details` per field, or `idempotency_key_reused`"
+      content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } }
+    TooManyRequests:
+      description: Rate limit reached; see Retry-After
+      headers:
+        Retry-After: { schema: { type: integer } }
+      content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } }
+
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, correlation_id]
+          properties:
+            code: { type: string, examples: [validation_failed, invalid_transition, invalid_credentials, unauthenticated, http_403] }
+            message: { type: string }
+            details: { type: object, additionalProperties: { type: array, items: { type: string } } }
+            correlation_id: { type: string }
+
+    User:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        role: { type: string, enum: [requester, reviewer, approver, inspector, admin] }
+
+    PermitType:
+      type: object
+      properties:
+        id: { type: integer }
+        code: { type: string, examples: [FAC-USE, HOT-WORK, MINOR-CONST] }
+        name: { type: string }
+        validity_days: { type: integer }
+
+    Status:
+      type: string
+      enum: [under_review, revision_requested, pending_approval, issued, rejected, expired]
+
+    PermitRequest:
+      type: object
+      required: [permit_type_id, purpose, location, requested_start]
+      properties:
+        permit_type_id: { type: integer }
+        purpose: { type: string, minLength: 10, maxLength: 255 }
+        location: { type: string, maxLength: 120 }
+        details: { type: [string, "null"], maxLength: 2000 }
+        requested_start: { type: string, format: date, description: "Today up to 365 days ahead (Y-m-d)" }
+
+    PermitSummary:
+      type: object
+      properties:
+        reference: { type: string }
+        type: { type: object, properties: { id: { type: integer }, code: { type: string }, name: { type: string } } }
+        purpose: { type: string }
+        location: { type: string }
+        details: { type: [string, "null"] }
+        requested_start: { type: string, format: date }
+        status: { $ref: "#/components/schemas/Status" }
+        revision_count: { type: integer }
+        reviewer: { type: [string, "null"], description: Name only }
+        approver: { type: [string, "null"], description: Name only }
+        valid_from: { type: [string, "null"], format: date-time }
+        valid_until: { type: [string, "null"], format: date-time }
+        needs_manual_action: { type: boolean }
+        manual_action_reason: { type: [string, "null"] }
+
+    Permit:
+      allOf:
+        - $ref: "#/components/schemas/PermitSummary"
+        - type: object
+          properties:
+            events:
+              type: array
+              items:
+                type: object
+                properties:
+                  type: { type: string, examples: [submitted, routed_to_reviewer, revision_requested, resubmitted, endorsed, routed_to_approver, approved, rejected, expired, manual_action_flagged] }
+                  from: { type: [string, "null"] }
+                  to: { type: [string, "null"] }
+                  at: { type: string, format: date-time }
+                  by: { type: [string, "null"], description: "Name of the person who acted; null for the system (Week 17)" }
+                  note: { type: [string, "null"], description: "The reviewer's comment (revision_requested) or the reason (rejected); null otherwise (Week 17)" }
+            notifications:
+              type: array
+              items:
+                type: object
+                properties:
+                  kind: { type: string }
+                  status: { type: string, enum: [pending, sent, manual_action] }
+                  attempts: { type: integer }
+                  next_attempt_at: { type: [string, "null"], format: date-time }
+
+    PermitEnvelope:
+      type: object
+      properties:
+        data: { $ref: "#/components/schemas/Permit" }
+
+    Health:
+      type: object
+      properties:
+        status: { type: string, enum: [ready, degraded, not_ready] }
+        checks:
+          type: object
+          properties:
+            database: { type: object, properties: { status: { type: string, enum: [ok, fail] } } }
+            scheduler_automation: { $ref: "#/components/schemas/Heartbeat" }
+            scheduler_dispatch: { $ref: "#/components/schemas/Heartbeat" }
+            outbox:
+              type: object
+              properties:
+                status: { type: string, enum: [ok, backlog] }
+                overdue: { type: integer }
+                manual_action: { type: integer }
+        checked_at: { type: string, format: date-time }
+
+    Heartbeat:
+      type: object
+      properties:
+        status: { type: string, enum: [ok, stale] }
+        age_seconds: { type: [integer, "null"] }
