@@ -112,4 +112,26 @@ void main() {
     expect(find.text('Submit for review'), findsOneWidget); // the form stays open so the user can retry
     await tester.binding.setSurfaceSize(null);
   });
+
+  test("Week 17: after a 409 the permit list shows the server's current status", () async {
+    var status = 'under_review';
+    final client = MockClient((request) async {
+      if (request.method == 'POST' && request.url.path.endsWith('/endorse')) {
+        status = 'pending_approval'; // another reviewer endorsed it first
+        return http.Response('{"error":{"code":"invalid_transition","message":"Someone else already acted on this permit."}}', 409);
+      }
+      return http.Response(jsonEncode({
+        'data': [
+          {'reference': 'PRM-1', 'purpose': 'Clinic', 'location': 'Gym', 'status': status},
+        ],
+      }), 200);
+    });
+    final state = AppState(ApiClient(client: client));
+    await state.loadPermits();
+    expect(state.permits.single.status, 'under_review');
+
+    await expectLater(state.act('PRM-1', 'endorse'), throwsA(isA<ApiError>()));
+
+    expect(state.permits.single.status, 'pending_approval');
+  });
 }

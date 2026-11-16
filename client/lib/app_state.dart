@@ -101,8 +101,13 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> act(String reference, String action, [Map<String, dynamic>? body]) async {
-    await api.post('/permits/$reference/$action', body);
-    await loadPermits();
+    try {
+      await api.post('/permits/$reference/$action', body);
+    } finally {
+      // Week 17: reload after a refusal too (409 when someone else acted first, 403),
+      // so the list never keeps showing a status the server no longer has.
+      await loadPermits();
+    }
   }
 
   Future<Map<String, dynamic>> loadExceptions() async =>
