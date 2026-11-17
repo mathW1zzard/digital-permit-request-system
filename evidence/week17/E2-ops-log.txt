@@ -1,0 +1,80 @@
+2026-11-16T16:02:12Z deploy: start HEAD (5773932) -> 20261116-222016-5773932
+2026-11-16T16:02:17Z backup: 20261117-000214-pre-deploy-5773932.sql (3738380 bytes, sha256 a74d8f02578b)
+2026-11-16T21:22:27Z deploy: backend installed (no dev packages)
+2026-11-16T21:24:23Z deploy: web build made for https://localhost:8444/api
+2026-11-16T21:24:27Z deploy: migrations applied, config and routes cached
+2026-11-16T21:24:30Z workers: worker on 9101 exited; restarting
+2026-11-16T21:24:30Z workers: worker on 9101 exited; restarting
+2026-11-16T21:24:30Z workers: worker on 9102 exited; restarting
+2026-11-16T21:24:31Z workers: worker on 9102 exited; restarting
+2026-11-16T21:24:31Z workers: worker on 9103 exited; restarting
+2026-11-16T21:24:31Z workers: worker on 9103 exited; restarting
+2026-11-16T21:24:32Z workers: worker on 9104 exited; restarting
+2026-11-16T21:24:32Z workers: worker on 9104 exited; restarting
+2026-11-16T21:24:43Z deploy: current -> 20261116-222016-5773932, workers and scheduler restarted
+2026-11-16T21:24:44Z run: scheduler (php artisan schedule:work) from <staging>/releases/20261116-222016-5773932
+2026-11-16T21:24:44Z run: scheduler (php artisan schedule:work) from <staging>/releases/20261116-222016-5773932
+2026-11-16T21:24:44Z deploy: health check 200
+2026-11-16T21:24:44Z deploy: done 5773932
+2026-11-16T21:24:58Z workers: stopped
+2026-11-16T21:25:00Z stop: staging stopped
+2026-11-16T21:25:20Z run: mysql on 127.0.0.1:3307
+2026-11-16T21:25:23Z workers: 4 workers on 9101 9102 9103 9104
+2026-11-16T21:25:24Z run: nginx on https://localhost:8444
+2026-11-16T21:25:26Z run: mock gateway on 127.0.0.1:9000 (HTTPS through nginx on 9444)
+2026-11-16T21:25:29Z run: scheduler (php artisan schedule:work) from <staging>/releases/20261116-222016-5773932
+2026-11-16T21:25:47Z reset: staging database recreated for UAT round 1
+2026-11-16T21:25:49Z backup: 20261117-052548-uat-before.sql (29829 bytes, sha256 4a1addc136c8)
+2026-11-16T21:25:51Z backup: 20261117-052550-offsite-test.sql (29829 bytes, sha256 4d6b25002d60)
+2026-11-16T21:25:51Z backup: off-machine copy verified in /tmp/tmp.5IOZrvvYuA
+2026-11-16T21:30:51Z uat-operator: expire-sessions
+2026-11-16T21:37:18Z deploy: start HEAD (07d9154) -> 20261117-053718-07d9154
+2026-11-16T21:37:20Z backup: 20261117-053719-pre-deploy-07d9154.sql (67374 bytes, sha256 9ac3394e74f9)
+2026-11-16T21:42:03Z deploy: backend installed (no dev packages)
+2026-11-16T21:44:02Z deploy: web build made for https://localhost:8444/api
+2026-11-16T21:44:06Z deploy: migrations applied, config and routes cached
+2026-11-16T21:44:08Z workers: worker on 9101 exited; restarting
+2026-11-16T21:44:08Z workers: worker on 9102 exited; restarting
+2026-11-16T21:44:09Z workers: worker on 9103 exited; restarting
+2026-11-16T21:44:09Z workers: worker on 9104 exited; restarting
+2026-11-16T21:44:20Z deploy: current -> 20261117-053718-07d9154, workers and scheduler restarted
+2026-11-16T21:44:20Z deploy: health check 200
+2026-11-16T21:44:21Z deploy: done 07d9154
+2026-11-16T21:44:21Z run: scheduler (php artisan schedule:work) from <staging>/releases/20261117-053718-07d9154
+2026-11-16T22:24:57Z uat-operator: expire-sessions
+2026-11-16T22:25:11Z uat-operator: fix-bounce-email
+2026-11-16T22:25:23Z uat-operator: restore-bounce-email
+2026-11-16T22:26:16Z workers: stopped
+2026-11-16T22:26:19Z workers: 4 workers on 9101 9102 9103 9104
+2026-11-16T22:27:10Z workers: stopped
+2026-11-16T22:27:12Z workers: 4 workers on 9101 9102 9103 9104
+2026-11-16T22:27:26Z rollback: start 20261117-053718-07d9154 -> 20261116-222016-5773932
+2026-11-16T22:27:27Z workers: worker on 9101 exited; restarting
+2026-11-16T22:27:28Z workers: worker on 9102 exited; restarting
+2026-11-16T22:27:29Z workers: worker on 9103 exited; restarting
+2026-11-16T22:27:29Z workers: worker on 9104 exited; restarting
+2026-11-16T22:27:32Z workers: restarted with an empty code cache (all old workers gone first)
+2026-11-16T22:27:35Z run: scheduler (php artisan schedule:work) from <staging>/releases/20261116-222016-5773932
+2026-11-16T22:27:50Z rollback: current -> 20261116-222016-5773932, health 200
+2026-11-16T22:28:09Z deploy: start HEAD (57fcd31) -> 20261117-062809-57fcd31
+2026-11-16T22:28:11Z backup: 20261117-062809-pre-deploy-57fcd31.sql (96882 bytes, sha256 41bdb59ae07c)
+2026-11-16T22:32:05Z deploy: backend installed (no dev packages)
+2026-11-16T22:32:09Z deploy: web build copied from the current release (--skip-web)
+2026-11-16T22:32:13Z deploy: migrations applied, config and routes cached
+2026-11-16T22:32:14Z workers: worker on 9101 exited; restarting
+2026-11-16T22:32:15Z workers: worker on 9102 exited; restarting
+2026-11-16T22:32:16Z workers: worker on 9103 exited; restarting
+2026-11-16T22:32:16Z workers: worker on 9104 exited; restarting
+2026-11-16T22:32:20Z workers: restarted with an empty code cache (all old workers gone first)
+2026-11-16T22:32:21Z deploy: current -> 20261117-062809-57fcd31, workers and scheduler restarted
+2026-11-16T22:32:22Z run: scheduler (php artisan schedule:work) from <staging>/releases/20261117-062809-57fcd31
+2026-11-16T22:32:23Z deploy: health check 200
+2026-11-16T22:32:23Z deploy: done 57fcd31
+2026-11-16T22:32:54Z web: replaced the web build of 20261117-062809-57fcd31 with the one built for 07d9154 (same client code); the --skip-web deploy had copied the rolled-back release's build
+2026-11-16T22:34:15Z uat-operator: expire-sessions
+2026-11-16T22:35:09Z uat-operator: fix-bounce-email
+2026-11-16T22:35:21Z uat-operator: restore-bounce-email
+2026-11-17T03:18:43Z workers: worker on 9103 exited; restarting
+2026-11-17T03:18:44Z workers: worker on 9104 exited; restarting
+2026-11-17T03:18:44Z workers: worker on 9102 exited; restarting
+2026-11-17T03:18:45Z workers: worker on 9101 exited; restarting

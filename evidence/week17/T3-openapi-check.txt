@@ -1,0 +1,6 @@
+OpenAPI check, 2026-11-17T13:28:30Z: docs/api/openapi.yaml against php artisan route:list
+openapi version: 3.1.0
+routes in code: 16  operations in spec: 16
+in code, missing from spec: none
+in spec, not in code: none
+unresolved $ref: none

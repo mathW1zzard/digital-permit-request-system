@@ -62,3 +62,16 @@ The prediction was written before the run (`00-plan-and-prediction.txt`).
 1. Copy each backup off the machine, and test a restore on another machine once a month.
 2. Make `composer install` part of the build, not the deploy. Build once, copy the folder. That would cut the roll-forward time from about 4 minutes to well under a minute.
 3. Put the site in maintenance mode (`php artisan down`) during a restore, so no writes land between the restore and the switch.
+
+## Correction found in Week 17 (defect S4)
+
+Week 17 found that a worker restart could leave the web workers serving the **previous** release. On Windows, OPcache's shared memory outlived the one-by-one restart. So this rehearsal proved three things:
+- the database restore (counts identical)
+- the **scheduler's** code switch (S2 came back on the old release, then went away after the roll forward)
+- that `/api/health` answered
+
+It did **not** prove that the web API switched code. `workers.sh` now stops every worker before starting new ones. Week 17 then repeated the check in both directions:
+- after a rollback, the old behaviour came back (UAT-03 failed, as that release should)
+- after the deploy forward, the new behaviour returned (UAT-03 passed)
+
+Evidence: `evidence/week17/S4-opcache/`.
