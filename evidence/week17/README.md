@@ -8,7 +8,7 @@
 
 The outputs are unedited; the UAT runner replaces tokens with `[redacted]` and the ops log has its paths shortened. See `lab-log.md`.
 
-**Build:** branch `week17-uat`, from Week 16's `de82fb7`. Staging releases `5773932` (round 1), `07d9154` (round 2) and `57fcd31` (round 3). Times are UTC.
+**Build:** branch `week17-uat`, from Week 16's `de82fb7`. Tagged commit: `6e34ca1` (tag `week17-eval`). Staging releases `5773932` (round 1), `07d9154` (round 2) and `57fcd31` (round 3). Times are UTC.
 
 Reports in `docs/week17/`:
 - `40` UAT plan
